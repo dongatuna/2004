@@ -35,5 +35,9 @@ router.get('/learn/:course', SiteController.getCatalogCourse)
 router.get("/whypost", SiteController.getWhyPostPage)
 //get the hca page
 router.get("/page/:course", SiteController.getCourseDetailsPage )
+//get the courses landing page
+router.get("/courseslanding", SiteController.getCoursesLandingPage )
+//get the jobs landing page
+router.get("/jobslanding", SiteController.getJobsLandingPage )
 
 module.exports = router

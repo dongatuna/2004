@@ -416,5 +416,13 @@ module.exports = {
                 err
             })
         }
-    }  
+    },
+    // Get courses landing page
+    getCoursesLandingPage: (req, res) => {
+        res.render('site/courseslanding',  { seo_info: seo_page.courses_landing_seo_info })
+    },
+    // Get jobs landing page
+    getJobsLandingPage: (req, res) => {
+        res.render('site/jobslanding',  { seo_info: seo_page.jobs_landing_seo_info })
+    },
 }

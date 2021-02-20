@@ -354,16 +354,42 @@ module.exports = {
     so_page_seo_info: {
         title: "Safety Orientation course",
         titleTemplate:  'Upcoming Safety and Orientation specialty course schedules for NARs, HCAs and CNAs',
-        meta: [                   
+        meta: [
             { name: "description", content: "Details about DSHS Safety and Orientation Training for Nurse Assistants, NACs, Caregivers, Home Care Aides HCAs, and NARs course." },
             { name: "keywords", content: "DSHS Safety course, Safety course, Safety class, DSHS Orientation course, Orientation course, Orientation class" },
-            { name: "author", content: "Don Gatuna" }          
+            { name: "author", content: "Don Gatuna" }
         ],
 
         links: [
             { rel: 'canonical', href: 'https://www.excelcna.com/page/so' }
         ]
-    }
+    },
 
+    courses_landing_seo_info: {
+        title: "Courses",
+        titleTemplate: 'Excel Health Careers Training, Inc.',
+        meta: [
+           {name: "description", content: "Resource for managing Excel Health Careers Training students."},
+            {name: "keywords", content: "CNA, NAC, Certified Nurse Aide, Certified Nurse Assistant, Nurse Aide, Nurse Assistant, Caregiver, Aide, Companion"},
+            {name: "author", content: "Don Gatuna"}
+        ],
 
+        links: [
+            { rel: 'canonical', href: 'https://www.excelcna.com/jobslanding' },
+        ]
+    },
+
+    jobs_landing_seo_info: {
+        title: "Jobs",
+        titleTemplate: 'Excel Health Careers Training, Inc.',
+        meta: [
+           {name: "description", content: "Resource for managing Excel Health Careers Training students."},
+            {name: "keywords", content: "CNA, NAC, Certified Nurse Aide, Certified Nurse Assistant, Nurse Aide, Nurse Assistant, Caregiver, Aide, Companion"},
+            {name: "author", content: "Don Gatuna"}
+        ],
+
+        links: [
+            { rel: 'canonical', href: 'https://www.excelcna.com/jobslanding' },
+        ]
+    },
 }

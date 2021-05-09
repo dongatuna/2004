@@ -13,5 +13,8 @@ service cloud.firestore {
     match /reservations/{reservationId} {
       allow read, write    
     }
+    match /prospects/{prospectId} {
+      allow read, write    
+    }
   }
 }

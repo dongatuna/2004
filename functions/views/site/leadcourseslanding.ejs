@@ -42,13 +42,13 @@
 						<label for="tel"><strong>Telephone</strong> </label>                                   
 						<input type="tel" class="form-control border border-dark" name="tel" placeholder="Phone" id="tel" required>			   
 					</div>	
-					<a href="/learn/<%=code%>" class="btn btn-block btn-primary btn-lg">
+					<a href="/learn/<%=code%>" class="btn btn-block btn-primary btn-lg" id="registerProspect">
 						Sign up now
 					</a>
 				</div>	
 
 				<div class="col-sm-12 col-md-6 p-4">
-					
+					<p>
 						We have trained more than 10,000 students for more than the 15 years.
 						<ul>
 							<li>get a Washington CNA or HCA license </li>
@@ -79,3 +79,69 @@
 		</div>
 	</div> -->
 </article>
+
+
+<script type="application/javascript">
+	$(document).ready(() => {  
+			//get the course code
+			const code = (<%-JSON.stringify( code )%>)
+		   //this event register a student who pays registration fees
+		   $("#registerProspect").on('click', e => { 
+				//prevent default behavior
+				e.preventDefault()
+				// Read the CSRF token from the <meta> tag
+				// const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content')      
+				//REQUIRED FIELD: get student's first name
+				const first = $('#first').val()
+				//REQUIRED FIELD: get student's last name
+				const last = $('#last').val()
+				//REQUIRED FIELD: get student's email
+				const email = $('#email').val()
+				//REQUIRED FIELD: get student's telephone #
+				const tel = $('#tel').val()         
+				//make sure that first, last, email and telephone #s fields are filled
+				if(first === '' || last === '' || email === '' || tel === ''){
+					return alert('You must enter all fields.  Make sure you entered your first and last names, email and/or telephone #.')
+				}
+      
+				//hide the registration button to avoid multiple form submission           
+				$('#btnRegister').hide()       
+
+						
+				//create an on object constructed from data entered by user in the form above
+				const studentData = { first, last, email, tel }
+				debugger                
+			
+
+				$.ajax({
+					type: 'POST', 
+					url: `/students/prospects/${code}`,
+					credentials: 'same-origin', // <-- includes cookies in the request
+					headers: {
+						Accept: "application/json",
+						//'Content-Type': "application/json"				    
+					},
+					dataType: "json",
+					data: studentData,
+				}).done(function (response) {
+					if (response.redirect !== undefined && response.redirect) {
+						//add local storage items for student id and if student registered or waitlisted
+						localStorage.setItem('student_id', response.student_id)
+						
+						debugger
+						alert(response.message)
+						//window.location.replace(response.redirect_url)
+						window.location.href = response.redirect_url
+					}      
+					//if something is wrong - alert user and redirect user to course schedule page
+					if (response.redirect !== undefined && !response.redirect) {
+						
+						alert('Something went wrong - start the registration process again!')
+						window.location.href = '/courses'
+						// window.location.replace('/courses')
+					}                   
+				})                   
+        })
+
+	})
+</script>

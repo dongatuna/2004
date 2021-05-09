@@ -10,13 +10,38 @@ const db = firebase.firestore()
 
 module.exports = {  
 
+    /**
+     * @param {String | code } req | the short code of the course name
+     * @param {Object | redirect url, prospect id,and message} res | object containing redirect url, prospect id, and message
+     * @param {Object | error} res | error
+     */
+    registerProspect : async ( req, res, next ) => {
+        try {
+            //cons
+            const { first, last, tel, email } = req.body
+            console.log(`prospects ${ req.body }`)
+            //save prospect in the database
+            const prospect = await db.collection('prospects')
+                                     .add( {
+                                        first, last, tel, email
+                                     })
+            //return information to user
+            res.status(202).json({
+                message: 'We will now show you course schedules and da',
+                url: `/learn/${req.params.code}`
+
+            })
+        } catch (error) {
+            console.log(`prospects error ${error}`)
+        }
+    },
      /**
       * 
       * @param {*} req 
       * @param {*} res 
       * @param {*} next 
       */
-     studentPayRegistration : async ( req, res, next ) => {
+    studentPayRegistration : async ( req, res, next ) => {
         //get course code, course id and student id
         const { amount, code, course_id, student_id, stripeToken } = req.body
         //check to make sure amount and stripeToken exist

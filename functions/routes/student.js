@@ -8,6 +8,9 @@ router.route( '/registration' ).post( studentController.studentPayRegistration )
 router.route('/register/:code/:id').post( studentController.studentSelfCourseSignUp )
 //student contacts employers (starts job search) while enrolling for class
 router.route('/start-job-search').patch( studentController.contactEmployers )
+//student contacts employers (starts job search) while enrolling for class
+router.route('/prospects/:code')
+      .post( studentController.registerProspect )
 //admin registers a new student
 router.route('/start/:code/:course_id').post( authenticate.isAdmin, studentController.studentCourseSignUpByAdmin ) 
 //admin updates a student 

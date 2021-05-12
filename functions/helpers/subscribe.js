@@ -39,6 +39,24 @@ module.exports = {
         }
     },  
 
+     //email, first, last, tel, course.name, course.start_date, course.end_date
+    prospectData: (email, first_name, last_name, tel, student_id, code, tags) => {
+            
+        //construct and return data // tags,    
+        return mc_data = {               
+            email_address: email,     
+            status: 'subscribed',
+            tags,                  
+            merge_fields: {
+                FNAME: first_name,
+                LNAME: last_name,
+                PHONE: tel,              
+                CODE: code,           
+                USER_ID: student_id //user_id is used in the URLs found in transfer and post registration email bodies
+            }   
+        }
+    },
+
     /**
      * @param: Array of objects, string
      * @returns: Nothing

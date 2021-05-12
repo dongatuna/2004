@@ -145,7 +145,7 @@ module.exports = {
 
     try {
         //get the student using student id
-        const result = await db.collection("students").doc( student_id ).get()
+        const result = await db.collection('students').doc(student_id).get()
         //create student to return to the front side
         const student = {
             name: `${ result.data().first } ${ result.data().last }`,
@@ -154,7 +154,7 @@ module.exports = {
             id: result.id
         }
         //return the registration form
-        res.render('site/payregistration', {                
+        res.render('site/enrollstudent', {                
             course: course,                
             code: code,  
             fees: fees,
@@ -247,12 +247,13 @@ module.exports = {
         //res.status(200).json({campaignText})
     },       
     //12. Get CNA lead course schedule page
-    getLeadCourses: async ( req, res ) => {          
-        try{                   
+    getLeadCourses: async ( req, res ) => {    
             //get start of today
-            const today = moment().startOf('day')
-            //get the long name of course stored in database
-            const course_name = courseName(req.params.name)
+        const today = moment().startOf('day')
+        //get the long name of course stored in database
+        const course_name = courseName(req.params.name)
+
+        try{   
 
             if (
                 course_name == "BLS Course Skill Testing" || 

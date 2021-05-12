@@ -12,7 +12,7 @@ module.exports = {
 
     /**
      * @param {String | code } req | the short code of the course name
-     * @param {Object | redirect url, prospect id,and message} res | object containing redirect url, prospect id, and message
+     * @param {Object | redirect url, redirect boolean, prospect id,and message} res | object containing redirect url, prospect id, and message
      * @param {Object | error} res | error
      */
     registerProspect : async ( req, res, next ) => {
@@ -20,19 +20,35 @@ module.exports = {
             //cons
             const { first, last, tel, email } = req.body
             console.log(`prospects ${ req.body }`)
+            //add status data - default to FALSE
+            const status = {
+                course_start: false,
+                walk_in: false,
+                web_sign_up: true
+            }
             //save prospect in the database
-            const prospect = await db.collection('prospects')
+            const prospect = await db.collection('students')
                                      .add( {
-                                        first, last, tel, email
+                                        first, last, tel, email, status
                                      })
+            //subscribe to mailchimp
+
             //return information to user
             res.status(202).json({
-                message: 'We will now show you course schedules and da',
-                url: `/learn/${req.params.code}`
+                message: 'Next, choose your class days and times.',
+                redirect: true,
+                url: `/select-schedule/${req.params.code}`,
+                prospect_id: `${prospect.id}`
 
             })
         } catch (error) {
             console.log(`prospects error ${error}`)
+            //return information to user
+            res.status(500).json({
+                message: 'There was an error processing your form details.',
+                redirect: false,
+                url: `/signup/${req.params.code}`
+            })
         }
     },
      /**
@@ -100,11 +116,11 @@ module.exports = {
                 "message": "Did not sign up for the class."
             })
         }
-     },
+    },
     /**
      * First view after admin signs up 
-     *@param: none
-     * returns: students who registered today and daily sum
+     *@param {}: none
+     * @returns {Object | students who registered today and sum paid} students who registered today and daily sum
      */
     getDailyRegistrants: async ( req, res, next ) => {
         try {          
@@ -268,7 +284,7 @@ module.exports = {
     },
     /**
      * student register self for an upcoming course
-     * @param { String | course id, code } - param is course id and code
+     * @param { String | student data, stripe token, course id, code } - param is course id and code
      * @params: id of the course, code
      * data: student information and stripe token if payment is made
      */

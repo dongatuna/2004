@@ -28,8 +28,29 @@
                                     <small>There are only few spots available so, complete registration to secure your spot.  Spots are assigned in the order of receipt of registration fees. </small>
                                 </p>
                             </div>                            
-                        </div>   
-    
+                        </div>                                                                   
+                      
+                         <!-- ADD AND DISPLAY CARD ELEMENT TO THE PAGE -->
+                        <div class="row justify-content-center">
+                            <div class="col-sm-12 col-lg-4 p-3 bg-light">     
+                                <p class="text-center lead text-danger"><strong> Classes fill up fast.  Register now and secure your spot immediately. </strong></p>
+                                <label for="card-element">
+                                    Credit or debit card
+                                </label>
+                                <div id="card-element">
+                                    <!-- Elements will create input elements here -->
+                                </div>
+                                
+                                <!-- We'll put the error messages in this element -->
+                                <div id="card-errors" role="alert" ></div>
+                                <div class="mt-2">                               
+                                    <button class="btn btn-primary btn-block p-3 mt-3" name="register" id="btnRegister" type="submit"><strong>Pay <%= course.fees %>.00 Registration Fee</strong></button> 
+                                    <p class="text-success"><small>Payments processed by Stripe Corporation.</small></p>
+                                    <p class="text-dark text-center" id="process-registration" style="display: none;"><strong>Processing...</strong></p>
+                                </div>
+                                    
+                            </div>
+                        </div>      
                         
                         <!--COMMENTS AND QUESTIONS-->
                         <div class="row justify-content-center">
@@ -39,30 +60,7 @@
                                     <textarea class="form-control" name="comments" id="comments" cols="10" rows="2" placeholder="Enter your comments or questions" ></textarea>
                                 </div>          
                             </div>
-                        </div> 
-                                                
-                      
-                         <!-- ADD AND DISPLAY CARD ELEMENT TO THE PAGE -->
-                    <div class="row justify-content-center">
-                        <div class="col-sm-12 col-lg-4 p-3 bg-light">     
-                            <p class="text-center lead text-danger"><strong> Classes fill up fast.  Register now and secure your spot immediately. </strong></p>
-                            <label for="card-element">
-                                Credit or debit card
-                            </label>
-                            <div id="card-element">
-                                <!-- Elements will create input elements here -->
-                            </div>
-                            
-                              <!-- We'll put the error messages in this element -->
-                            <div id="card-errors" role="alert" ></div>
-                            <div class="mt-2">                               
-                                <button class="btn btn-primary btn-block p-3 mt-3" name="register" id="btnRegister" type="submit"><strong>Pay <%= course.fees %>.00 Registration Fee</strong></button> 
-                                <p class="text-success"><small>Payments processed by Stripe Corporation.</small></p>
-                                <p class="text-dark text-center" id="process-registration" style="display: none;"><strong>Processing...</strong></p>
-                            </div>
-                                
-                        </div>
-                    </div>                   
+                        </div>   
                         
                         <p class="text-dark text-center" id="process-waitlist" style="display: none;"><strong>Processing...</strong></p>                          
                     </form>

@@ -125,6 +125,85 @@ module.exports = {
         }      
     },
 
+    /**
+     * View registration payment field and add student
+     * @param {*} req 
+     * @param {*} res 
+     * @param {*} next 
+     */
+    getStudentPayment: async ( req, res, next ) => {
+        //get the params in the url
+        const { code, course_id } = req.params
+        //get the long name of course stored in database
+        const course_name = courseName(code)
+        //remove the links in the nav bar - lead page = true
+        const lead = true
+        //get course registration fee
+        const fees  = registration_fee[course_name]
+        if(
+            course_name == "BLS Course Skill Testing" || 
+            course_name == "Adult CPR/First Aid/AED Skill Testing" || 
+            course_name == "DSHS Nurse Delegation Special Focus on Diabetes" || 
+            course_name == "DSHS Nurse Delegation (CORE) for NAs and HCAs" 
+        ){
+          
+            const title = `${ course_name } Sign Up Form`
+
+            const data = {
+                courseId: course_id,
+                fees,
+                title,
+                name: course_name
+            }
+
+            return res.render('site/studentsignup', 
+                {   
+                    // csrfToken: req.csrfToken(),
+                    code: course,
+                    seo_info: seo_page.register_page_seo_info, 
+                    lead: lead,
+                    course: data,                                
+                    STRIPE_PUBLIC_KEY: STRIPE_PUBLIC_KEY
+                }
+            )
+
+        }
+        try {
+             //else {
+                //find the course
+                const query = await db.collection('courses').doc(course_id).get()
+                //construct data about class - remove student array
+                const results = query.data()
+                
+                const title = results.end_date !== null ? moment( results.start_date.toDate()).tz('America/Los_Angeles' ).format("MMM D") +" - "+ moment( results.end_date.toDate()).tz('America/Los_Angeles' ).format("MMM D") +" "+ results.name + " " + results.type : moment( results.start_date.toDate()).tz('America/Los_Angeles' ).format("MMM D") +" "+ results.name + " " + results.type +" Sign Up Form"     
+                
+                const data = {              
+                    courseId: course_id,                                               
+                    title,
+                    fees,
+                    name: course_name                  
+                } 
+                
+               
+                res.render('site/studentsignup', 
+                    {   
+                        // csrfToken: req.csrfToken(),
+                        code: course,
+                        seo_info: seo_page.register_page_seo_info, 
+                        lead: lead,
+                        course: data,                                
+                        STRIPE_PUBLIC_KEY: STRIPE_PUBLIC_KEY
+                    }
+                )
+            //} 
+
+            
+            
+        } catch (error) {
+            console.log('Error ', error)
+        }
+    },
+
     /** 
      * The link to this form is sent to student who has already registered for a class
      * Aims to get the student to sign up and convert from waitlist to registered    
@@ -133,41 +212,41 @@ module.exports = {
      * @param {none} next 
      */
     getStudentPayRegistrationForm : async ( req, res, next ) => {
-    //get the parameters
-    const { code, course_id, student_id } = req.params   
-    //get the course or reservation full name/title
-    const course = await courseDbName( code, course_id )   
-    //get the long name of course stored in database
-        
-    console.log( 'and course ', course)       
-    //get course registration fee
-    const fees  = registration_fee[course.data.name]
-
-    try {
-        //get the student using student id
-        const result = await db.collection('students').doc(student_id).get()
-        //create student to return to the front side
-        const student = {
-            name: `${ result.data().first } ${ result.data().last }`,
-            email: `${ result.data().email } `,
-            phone: `${ result.data().tel }`,
-            id: result.id
-        }
-        //return the registration form
-        res.render('site/enrollstudent', {                
-            course: course,                
-            code: code,  
-            fees: fees,
-            student: student,                 
-            seo_info: seo_page[code + "_page_seo_info"] ,
-            seo_info: seo_page.register_page_seo_info, 
-            STRIPE_PUBLIC_KEY: STRIPE_PUBLIC_KEY                                            
-        })      
+        //get the parameters
+        const { code, course_id, student_id } = req.params   
+        //get the course or reservation full name/title
+        const course = await courseDbName( code, course_id )   
+        //get the long name of course stored in database
             
-        
-    } catch (error) {
-        console.log( 'error', error )
-    }
+        console.log( 'and course ', course)       
+        //get course registration fee
+        const fees  = registration_fee[course.data.name]
+
+        try {
+            //get the student using student id
+            const result = await db.collection('students').doc(student_id).get()
+            //create student to return to the front side
+            const student = {
+                name: `${ result.data().first } ${ result.data().last }`,
+                email: `${ result.data().email } `,
+                phone: `${ result.data().tel }`,
+                id: result.id
+            }
+            //return the registration form
+            res.render('site/enrollstudent', {                
+                course: course,                
+                code: code,  
+                fees: fees,
+                student: student,                 
+                seo_info: seo_page[code + "_page_seo_info"] ,
+                seo_info: seo_page.register_page_seo_info, 
+                STRIPE_PUBLIC_KEY: STRIPE_PUBLIC_KEY                                            
+            })      
+                
+            
+        } catch (error) {
+            console.log( 'error', error )
+        }
     },
 
     //8. Get the receipt page

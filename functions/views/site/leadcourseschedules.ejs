@@ -32,12 +32,17 @@
                 <div class="col-sm-12">
                 <h4 class="diplay text-center mr-4">Enroll in the course that best fits your schedule</h4>                      
                     <div class=" row justify-content-center">
-                        <div class="col-sm-12 col-md-4">                        
+                        <div class="col-sm-10 col-md-4">                        
                             <ul class="list-group">                                
                                 <li class="list-group-item bg-dark text-white"> <strong>DAY CLASS </strong><br> Monday - Friday <br>  2 weeks <br> 9:00 a.m. - 3:00 p.m.</li> 
                                 <% course.day_courses.forEach(course => { %>                                    
                                 <li class="list-group-item" >
-                                    <a href="/select-payment/<%=code%>/<%= course.courseId %>"> <%=course.start_date %> - <%=course.end_date %> <span class="text-danger float-right"> <strong> Enroll </strong> </span> </a>
+                                    <%=course.start_date %> - <%=course.end_date %>
+                                    <a class="btn btn-danger float-right" href ="/select-payment/<%=code%>/<%= course.courseId %>">
+                                        Join                                       <!-- <span class="text-danger float-right"> 
+                                             <strong> Enroll </strong>
+                                        </span>  -->
+                                    </a>
                                 </li> 
                                 <% }) %>                                 
                             </ul>
@@ -47,8 +52,13 @@
                                 <li class="list-group-item bg-dark text-white"> <strong>EVENING CLASS </strong><br>Monday - Friday <br> 2 weeks <br> 3:00 p.m. - 9:00 p.m.</li>                        
                                 <% course.evening_courses.forEach(course => { %>       
                                     <li class="list-group-item" >
-                                        <a href="/select-payment/<%=code%>/<%= course.courseId %>"> <%=course.start_date %> - <%=course.end_date %> <span class="text-danger float-right"> <strong> Enroll </strong> </span> </a>
-                                    </li>
+                                        <%=course.start_date %> - <%=course.end_date %>
+                                        <a class="btn btn-danger float-right" href ="/select-payment/<%=code%>/<%= course.courseId %>">
+                                            Join                                       <!-- <span class="text-danger float-right"> 
+                                                 <strong> Enroll </strong>
+                                            </span>  -->
+                                        </a>
+                                    </li> 
                                 <% }) %>                               
                             </ul>
                         </div>
@@ -57,8 +67,13 @@
                                 <li class="list-group-item  bg-dark text-white"> <strong>WEEKEND CLASS </strong> <br>Saturday & Sunday <br> 4 weekends <br> 2:00 p.m. - 10:00 p.m.</li>   
                                 <% course.weekend_courses.forEach(course => { %>             
                                     <li class="list-group-item" >
-                                        <a href="/select-payment/<%=code%>/<%= course.courseId %>"> <%=course.start_date %> - <%=course.end_date %> <span class="text-danger float-right"> <strong> Enroll </strong> </span> </a>
-                                    </li>
+                                        <%=course.start_date %> - <%=course.end_date %>
+                                        <a class="btn btn-danger float-right" href ="/select-payment/<%=code%>/<%= course.courseId %>">
+                                            Join                                       <!-- <span class="text-danger float-right"> 
+                                                 <strong> Enroll </strong>
+                                            </span>  -->
+                                        </a>
+                                    </li> 
                                 <% }) %>                                
                             </ul>
                         </div>  

@@ -19,16 +19,16 @@
 				<span class="text-background--purple">Sign up for our </span><%= course %> course...
 			</h1>
 			<p class="tagline">
-				to connect to employers who offer tuition assistance and/or jobs to you during and after your training! 
+				to connect to employers who offer tuition assistance and jobs during and after your training! 
 			</p>
 			<p class="tagline">
 				
 			</p> 
-			<p > <strong>Our courses prepare you for WA CNA license exam and are offered during day, evening and weekends.  <br> <br>Signing is up easy.  Fill out the form below to start!</strong></p>
+			<p > <strong>Our courses prepare you for CNA state license exam and are offered during day, evening and weekends.  <br> <br>Signing is up easy.  Fill out the form below to start!</strong></p>
 
 			 <!--FIRST AND LAST NAMES-->
 			<div class="row justify-content-between">
-				<div class="col-sm-12 col-md-8">   				
+				<div class="col-sm-12 col-lg-8">   				
 					<div class="form-group">
 						<label for="first"><strong>First Name</strong> </label>                                   
 						<input type="text" class="form-control border border-dark" name="first" placeholder="First name" id="first" required>			   
@@ -117,7 +117,7 @@
 				}).done(function (response) {
 					if (response.redirect !== undefined && response.redirect) {
 						//add local storage items for student id and if student registered or waitlisted
-						localStorage.setItem('prospect_id', response.prospect_id)						
+						localStorage.setItem('student_id', response.student_id)						
 						debugger
 						alert(response.message)
 						//window.location.replace(response.redirect_url)

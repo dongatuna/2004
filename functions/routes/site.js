@@ -31,7 +31,7 @@ router.get('/select-course/:name', SiteController.getCoursesLandingPage )
 //get the course schedules
 router.get('/select-schedule/:name', SiteController.getLeadCourses )
 //gets page for student to pay registration fee after receiving email /
-router.get('/select-payment/:code/:course_id', SiteController.getStudentPayRegistrationForm )
+router.get('/select-payment/:code/:course_id', SiteController.getStudentPayment )
 
 //************************************************************************************ */
 //gets page for student to pay registration fee after receiving email /

@@ -2,7 +2,7 @@ const firebase = require("firebase")
 const moment = require('moment')
 const seo_page = require('../client_helpers/seo_page_info')
 const { createCustomer, createCard, charge  } = require('../helpers/payments')
-const { studentData, updateStudentTags, subscribe  } = require("../helpers/subscribe")
+const { prospectData, studentData, updateStudentTags, subscribe  } = require("../helpers/subscribe")
 const { courseDbName, codeName } = require('../helpers/course_classifier')
 
 //create reference for firestore database
@@ -27,18 +27,22 @@ module.exports = {
                 web_sign_up: true
             }
             //save prospect in the database
-            const prospect = await db.collection('students')
+            const student = await db.collection('students')
                                      .add( {
                                         first, last, tel, email, status
                                      })
-            //subscribe to mailchimp
+            const tags = ['Prospects']
+             //create postdata to send to mailchimp
+            const postData = prospectData(email, first, last, tel, student.id, req.params.code, tags)            
+            //send student data to mailchimp list/audience for students
+            await subscribe( STUDENT_LIST, postData ) 
 
             //return information to user
             res.status(202).json({
                 message: 'Next, choose your class days and times.',
                 redirect: true,
                 url: `/select-schedule/${req.params.code}`,
-                prospect_id: `${prospect.id}`
+                student_id: `${student.id}`
 
             })
         } catch (error) {

@@ -1,8 +1,9 @@
 const firebase = require("firebase")
 const moment = require('moment')
 const seo_page = require('../client_helpers/seo_page_info')
+const mailchimpClient = require('@mailchimp/mailchimp_transactional')( MANDRILL_API_KEY )
 const { createCustomer, createCard, charge  } = require('../helpers/payments')
-const { prospectData, studentData, updateStudentTags, subscribe  } = require("../helpers/subscribe")
+const { prospectData, studentData, updateStudentTags, updateMergeFields, subscribe  } = require("../helpers/subscribe")
 const { courseDbName, codeName } = require('../helpers/course_classifier')
 
 //create reference for firestore database
@@ -28,9 +29,11 @@ module.exports = {
             }
             //save prospect in the database
             const student = await db.collection('students')
-                                     .add( {
+                                    .add( {
+                                        enrolledOn : firebase.firestore.Timestamp.fromDate(new Date()),
                                         first, last, tel, email, status
-                                     })
+                                    })
+            //add tags showing that the student is a prospect
             const tags = ['Prospects']
              //create postdata to send to mailchimp
             const postData = prospectData(email, first, last, tel, student.id, req.params.code, tags)            
@@ -218,17 +221,19 @@ module.exports = {
             
             //get the data from the front end
             const { student_id, jobs }  = req.body
+
+            console.log(`REQ BODY ${JSON.stringify(req.body)}`)
             //get student for full name and contact information
-            const student = await db.collection('students').doc( student_id ).get()
+            const student = await db.collection('students').doc(student_id).get()
             //student's full name
             const full_name = `${ student.data().first } ${ student.data().last }`      
-            
+            console.log(`Jobs ${JSON.stringify(jobs)}`)
             //if the student has contacted more than 1 employer
             if( jobs.length > 0 ) {
                 //send employers emails
                 jobs.forEach (async( x ) => {                        
                     //get student for full name and contact information
-                    const job = await db.collection('jobs').doc( x.job_id ).get()
+                    const job = await db.collection('jobs').doc(x.job_id).get()
                     //get the prospects
                     const prospects = job.data().applicants.length > 0 ? job.data().applicants : []
                     //add the new prospect to the prospects array
@@ -241,7 +246,7 @@ module.exports = {
                     //find the student with id of student_id
                     await db.collection('jobs')               
                             .doc( x.job_id )
-                            .update(prospects) 
+                            .update({ prospects}) 
 
                     //send 
                     await mailchimpClient.messages.sendTemplate({
@@ -299,26 +304,21 @@ module.exports = {
             //get the long name of course stored in database
             const course = await courseDbName( code, id )            
             //get the req.body data
-            const { comments, email, first, payment, stripeToken, last, tel } = req.body         
+            const { stripeToken, student_id, payment } = req.body         
             //check if there is an amount
             const amount = payment > 0 ? parseInt( payment ) : 0            
             //create a payment array
             const payments = []
-            //add status data - default to FALSE
-            const status = {
-                course_start: false,
-                walk_in: false,
-                web_sign_up: true
-            }            
+            //get the student using the student id
+            const student = await db.collection('students').doc(student_id).get()              
 
             //check if there is a stripe token and the amount
             if( stripeToken && amount > 0 ) {
                 //use registrant's email, first and last name and telephone to create a customer using stripe api
-                const customer = await createCustomer( email, first, last, tel )   
+                const customer = await createCustomer( student.data().email, student.data().first, student.data().last, student.data().tel )   
             
                 //create a card using customer created from above process
-                const card = await createCard( customer, stripeToken )
-            
+                const card = await createCard( customer, stripeToken )            
                 //create a charge
                 const chargeId = await charge( card.id, customer, amount, item_description = "Self Course Sign Up - " + course.title )                
             
@@ -344,21 +344,23 @@ module.exports = {
                 })                             
             } 
 
-            //add student to object
-            const student = await db.collection('students')
-                                    .add({   
-                                        enrolledOn : firebase.firestore.Timestamp.fromDate(new Date()),
-                                        comments, email, first, last, tel, payments, status 
-                                    }) 
-            
-            //tag registrant depending on whether they paid or not
-            const tags = parseInt( payment ) > 0 ? ["Paid Course Registration"] : ["Course Waitlist"]
-             //create postdata to send to mailchimp
-            const postData = studentData( email, first, last, tel, course.data.name, course.data.start_date, course.data.end_date, student.id, id, tags, code )
-       
-             //send student data to mailchimp list/audience for students
-            await subscribe( STUDENT_LIST, postData )
+            //registration tag depending on whether they paid or not
+            const tags = parseInt( payment ) > 0 ? [ 
+                { "name" : "Paid Course Registration", "status": "active" }, 
+                { "name" : "Prospects", "status": "inactive" }
+            ] : [
+                { "name" : "Course Waitlist", "status": "active" }, 
+                { "name" : "Prospects", "status": "inactive" }
+            ]
 
+            //add student to object            
+            await db.collection('students').doc(student_id).update({ payments }) 
+        
+            //update student tags
+            updateStudentTags ( student.data().email, tags )
+            //update student merge fields
+            updateMergeFields( student.data().email, course.title, course.start, course.end, id )
+      
             //check the code of the course
             if(code == 'hca' || code == 'cna' || code == 'bridging') {
                 res.status(201).json({
@@ -369,7 +371,6 @@ module.exports = {
                     message: 'You have signed up for '+ course.title
                 })
             } else {
-
                 res.status(201).json({
                     redirect: true,                      
                     redirect_url: ( stripeToken && amount > 0 ) ? '/confirm-payment' : '/success',

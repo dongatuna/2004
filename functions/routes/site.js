@@ -29,7 +29,7 @@ router.get('/secure/:code/:course_id/:student_id', SiteController.getStudentPayR
 //get the courses landing page
 router.get('/select-course/:name', SiteController.getCoursesLandingPage )
 //get the course schedules
-router.get('/select-schedule/:name', SiteController.getLeadCourses )
+router.get('/select-schedule/:course', SiteController.getCatalogCourse  )
 //gets page for student to pay registration fee after receiving email /
 router.get('/select-payment/:code/:course_id', SiteController.getStudentPayment )
 

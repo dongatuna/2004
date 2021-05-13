@@ -12,9 +12,7 @@
                     <div class="row justify-content-between px-3">
                         <p class="card-text "><%= job.address %></p>                       
                     </div>     
-                   <p><strong> Settings: </strong> <%job.settings.forEach(setting => { %>                          
-                        <span><%=setting%></span>                    
-                    <% }) %></p>  
+                   
                     <a class="btn btn-primary text-white apply"                          
                             data_job_id = "<%= job.id %>"                        
                             type="button"> <strong> Contact </strong>

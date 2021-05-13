@@ -54,15 +54,16 @@ module.exports = {
 
     //7. Get the course registration form
     getCourseRegistrationForm: async (req, res) => {    
-        try {             
-            //get the course id
-            const { course_id, course } = req.params  
-            //get the long name of course stored in database
-            const course_name = courseName(course)           
-            //get course registration fee
-            const fees  = registration_fee[course_name]
-            console.log('COURSE NAME', course_name, "and fees ", fees)
-            const lead = course != undefined ? true : false
+        //get the course id
+        const { course_id, course } = req.params  
+        //get the long name of course stored in database
+        const course_name = courseName(course)           
+        //get course registration fee
+        const fees  = registration_fee[course_name]
+        console.log('COURSE NAME', course_name, "and fees ", fees)
+        const lead = course != undefined ? true : false
+
+        try {       
 
             if(
                 course_name == "BLS Course Skill Testing" || 
@@ -80,7 +81,7 @@ module.exports = {
                     name: course_name
                 }
 
-                res.render('site/studentsignup', 
+                res.render(/*'site/studentsignup'*/ 'site/enrollstudent', 
                     {   
                         // csrfToken: req.csrfToken(),
                         code: course,
@@ -107,7 +108,7 @@ module.exports = {
                 } 
                 
                
-                res.render('site/studentsignup', 
+                res.render(/*'site/studentsignup'*/ 'site/enrollstudent', 
                     {   
                         // csrfToken: req.csrfToken(),
                         code: course,
@@ -166,14 +167,13 @@ module.exports = {
                     STRIPE_PUBLIC_KEY: STRIPE_PUBLIC_KEY
                 }
             )
-
         }
         try {
              //else {
                 //find the course
                 const query = await db.collection('courses').doc(course_id).get()
                 //construct data about class - remove student array
-                const results = query.data()
+                const results = query.data()                
                 
                 const title = results.end_date !== null ? moment( results.start_date.toDate()).tz('America/Los_Angeles' ).format("MMM D") +" - "+ moment( results.end_date.toDate()).tz('America/Los_Angeles' ).format("MMM D") +" "+ results.name + " " + results.type : moment( results.start_date.toDate()).tz('America/Los_Angeles' ).format("MMM D") +" "+ results.name + " " + results.type +" Sign Up Form"     
                 
@@ -182,13 +182,14 @@ module.exports = {
                     title,
                     fees,
                     name: course_name                  
-                } 
+                }  
                 
+                console.log(`Data: ${JSON.stringify(data)}`)
                
-                res.render('site/studentsignup', 
+                res.render('site/enrollstudent', 
                     {   
                         // csrfToken: req.csrfToken(),
-                        code: course,
+                        code: code,
                         seo_info: seo_page.register_page_seo_info, 
                         lead: lead,
                         course: data,                                
@@ -248,7 +249,6 @@ module.exports = {
             console.log( 'error', error )
         }
     },
-
     //8. Get the receipt page
     getReceiptPage: (req, res) => {
       
@@ -311,7 +311,6 @@ module.exports = {
             
         }
     },
-
     //11. Get the employer sign up page
     getAdminSignUpPage: (req, res) => {
         res.set('Cache-Control', 'public, max-age=300, s-maxage=600')

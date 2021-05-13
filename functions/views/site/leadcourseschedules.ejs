@@ -39,9 +39,7 @@
                                 <li class="list-group-item" >
                                     <%=course.start_date %> - <%=course.end_date %>
                                     <a class="btn btn-danger float-right" href ="/select-payment/<%=code%>/<%= course.courseId %>">
-                                        Join                                       <!-- <span class="text-danger float-right"> 
-                                             <strong> Enroll </strong>
-                                        </span>  -->
+                                        Join                                      
                                     </a>
                                 </li> 
                                 <% }) %>                                 
@@ -54,9 +52,7 @@
                                     <li class="list-group-item" >
                                         <%=course.start_date %> - <%=course.end_date %>
                                         <a class="btn btn-danger float-right" href ="/select-payment/<%=code%>/<%= course.courseId %>">
-                                            Join                                       <!-- <span class="text-danger float-right"> 
-                                                 <strong> Enroll </strong>
-                                            </span>  -->
+                                            Join                                       
                                         </a>
                                     </li> 
                                 <% }) %>                               
@@ -69,9 +65,7 @@
                                     <li class="list-group-item" >
                                         <%=course.start_date %> - <%=course.end_date %>
                                         <a class="btn btn-danger float-right" href ="/select-payment/<%=code%>/<%= course.courseId %>">
-                                            Join                                       <!-- <span class="text-danger float-right"> 
-                                                 <strong> Enroll </strong>
-                                            </span>  -->
+                                            Join                                       
                                         </a>
                                     </li> 
                                 <% }) %>                                
@@ -102,7 +96,10 @@
 
                                 <% course.day_courses.forEach( course => { %>                      
                                 <li  class="list-group-item"  >
-                                    <a href="/select-payment/<%=code%>/<%= course.courseId %>"> <%= course.start_date%> - <%= course.end_date%> <span class="text-danger float-right"> <strong> [+] </strong></span> </a>
+                                    <%=course.start_date %> - <%=course.end_date %>
+                                    <a class="btn btn-danger float-right" href ="/select-payment/<%=code%>/<%= course.courseId %>">
+                                        Join                                       
+                                    </a>
                                 </li>
                                 <% }) %>
                             </ul>
@@ -119,9 +116,12 @@
                                 <% } %>
                                
                                 <% course.weekend_courses.forEach(course => { %>                    
-                                <li  class="list-group-item">
-                                    <a href= "/select-payment/<%=code%>/<%= course.courseId %>"><%= course.start_date%> - <%= course.end_date %> <span class="text-danger float-right"> <strong> [+] </strong></span> </a>
-                                </li>
+                                    <li  class="list-group-item"  >
+                                        <%=course.start_date %> - <%=course.end_date %>
+                                        <a class="btn btn-danger float-right" href ="/select-payment/<%=code%>/<%= course.courseId %>">
+                                            Join                                       
+                                        </a>
+                                    </li>
                                 <% }) %>
                             </ul>
                         </div>     
@@ -139,9 +139,12 @@
                             <ul class="list-group justify-content-between">                                
                                 <li class="list-group-item bg-dark text-white"> <strong>WEEKDAY CLASS </strong><br> [Tue/Wed/Thur] <br> 10:00 a.m. - 6:30 p.m.</li>                              
                                 <% course.day_courses.forEach(course => { %>                      
-                                <li  class="list-group-item"  >
-                                    <a href="/select-payment/<%=code%>/<%= course.courseId %>"> <%= course.start_date%> <span class="text-danger float-right"> <strong> [+] </strong></span> </a>
-                                </li>
+                                    <li  class="list-group-item"  >
+                                        <%=course.start_date %>
+                                        <a class="btn btn-danger float-right" href ="/select-payment/<%=code%>/<%= course.courseId %>">
+                                            Join                                       
+                                        </a>
+                                    </li>
                                 <% }) %>
                             </ul>
                         </div>
@@ -149,9 +152,12 @@
                             <ul class="list-group justify-content-between">                                
                                 <li class="list-group-item bg-dark text-white"> <strong>WEEKDAY CLASS </strong><br> [Sat/Sun] <br> 12:00 p.m. - 8:30 p.m.</li>                                                           
                                 <% course.weekend_courses.forEach(course => { %>                    
-                                <li  class="list-group-item">
-                                    <a href= "/select-payment/<%=code%>/<%= course.courseId %>"><%= course.start_date%> <span class="text-danger float-right"> <strong> [+] </strong></span> </a>
-                                </li>
+                                    <li  class="list-group-item"  >
+                                        <%=course.start_date %>
+                                        <a class="btn btn-danger float-right" href ="/select-payment/<%=code%>/<%= course.courseId %>">
+                                            Join                                       
+                                        </a>
+                                    </li>
                                 <% }) %>
                             </ul>
                         </div>     
@@ -168,9 +174,12 @@
                 <ul class="list-group justify-content-between">
                     <li class="list-group-item bg-dark text-white"> <strong>WEEKDAY/WEEKEND CLASS </strong> <br> 12:00 p.m. - 5:30 p.m.</li>  
                     <% course.day_courses.forEach(course => { %>                       
-                    <li  class="list-group-item" >
-                        <a href="/select-payment/<%=code%>/<%= course.courseId %>"><%=course.start_date%> <span class="text-danger float-right"> <strong> [+] </strong></span> </a>
-                    </li>
+                        <li  class="list-group-item"  >
+                            <%=course.start_date %> 
+                            <a class="btn btn-danger float-right" href ="/select-payment/<%=code%>/<%= course.courseId %>">
+                                Join                                       
+                            </a>
+                        </li>
                     <% }) %>
                 </ul>                
             </div>                          
@@ -184,9 +193,12 @@
                 <p class="diplay text-left bg-warning">Our nurse delegation/diabetes are self-study.  Priority is given to students who sign up to reserve study materials.</p>                  
                     <ul class="list-group justify-content-between">
                         <li class="list-group-item bg-dark text-white"> <strong>WEEKDAY/WEEKEND CLASS </strong> <br> 30 minutes</li>                                             
-                        <li  class="list-group-item" >
-                            <a href="/select-payment/<%=code%>/<%= course_id %>"> Sign Up <span class="text-danger float-right"> <strong> [+] </strong></span> </a>
-                        </li>                     
+                        <li  class="list-group-item"  >
+                            <%=course.start_date %> 
+                            <a class="btn btn-danger float-right" href ="/select-payment/<%=code%>/<%= course.courseId %>">
+                                Join                                       
+                            </a>
+                        </li>                    
                     </ul>
                 </div>                   
             </div>                
@@ -198,9 +210,12 @@
                 <p class="diplay text-left bg-warning"> Sign up to reserve date and time to complete your CPR/FA or BLS skill testing.  Priority is given to students who sign up to reserve study materials.</p>                  
                     <ul class="list-group list-group-flush justify-content-between">
                         <li class="list-group-item bg-dark text-white"> <strong>WEEKDAY/WEEKEND CLASS </strong> <br> 30 minutes</li>                                             
-                        <li  class="list-group-item" >
-                            <a href="/select-payment/<%=code%>/<%= course_id %>"> Sign Up <span class="text-danger float-right"> <strong> [+] </strong></span> </a>
-                        </li>                        
+                        <li  class="list-group-item"  >
+                            <%=course.start_date %> - <%=course.end_date %>
+                            <a class="btn btn-danger float-right" href ="/select-payment/<%=code%>/<%= course.courseId %>">
+                                Join                                       
+                            </a>
+                        </li>                       
                     </ul>
                 </div>                   
             </div>                
@@ -209,24 +224,7 @@
     </div> 
 </div>
 </section>      
-<!-- </article> -->
 
-<script type="application/javascript">
-
-    $(document).ready(() => {
-
-        const course_name = (<%-JSON.stringify( name )%>)
-
-        const eventAction = 'View Lead '+course_name+' Course Schedules'
-
-        gtag('event', eventAction, {
-            'event_category': eventAction,
-            'event_label': 'Prospective Student',
-            'value': 1
-        })
-    })
-
-</script>
 
 <style scoped>
     .course-info  {

@@ -2,22 +2,34 @@
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col">               
-                <h3 class="text-dark text-center"><%= course.title %> Course</h3>
+                <!-- <h3 class="text-dark text-center"><%= course.title %> Course</h3> -->
                 <br>
                 <!--BEGINNING OF THE FORM-->
-                <form id="course_sign_up" >                    
+                <form id="course_sign_up" >
+                                 
                     <!-- ADD AND DISPLAY CARD ELEMENT TO THE PAGE -->
-                    <div class="row justify-content-center">
-                        <div class="col-sm-12 col-lg-4 p-3 bg-light">     
-                            <p class="text-center lead text-danger"><strong> Classes fill up fast.  Register now and secure your spot immediately. </strong></p>
+                    <div class="row justify-content-center p-4">
+                        <div class="col-sm-12 col-lg-4 ">
+                            <!-- <p class="text-danger bg-dark rounded"><strong> Classes fill up fast.  Register now and secure your spot immediately. </strong></p> -->
+                            
+                            <div class="alert bg-dark text-white font-weight-bold" role="alert">
+                                Pay registration fees to secure your spot in the <%= course.title %> course.
+                            </div>
+                        </div> 
+
+                    </div>
+                    <div class="row justify-content-center">                        
+                        
+                        <div class="col-sm-12 col-lg-4 >     
+                            
                             <label for="card-element">
-                                Credit or debit card
+                                Enter credit/debit card details
                             </label>
                             <div id="card-element">
                                 <!-- Elements will create input elements here -->
                             </div>
                             
-                            <!-- We'll put the error messages in this element -->
+                              <!-- We'll put the error messages in this element -->
                             <div id="card-errors" role="alert" ></div>
                             <div class="mt-2">                               
                                 <button class="btn btn-primary btn-block p-3 mt-3" name="register" id="btnRegister" type="submit"><strong>Pay <%= course.fees %>.00 Registration Fee</strong></button> 
@@ -26,28 +38,23 @@
                             </div>
                                 
                         </div>
-                    </div>    
-
+                    </div>  
 
                     <!--COMMENTS AND QUESTIONS-->
-                    <div class="row justify-content-center">
+                    <!-- <div class="row justify-content-center">
                         <div class="col-sm-12 col-md-12 col-lg-4">
                             <div class="form-group">
                                 <label for="comments">Comments</label>                                
                                 <textarea class="form-control" name="comments" id="comments" cols="10" rows="2" placeholder="Enter your comments or questions" ></textarea>
                             </div>          
                         </div>
-                    </div>    
-                    <!-- <% if(code=='cna') { %>
-                    <% } %> -->
-
-                                  
+                    </div>                                     -->
                     
                     <!-- ADD TO THE WAITLIST BUTTON -->
                     <div class="row justify-content-center mt-2">
                         <div class="col-sm-12 col-lg-4 bg-white"> 
                             <p>Still undecided? </p>                                                                                
-                            <button class="btn btn-secondary py-3" name="waitlist" id="btnWaitlist" type="submit"><strong>Add me to the waitlist </strong> </button> 
+                            <button class="btn btn-secondary btn-sm py-3" name="waitlist" id="btnWaitlist" type="submit">Add me to the waitlist </button> 
                             <p class="text-dark text-center" id="process-waitlist" style="display: none;"><strong>Processing...</strong></p>
                         </div>
                     </div>                      
@@ -90,53 +97,38 @@
 
     $(document).ready(() => {       
          //get the course
-        const course = (<%-JSON.stringify( course )%>)
-        const code = (<%-JSON.stringify( code )%>)
-        console.log('STUPID COURSE ', course, 'and code ', code)
-
+        const course = (<%-JSON.stringify(course)%>)           
+        //get the code
+        const code = localStorage.getItem('code') 
         // const fees = (<%-JSON.stringify(course.fees)%>)  
-
+        //get student id
+        const student_id = localStorage.getItem('student_id')
         //this event register a student who pays registration fees
         $("#btnRegister").on('click', e => { 
             //prevent default behavior
             e.preventDefault()
             // Read the CSRF token from the <meta> tag
-            // const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content')      
-            //REQUIRED FIELD: get student's first name
-            const first = $('#first').val()
-            //REQUIRED FIELD: get student's last name
-            const last = $('#last').val()
-            //REQUIRED FIELD: get student's email
-            const email = $('#email').val()
-            //REQUIRED FIELD: get student's telephone #
-            const tel = $('#tel').val()
-            //get student's comments or questions    
-            const comments = $('#comments').val()
-            //make sure that first, last, email and telephone #s fields are filled
-            if(first === '' || last === '' || email === '' || tel === ''){
-                return alert('You must enter all fields.  Make sure you entered your first and last names, email and/or telephone #.')
-            }
-      
+            // const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content')         
+            
             //hide the registration button to avoid multiple form submission           
             $('#btnRegister').hide()
             //show user their form submission is being processed
             $("#process-registration").show()
 
             stripe.createToken( card ).then( result => {
-                // Handle result.error or result.token
+                //Handle result.error or result.token
                 if(result.error){
                     return displayError.textContent = result.error
                 }               
                 //get the stripe token
-                const stripeToken = result.token.id              
-                //create an on object constructed from data entered by user in the form above
-                const studentData = { first, last, email, tel, comments }
-                //debugger                
-                //add course costs 
-                studentData.payment = course.fees
-                //add stripe token from stripe
-                studentData.stripeToken = stripeToken
+                const stripeToken = result.token.id  
                 debugger
+                const studentData = {
+                    'payment' : course.fees,
+                    'stripeToken' : stripeToken,
+                    student_id
+                }
+
                 //send data to GA         
                 gtag('event', 'Course Registration', {
                     "transaction_id": course.courseId,
@@ -158,11 +150,11 @@
                     type: 'POST', 
                     url: '/students/register/'+ code +'/'+ course.courseId,
                     credentials: 'same-origin', // <-- includes cookies in the request
-                    // headers: {
-                    //     Accept: "application/json",
-                    //    // "Content-Type": "application/json",
-                    //     'CSRF-Token': token
-                    // },
+                    headers: {
+                        Accept: "application/json",
+                       // "Content-Type": "application/json",
+                        // 'CSRF-Token': token
+                    },
                     dataType: "json",
                     data: studentData,
                 }).done(function (response) {

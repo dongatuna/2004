@@ -34,14 +34,12 @@ module.exports = {
                 CODE: code,
                 USER_ID: student_id, //user_id is used in the URLs found in transfer and post registration email bodies
                 COURSE_ID: course_id //user_id is used in the URLs found in transfer and post registration email bodies
-            }              
-
+            } 
         }
     },  
 
      //email, first, last, tel, course.name, course.start_date, course.end_date
-    prospectData: (email, first_name, last_name, tel, student_id, code, tags) => {
-            
+    prospectData: (email, first_name, last_name, tel, student_id, code, tags) => {            
         //construct and return data // tags,    
         return mc_data = {               
             email_address: email,     
@@ -75,6 +73,27 @@ module.exports = {
             //console log the error
             console.log(error)     
         }        
+    },
+
+    updateMergeFields: async ( email, course, start, end, course_id ) => {
+        try {
+            await client.lists.updateListMember(
+                STUDENT_LIST,
+                md5(email.toLowerCase()),
+                {
+                    status: 'subscribed',
+                    merge_fields : {
+                        COURSE: course,
+                        START: start,
+                        END: end,
+                        COURSE_ID: course_id 
+                    }
+                }
+            )
+
+        } catch (error) {
+            console.log('mailchimp upmerge fields ', error)
+        }
     },
    
     employerData: ( email, settings, org_name, tel ) => {

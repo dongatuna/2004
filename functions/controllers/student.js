@@ -233,37 +233,48 @@ module.exports = {
                 //send employers emails
                 jobs.forEach (async( x ) => {                        
                     //get student for full name and contact information
-                    const job = await db.collection('jobs').doc(x.job_id).get()
+                    const result = await db.collection('jobs').doc(x.job_id).get()
+                    
+                    const job = result.data()
+                    console.log(`student data.... ${student.data()} fullname...${full_name}`)
+                    console.log(`INDIVIDUAL JOB APPLICANTS --> ${JSON.stringify(job.applicants)}`)
+                    console.log(`INDIVIDUAL JOB APPLICANTS --> ${job.applicants} AND TITLE ${job.title}`)
+                    console.log(`INDIVIDUAL JOBS --> ${job}`)
+                    console.log(`INDIVIDUAL JOB APPLICANTS --> ${JSON.stringify(job)}`)
+                    console.log(`JOBS LENGTH ---> ${job.applicants.length}`)
                     //get the prospects
-                    const prospects = job.data().applicants.length > 0 ? job.data().applicants : []
+                    const applicants = job.applicants //.length > 0 ? job.applicants : []
+
+                    console.log(`APPLICANTS --> ${applicants}`)
                     //add the new prospect to the prospects array
-                    prospects.unshift[{ 
+                    applicants.unshift({ 
                         full_name,
                         applied: firebase.firestore.Timestamp.fromDate(new Date()), 
                         email: student.data().email,
                         tel: student.data().tel
-                    }]
+                    })
+
+                    console.log(`APPLICANTS --> ${applicants}`)
                     //find the student with id of student_id
                     await db.collection('jobs')               
-                            .doc( x.job_id )
-                            .update({ prospects}) 
-
+                            .doc(result.id)
+                            .update({ applicants }) 
                     //send 
                     await mailchimpClient.messages.sendTemplate({
                         template_name: "student-applicant",
                         template_content: [],
                         message: {
                             from_email: 'jobs@excelcna.com',                        
-                            subject: `Caregiver/CNA Job Application for ${ job.data().title }`,                      
+                            subject: `Caregiver/CNA Job Application for ${job.title}`,                      
                             track_opens: true,
                             track_clicks: true,
                             important: true,
                             merge_language: "handlebars",
                             merge_vars: [{
-                                rcpt: job.data().email,
+                                rcpt: job.email,
                                 vars: [
-                                    { name: 'ORGANIZATION', content: job.data().facility_name },
-                                    { name: 'JOB_TITLE', content:  job.data().title },
+                                    { name: 'ORGANIZATION', content: job.facility_name },
+                                    { name: 'JOB_TITLE', content:  job.title },
                                     { name: 'STUDENT_FULL_NAME', content: full_name },
                                     { name: 'STUDENT_EMAIL', content: student.data().email },
                                     { name: 'STUDENT_TEL', content: student.data().tel },
@@ -271,7 +282,7 @@ module.exports = {
                                 ]
                             }],
                             to: [
-                                { email: job.data().email }
+                                { email: job.email }
                             ]
                         },
                     })

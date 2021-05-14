@@ -124,8 +124,8 @@
                 const stripeToken = result.token.id  
                 debugger
                 const studentData = {
-                    'payment' : course.fees,
-                    'stripeToken' : stripeToken,
+                    payment : course.fees,
+                    stripeToken : stripeToken,
                     student_id
                 }
 
@@ -184,79 +184,64 @@
             e.preventDefault()            
             //arbitrarily assign the price to be a third that of the registrant who paid for the course
             const price = 15   
+           
+            //hide waitlist button
+            $('#btnWaitlist').hide()
+            //show user their form submission is being processed
+            $("#process-waitlist").show()
+            //create an on object constructed from data entered by user in the form above
+            const studentData = {
+                payment : 0,
+                stripeToken : null,
+                student_id
+            }      
+            //get the course id for the course -> student will be added to the course with course id          
+            gtag('event', 'Course Add To Waitlist', {
+                "transaction_id": course.courseId,
+                "affiliation": "EHCT - Course Self Registration",  
+                "currency": "USD",  
+                "items": [
+                    {
+                        "id": course.courseId,
+                        "name": course.name,     
+                        "category": "Courses", //course_name,
+                        // "variant": course.type,     
+                        "quantity": 1,
+                        "price": price
+                    }
+                ]
+            }) 
+           
+            
+            $.ajax({
+                    type: 'POST', 
+                    url: '/students/register/'+ code +'/'+ course.courseId,
+                    credentials: 'same-origin', // <-- includes cookies in the request
+                    headers: {
+                        Accept: "application/json",
+                        // "Content-Type": "application/json",
+                        //"CSRF-Token": token
+                    },
+                    dataType: "json",
+                    data: studentData,
+                }).done(function (response) {
+                    if (response.redirect !== undefined && response.redirect) {
+                        //add local storage items for student id and if student registered or waitlisted
+                        localStorage.setItem('student_id', response.student_id)
+                        localStorage.setItem('registered', response.registered)
+                        debugger
+                        alert(response.message)
+                        window.location.replace(response.redirect_url)
+                    }      
+                    //if something is wrong - alert user and redirect user to course schedule page
+                    if (response.redirect !== undefined && !response.redirect) {
+                        
+                        alert('Something went wrong - start the registration process again!')
 
-            // Read the CSRF token from the <meta> tag
-            //const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content')   
-            //REQUIRED FIELD: get student's first name
-            const first = $('#first').val()
-            //REQUIRED FIELD: get student's last name
-            const last = $('#last').val()
-            //REQUIRED FIELD: get student's email
-            const email = $('#email').val()
-            //REQUIRED FIELD: get student's telephone #
-            const tel = $('#tel').val()
-            //get student's comments or questions    
-            const comments = $('#comments').val()
-            //make sure that first, last, email and telephone #s fields are filled
-            if(first === '' || last === '' || email === '' || tel === ''){
-                return alert('You must enter all fields.  Make sure you entered your first and last names, email and/or telephone #.')
-            } else {
-                //hide waitlist button
-                $('#btnWaitlist').hide()
-                //show user their form submission is being processed
-                $("#process-waitlist").show()
-                //create an on object constructed from data entered by user in the form above
-                const studentData = { first, last, email, tel, comments }        
-                //get the course id for the course -> student will be added to the course with course id          
-                gtag('event', 'Course Add To Waitlist', {
-                    "transaction_id": course.courseId,
-                    "affiliation": "EHCT - Course Self Registration",  
-                    "currency": "USD",  
-                    "items": [
-                        {
-                            "id": course.courseId,
-                            "name": course.name,     
-                            "category": "Courses", //course_name,
-                            // "variant": course.type,     
-                            "quantity": 1,
-                            "price": price
-                        }
-                    ]
-                }) 
-                //classify the user as employer and increment number of sign in by 1
-                // gtat('set', {
-                //     'dimension1': course.name, 'metric10': 1
-                // })
-                
-                $.ajax({
-                        type: 'POST', 
-                        url: '/students/register/'+ code +'/'+ course.courseId,
-                        credentials: 'same-origin', // <-- includes cookies in the request
-                        // headers: {
-                        //     Accept: "application/json",
-                        //     // "Content-Type": "application/json",
-                        //     "CSRF-Token": token
-                        // },
-                        dataType: "json",
-                        data: studentData,
-                    }).done(function (response) {
-                        if (response.redirect !== undefined && response.redirect) {
-                            //add local storage items for student id and if student registered or waitlisted
-                            localStorage.setItem('student_id', response.student_id)
-                            localStorage.setItem('registered', response.registered)
-                            debugger
-                            alert(response.message)
-                            window.location.replace(response.redirect_url)
-                        }      
-                        //if something is wrong - alert user and redirect user to course schedule page
-                        if (response.redirect !== undefined && !response.redirect) {
-                            
-                            alert('Something went wrong - start the registration process again!')
-
-                            window.location.replace('/courses')
-                        }                   
+                        window.location.replace('/courses')
+                    }                   
                 })
-            }                
+                            
         })     
    })    
 

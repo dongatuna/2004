@@ -235,30 +235,23 @@ module.exports = {
                     //get student for full name and contact information
                     const result = await db.collection('jobs').doc(x.job_id).get()
                     
-                    const job = result.data()
-                    console.log(`student data.... ${student.data()} fullname...${full_name}`)
-                    console.log(`INDIVIDUAL JOB APPLICANTS --> ${JSON.stringify(job.applicants)}`)
-                    console.log(`INDIVIDUAL JOB APPLICANTS --> ${job.applicants} AND TITLE ${job.title}`)
-                    console.log(`INDIVIDUAL JOBS --> ${job}`)
-                    console.log(`INDIVIDUAL JOB APPLICANTS --> ${JSON.stringify(job)}`)
-                    console.log(`JOBS LENGTH ---> ${job.applicants.length}`)
+                    const job = result.data()              
                     //get the prospects
-                    const applicants = job.applicants //.length > 0 ? job.applicants : []
-
-                    console.log(`APPLICANTS --> ${applicants}`)
+                    const prospects = job.propects.length > 0 ? job.prospects : []
+                    
                     //add the new prospect to the prospects array
-                    applicants.unshift({ 
+                    proppects.unshift({ 
                         full_name,
                         applied: firebase.firestore.Timestamp.fromDate(new Date()), 
                         email: student.data().email,
                         tel: student.data().tel
                     })
 
-                    console.log(`APPLICANTS --> ${applicants}`)
+               
                     //find the student with id of student_id
                     await db.collection('jobs')               
                             .doc(result.id)
-                            .update({ applicants }) 
+                            .update({ prospects }) 
                     //send 
                     await mailchimpClient.messages.sendTemplate({
                         template_name: "student-applicant",

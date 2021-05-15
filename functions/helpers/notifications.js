@@ -25,21 +25,22 @@ notifyStudents : async ( num ) => {
     const jobs = allJobs.docs.filter( job => moment(job.data().created.toDate()).isAfter(start) 
                                             && moment(job.data().created.toDate()).isBefore(end) 
                               ).map( job => {
+                            
                               return {
                                 url: `/job/view/${job.id}`,
                                 title: job.data().title,
                                 name: job.data().facility_name
                               }
                             })
-
+   //console.log(`jobs ${JSON.stringify(jobs)}`)                          
   //console.log('students ', students )
   const subject = day === 7 ? 'CNA/Caregiver job openings posted in the last 7 days ' : ' Recent CNA/Caregiver job openings'
  
 
   if( jobs.length > 0 ) {
     //4.  create time marker of the last 6 months         
-    const enrolledOn = moment().subtract(180, 'day').startOf('day')
-
+   // const enrolledOn = moment().subtract(180, 'day').startOf('day')
+    const enrolledOn = moment().subtract(10, 'day').startOf('day')
     //5.  get all students who signed up in the last 6 months and send them job email notifications
     const allStudents = await db.collection('students')
                           .orderBy("enrolledOn", "desc")
@@ -56,8 +57,9 @@ notifyStudents : async ( num ) => {
   
     //7.  send students above jobs
     students.forEach( async (student) => {
-      
-      await mailchimpClient.messages.sendTemplate({
+      //console.log(`student: ${student}`)
+
+      const mandrillresponse = await mailchimpClient.messages.sendTemplate({
         template_name: "jobs-openings",
         template_content: [],
         message: {
@@ -78,8 +80,11 @@ notifyStudents : async ( num ) => {
               { email: student.email }
           ]
         }
-      })      
-    }) 
+      })   
+      console.log(`Mandrill Response: -> ${JSON.stringify(mandrillresponse)}`)
+    })
+    
+    
   }    
 },
 

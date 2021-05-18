@@ -3,6 +3,7 @@ const moment = require('moment')
 const seo_page = require('../client_helpers/seo_page_info')
 const mailchimpClient = require('@mailchimp/mailchimp_transactional')( MANDRILL_API_KEY )
 const { createCustomer, createCard, charge  } = require('../helpers/payments')
+const { sendOneText  } = require('../helpers/twilio')
 const { prospectData, studentData, updateStudentTags, updateMergeFields, subscribe  } = require("../helpers/subscribe")
 const { courseDbName, codeName } = require('../helpers/course_classifier')
 
@@ -26,7 +27,8 @@ module.exports = {
                 course_start: false,
                 walk_in: false,
                 web_sign_up: true
-            }
+            }      
+            
             //save prospect in the database
             const student = await db.collection('students')
                                     .add( {
@@ -39,6 +41,13 @@ module.exports = {
             const postData = prospectData(email, first, last, tel, student.id, req.params.code, tags)            
             //send student data to mailchimp list/audience for students
             await subscribe( STUDENT_LIST, postData ) 
+
+            const messageOne = {
+                tel: student.data().tel,
+                message: `Hi ${first}, Call 206 271 1946 if you have any questions. We've train and assist with job search and placement.`
+            }
+
+            await sendOneText(messageOne)
 
             //return information to user
             res.status(202).json({
@@ -314,7 +323,7 @@ module.exports = {
             //create a payment array
             const payments = []
             //get the student using the student id
-            const student = await db.collection('students').doc(student_id).get()              
+            const student = await db.collection('students').doc(student_id).get()
 
             //check if there is a stripe token and the amount
             if( stripeToken && amount > 0 ) {
@@ -364,6 +373,14 @@ module.exports = {
             updateStudentTags ( student.data().email, tags )
             //update student merge fields
             updateMergeFields( student.data().email, course.title, course.start, course.end, id )
+            //user to send to user            
+
+            const messageOne = {
+                tel: student.data().tel,
+                message: `Thanks for signing up for our ${course.title} course.  Come to school to complete the sign up process and collect course materials.  We are located at: https://bit.ly/3yjpqOw`
+            }
+
+            await sendOneText(messageOne)  
       
             //check the code of the course
             if(code == 'hca' || code == 'cna' || code == 'bridging') {

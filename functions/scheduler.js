@@ -1,4 +1,5 @@
 const cron = require('node-cron')
+const moment = require('moment')
 
 const { notifyEmployers, notifyStudents } = require('./helpers/notifications')
 
@@ -6,10 +7,13 @@ const scheduler = () => {
     return { 
         
         alertDaily: () => {
-            cron.schedule('0 9 * * *',   () => { //'* * * * * *',
+            cron.schedule('* * * * *', () => {  // '0 9 * * *'
              
-                notifyStudents(15) 
-                notifyEmployers(1)              
+                let monday = moment().startOf('month')
+                                     .day("Monday");
+                console.log(`Monday ${monday}`)
+                // notifyStudents(15) 
+                // notifyEmployers(1)              
             })
         },
 
@@ -19,7 +23,13 @@ const scheduler = () => {
                 notifyStudents(7)
                 notifyEmployers(7)
             })
-        }
+        },
+
+        // alertMonthly: () => {
+        //     cron.schedule('0 9 1 * *', ()=> {
+
+        //     })
+        // }
     }
 }
 

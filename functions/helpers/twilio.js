@@ -11,7 +11,7 @@ module.exports = {
                                     .create({
                                         body: `${studentDetails.msg}`,
                                         messagingServiceSid: TWILIO_MSG_SID,      
-                                        to: `${studentDetails.tel}`     
+                                        to: `+1${studentDetails.tel}`     
                                     })
             //.then(message => console.log(message.sid));
             

@@ -26,7 +26,8 @@ module.exports = {
             const status = {
                 course_start: false,
                 walk_in: false,
-                web_sign_up: true
+                web_sign_up: true,
+                prospect: true
             }      
             
             //save prospect in the database
@@ -324,6 +325,10 @@ module.exports = {
             const payments = []
             //get the student using the student id
             const student = await db.collection('students').doc(student_id).get()
+            //get the student status
+            const status = student.data().status
+            //change the prospect status to false
+            status.prospect = false
 
             //check if there is a stripe token and the amount
             if( stripeToken && amount > 0 ) {
@@ -367,7 +372,7 @@ module.exports = {
             ]
 
             //add student to object            
-            await db.collection('students').doc(student_id).update({ payments }) 
+            await db.collection('students').doc(student_id).update({ payments, status }) 
         
             //update student tags
             updateStudentTags ( student.data().email, tags )

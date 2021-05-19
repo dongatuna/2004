@@ -7,7 +7,6 @@ module.exports = {
             {name: "description", content: "Resource for managing Excel Health Careers Training students."},
             {name: "keywords", content: "CNA, NAC, Certified Nurse Aide, Certified Nurse Assistant, Nurse Aide, Nurse Assistant, Caregiver, Aide, Companion"},
             {name: "author", content: "Don Gatuna"}          
-        
         ],
         links: [
             {rel: 'canonical', href: `https://www.excelcna.com/admin/signup`}
@@ -264,13 +263,20 @@ module.exports = {
     },
 
     cna_page_seo_info: {
-        title: "CNA, Nurse Aide, Nurse Assistant Training Course Page Details",
+        title: "Study CNA, Certified Nursting Assistant, Seattle, Des Moines",
         titleTemplate: 'CNA, Nurse Assistant Page Details',
         meta: [                   
-            { name: "description", content: "The costs, length, schedule, admission requirements, job or career outlook and clinical rotations requirements of the Certified Nurse Aide training course." },
-            { name: "keywords", 
-              content: "CNA, Nurse Aide, Nurse Assistant, Certified Nurse Aide, Certified Nurse Assistant" },
-            { name: "author", content: "Don Gatuna" }          
+            {name: "description", content: "The costs, length, schedule, admission requirements, job or career outlook and clinical rotations requirements of the Certified Nurse Aide training course." },
+            {name: "keywords", content: "CNA, Nurse Aide, Nurse Assistant, Certified Nurse Aide, Certified Nurse Assistant" },
+            {name: "author", content: "Don Gatuna" },
+            {property: "og:site_name", content: "Excel Health Careers Training"},
+            {property: "og:title", content: "CNA Training school in Seattle, Des Moines"},
+            {property: "og:url", content: "https://www.excelcna.com"},
+            {property: "og:type", content: "website" },
+            {property: "og:description", content: "Study CNA, Certified Nursting Assistant, Seattle, Des Moines"},
+            {itemprop: "name", content: "Excel CNA Training"},
+            {itemprop: "url", content: "https://www.excelcna.com"},
+            {itemprop: "description", content: "Study CNA, Certified Nursting Assistant, Seattle, Des Moines"}
         ],
 
         links: [

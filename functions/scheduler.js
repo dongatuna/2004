@@ -9,9 +9,15 @@ const scheduler = () => {
         alertDaily: () => {
             cron.schedule('* * * * *', () => {  // '0 9 * * *'
              
-                let monday = moment().startOf('month')
-                                     .day("Monday");
-                console.log(`Monday ${monday}`)
+               
+
+                //console.log(`FIRST ${first}`)
+                
+
+
+               
+                let second = first.add(8 - first.day(), 'day')
+                console.log(`SECOND ${second}`)
                 // notifyStudents(15) 
                 // notifyEmployers(1)              
             })
@@ -25,11 +31,24 @@ const scheduler = () => {
             })
         },
 
-        // alertMonthly: () => {
-        //     cron.schedule('0 9 1 * *', ()=> {
+        alertFirstMondayOfMonth: () => {
+            cron.schedule('0 0 1 * *', ()=> {
+                //get the
+                let first = moment().startOf('month')//.add(1, 'month');
+                let day = first;
+                if ( first.day() > 1 ) {
+                    day = first.add(8 - first.day(), 'day');
+                }
+                if ( day.day() === 0 ) {
+                    day = day.add(1, 'days');
+                }
+                //format the date of the first Monday of the month
+                date = day.format('YYYY-MM-DD'); 
+                
+                
 
-        //     })
-        // }
+            })
+        }
     }
 }
 

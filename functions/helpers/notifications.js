@@ -1,7 +1,7 @@
 const firebase = require("firebase")
 const moment = require('moment')
 const mailchimpClient = require('@mailchimp/mailchimp_transactional')( MANDRILL_API_KEY )
-const client = require("@mailchimp/mailchimp_marketing");
+const client = require("@mailchimp/mailchimp_marketing")
 const db = firebase.firestore()
 
 module.exports = {
@@ -147,5 +147,34 @@ module.exports = {
           })
         }) 
       }
+  },
+  //notify employers about upcoming courses
+  upcomingCoursesNotifications : async () => {
+    try {
+      //get employer list member with subscribe status
+      client.setConfig({
+        apiKey: MAILCHIMP_API_KEY,
+        server: "us4",
+      });
+
+      //"status":"subscribed","merge_fields":{"FNAME":"","LNAME":"","ADDRESS":"","PHONE":"","MMERGE5":"Barbara Volin","MMERGE6":"People Aiding the Multi Handicapped Co."}
+
+      const response = await client.lists.getListMembersInfo(`${ALL_EMPLOYER_LIST}`, 
+                                                                {                                                            
+                                                                  "status":"subscribed",
+                                                                  "count":700                                                            
+                                                                } 
+                                                            )
+      return response.members.map( x => {
+        return {
+          'email':  x.email_address,
+          'name': x.merge_fields.MMERGE5,
+          'provider': x.merge_fields.MMERGE6
+        }
+      })  
+      
+    } catch (error) {
+      
+    }
   }
 }

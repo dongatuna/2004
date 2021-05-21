@@ -31,36 +31,33 @@ const scheduler = () => {
             })
         },
 
-        alertFirstMondayOfMonth: () => {
-            cron.schedule("* * * * *", async ()=> { //0 8 * * *
-                
-
-               
-                //get the
+        alertFirstMondayNotification: () => {
+            cron.schedule("0 8 * * *", async () => { //0 8 * * *              
+                //get the first day of the month
                 let first = moment().startOf('month')//.add(1, 'month');
                 let day = first
-
+                //if the first day is 1 
                 if(first.day() === 1 ){
-                    const dayOfWeek = moment(day).format('dddd')
-                    console.log(`DDT ${dayOfWeek}`)
-                    //check of day of week
+
+                    const dayOfWeek = moment(day).format('dddd')                
+                    //check of day of week is 'Monday'
                     if(dayOfWeek === 'Monday'){
-                        console.log('Today is Monday')
-                        const response = await upcomingCoursesNotifications()
+                        //alert the list WHCA lists
+                        await alertWHCAEmployers()
                     }
                  
                 }
                
-                if ( first.day() > 1 ) {                 
+                if ( first.day() > 1 ) {       
                  
                     day = first.add(8 - first.day(), 'day')          
               
                     const dayOfWeek = moment(day).format('dddd')
-                    console.log(`DDT ${dayOfWeek}`)
+                   
                     //check of day of week
                     if(dayOfWeek === 'Monday'){
-                        console.log('Today is Monday')
-                        const response = await upcomingCoursesNotifications()
+                        
+                        await alertWHCAEmployers()
                     }
                  
                     //send an email to employers about recruiting our past students,
@@ -69,14 +66,10 @@ const scheduler = () => {
                     day = day.add(1, 'days')
                     const dayOfWeek = moment(day).format('dddd')
                     if(dayOfWeek === 'Monday'){
-                        console.log('Today is Monday')
-                        const response = await upcomingCoursesNotifications()
+                       
+                       await alertWHCAEmployers()
                     }
                 }
-                //format the date of the first Monday of the month
-                date = day.format('YYYY-MM-DD HH:mm:ss')   
-                console.log(`This date ${date}`)  
-
             })
         }
     }

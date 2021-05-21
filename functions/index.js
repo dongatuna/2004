@@ -84,7 +84,7 @@ const scheduler = require('./scheduler')
 
 scheduler.alertDaily()
 scheduler.alertWeekly()
-scheduler.alertFirstMondayOfMonth()
+scheduler.alertFirstMondayNotification()
 
 
 exports.app = functions.https.onRequest(app)

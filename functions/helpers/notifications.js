@@ -149,32 +149,31 @@ module.exports = {
       }
   },
   //notify employers about upcoming courses
-  upcomingCoursesNotifications : async () => {
-    try {
-      //get employer list member with subscribe status
-      client.setConfig({
-        apiKey: MAILCHIMP_API_KEY,
-        server: "us4",
-      });
-
-      //"status":"subscribed","merge_fields":{"FNAME":"","LNAME":"","ADDRESS":"","PHONE":"","MMERGE5":"Barbara Volin","MMERGE6":"People Aiding the Multi Handicapped Co."}
-
+  alertWHCAEmployers: async () => {
+    //get employer list member with subscribe status
+    client.setConfig({
+      apiKey: MAILCHIMP_API_KEY,
+      server: "us4",
+    });
+    try { 
+      //get the employers from mailchimp who are still subscribers
       const response = await client.lists.getListMembersInfo(`${ALL_EMPLOYER_LIST}`, 
                                                                 {                                                            
                                                                   "status":"subscribed",
                                                                   "count":700                                                            
                                                                 } 
                                                             )
+      //return only the employers' email, full_name, and providr                                                      
       return response.members.map( x => {
         return {
           'email':  x.email_address,
-          'name': x.merge_fields.MMERGE5,
+          'full_name': x.merge_fields.MMERGE5,
           'provider': x.merge_fields.MMERGE6
         }
       })  
       
     } catch (error) {
-      
+      console.log(`Error ${error}`)
     }
   }
 }

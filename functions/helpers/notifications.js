@@ -112,7 +112,7 @@ module.exports = {
                                         title: x.data().title,
                                         facility_name: x.data().facility_name,
                                         applicants: x.data().applicants,
-                                        url: `/job/view/${x.id}`,
+                                        url: `https://www.excelcna.com/job/view/${x.id}`,
                                         prospects: x.data().propects,
                                         email: x.data().email
                                       }
@@ -160,7 +160,7 @@ module.exports = {
       const response = await client.lists.getListMembersInfo(`${ALL_EMPLOYER_LIST}`, 
                                                                 {                                                            
                                                                   "status":"subscribed",
-                                                                  "count":700                                                            
+                                                                  "count":1000                                                            
                                                                 } 
                                                             )
       //return only the employers' email, full_name, and providr                                                      

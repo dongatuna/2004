@@ -5166,7 +5166,7 @@ const questions = [
             "Punish or discipline misbehavior.",
             "Use praise appropriately."
         ],
-        "question": "To make an angry resident even angrier or more agitated:",
+        "question": "Which of the following will make an angry resident even more agitated?",
         "rationale": "The incorrect thing to do when a client is angry is to punish or discipline them.  This escalates the behavior and makes everything more difficult.  The other options help mitigate the behavior."
     },
     {

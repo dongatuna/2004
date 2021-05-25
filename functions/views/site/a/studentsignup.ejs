@@ -187,13 +187,13 @@
 
                 $.ajax({
                     type: 'POST', 
-                    url: '/students/register/'+ code +'/'+ course.courseId,
+                    url: '/students/enroll/'+ code +'/'+ course.courseId,
                     credentials: 'same-origin', // <-- includes cookies in the request
-                    // headers: {
-                    //     Accept: "application/json",
-                    //    // "Content-Type": "application/json",
-                    //     'CSRF-Token': token
-                    // },
+                    headers: {
+                        Accept: "application/json",
+                       // "Content-Type": "application/json",
+                        //'CSRF-Token': token
+                    },
                     dataType: "json",
                     data: studentData,
                 }).done(function (response) {
@@ -269,7 +269,7 @@
                 
                 $.ajax({
                         type: 'POST', 
-                        url: '/students/register/'+ code +'/'+ course.courseId,
+                        url: '/students/enroll/'+ code +'/'+ course.courseId,
                         credentials: 'same-origin', // <-- includes cookies in the request
                         // headers: {
                         //     Accept: "application/json",

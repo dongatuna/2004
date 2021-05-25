@@ -18,18 +18,18 @@ module.exports = {
      * @param {Object | error} res | error
      */
     registerProspect : async ( req, res, next ) => {
-        try {
-            //cons
-            const { first, last, tel, email } = req.body
-            console.log(`prospects ${ req.body }`)
-            //add status data - default to FALSE
-            const status = {
-                course_start: false,
-                walk_in: false,
-                web_sign_up: true,
-                prospect: true
-            }      
+        //cons
+        const { first, last, tel, email } = req.body
             
+        //add status data - default to FALSE
+        const status = {
+            course_start: false,
+            walk_in: false,
+            web_sign_up: true,
+            prospect: true
+        } 
+
+        try {          
             //save prospect in the database
             const student = await db.collection('students')
                                     .add( {
@@ -43,23 +43,23 @@ module.exports = {
             //send student data to mailchimp list/audience for students
             await subscribe( STUDENT_LIST, postData ) 
 
-            const messageOne = {
-                tel: student.data().tel,
-                message: `Hi ${first}, Call 206 271 1946 if you have any questions. We've train and assist with job search and placement.`
-            }
+            // const messageOne = {
+            //     tel: student.data().tel,
+            //     message: `Hi ${first}, Call 206 271 1946 if you have any questions. We've train and assist with job search and placement.`
+            // }
 
-            await sendOneText(messageOne)
+            // await sendOneText(messageOne)
 
             //return information to user
             res.status(202).json({
                 message: 'Next, choose your class days and times.',
                 redirect: true,
-                url: `/select-schedule/${req.params.code}`,
+                url: `/dates/${req.params.code}`,
                 student_id: `${student.id}`
 
             })
         } catch (error) {
-            console.log(`prospects error ${error}`)
+         
             //return information to user
             res.status(500).json({
                 message: 'There was an error processing your form details.',
@@ -307,29 +307,29 @@ module.exports = {
     },
     /**
      * student register self for an upcoming course
-     * @param { String | student data, stripe token, course id, code } - param is course id and code
-     * @params: id of the course, code
+     * @param { Object | student id, stripe token, course id, code } - param is course id and code
+     * @param { String | course id, course code } - id of the course, code
      * data: student information and stripe token if payment is made
      */
-    studentSelfCourseSignUp: async( req, res, next ) => {
-        try{        
-            //get req params
-            const { code, id } = req.params 
+    studentSelfEnrollment: async( req, res, next ) => {
+        //get req params
+        const { code, id } = req.params 
+        //get the req.body data
+        const { stripeToken, student_id, payment } = req.body               
+        //check if there is an amount
+        const amount = payment > 0 ? parseInt( payment ) : 0            
+        //create a payment array
+        const payments = []
+
+        try{          
             //get the long name of course stored in database
-            const course = await courseDbName( code, id )            
-            //get the req.body data
-            const { stripeToken, student_id, payment } = req.body         
-            //check if there is an amount
-            const amount = payment > 0 ? parseInt( payment ) : 0            
-            //create a payment array
-            const payments = []
+            const course = await courseDbName( code, id )          
             //get the student using the student id
             const student = await db.collection('students').doc(student_id).get()
             //get the student status
             const status = student.data().status
             //change the prospect status to false
             status.prospect = false
-
             //check if there is a stripe token and the amount
             if( stripeToken && amount > 0 ) {
                 //use registrant's email, first and last name and telephone to create a customer using stripe api
@@ -397,6 +397,110 @@ module.exports = {
                     message: 'You have signed up for '+ course.title
                 })
             } else {
+                res.status(201).json({
+                    redirect: true,                      
+                    redirect_url: ( stripeToken && amount > 0 ) ? '/confirm-payment' : '/success',
+                    message: 'You have signed up for '+ course.title
+                })
+            }            
+
+        } catch (error){     
+               
+            res.status(500).json({
+                "redirect":false,
+                "redirect_url":"localhost:3000/courses",
+                "message": "Did not sign up for the class."
+            })
+        }
+    },
+    /**
+     * student register self for an upcoming course
+     * @param { String | course id, code } - param is course id and code
+     * @params: id of the course, code
+     * data: student information and stripe token if payment is made
+     */
+    studentCourseSelfSignUp: async( req, res, next ) => {
+
+        //get req params
+        const { code, id } = req.params 
+        
+        //get the req.body data
+        const { comments, email, first, payment, stripeToken, last, tel } = req.body         
+        //check if there is an amount
+        const amount = payment > 0 ? parseInt( payment ) : 0            
+        //create a payment array
+        const payments = []
+        //add status data - default to FALSE
+        const status = {
+            course_start: false,
+            prospect: false,
+            walk_in: false,
+            web_sign_up: true            
+        }            
+
+        try{            
+            //get the long name of course stored in database
+            const course = await courseDbName( code, id )      
+               
+            //check if there is a stripe token and the amount
+            if( stripeToken && amount > 0 ) {
+                //use registrant's email, first and last name and telephone to create a customer using stripe api
+                const customer = await createCustomer( email, first, last, tel )   
+            
+                //create a card using customer created from above process
+                const card = await createCard( customer, stripeToken )
+            
+                //create a charge
+                const chargeId = await charge( card.id, customer, amount, item_description = "Self Course Sign Up - " + course.title )                
+            
+                //add payment information
+                payments.unshift({
+                    payment_mode: "Credit/Debit card",
+                    course_name: course.title,
+                    course_id: course.id, 
+                    amount,        
+                    chargeId,
+                    last4: card.last4,
+                    cardId: card.id,
+                    created : firebase.firestore.Timestamp.fromDate(new Date())
+                })    
+
+            } else {
+                //add course id to the student array of payment objects
+                payments.unshift({ 
+                    course_id : course.id, 
+                    course_name : course.title, 
+                    amount,    
+                    created : firebase.firestore.Timestamp.fromDate(new Date())
+                })                             
+            } 
+
+            //add student to object
+            const student = await db.collection('students')
+                                    .add({   
+                                        enrolledOn : firebase.firestore.Timestamp.fromDate(new Date()),
+                                        comments, email, first, last, tel, payments, status 
+                                    }) 
+            
+            //tag registrant depending on whether they paid or not
+            const tags = parseInt( payment ) > 0 ? ["Paid Course Registration"] : ["Course Waitlist"]
+             //create postdata to send to mailchimp
+            const postData = studentData( email, first, last, tel, course.data.name, course.data.start_date, course.data.end_date, student.id, id, tags, code )
+       
+             //send student data to mailchimp list/audience for students
+            await subscribe( STUDENT_LIST, postData )
+
+            //check the code of the course
+            if(code == 'hca' || code == 'cna' || code == 'bridging') {
+                res.status(201).json({
+                    redirect: true,
+                    student_id: student.id,
+                    registered: ( stripeToken && amount > 0 ) ? true : false,
+                    redirect_url: '/start-job-search',
+                    message: 'You have signed up for '+ course.title
+                })
+            } else {
+
                 res.status(201).json({
                     redirect: true,                      
                     redirect_url: ( stripeToken && amount > 0 ) ? '/confirm-payment' : '/success',

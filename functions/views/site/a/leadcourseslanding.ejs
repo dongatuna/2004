@@ -1,0 +1,52 @@
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="/styles.css"
+/>
+<link
+	rel="preconnect"
+	href="https://fonts.gstatic.com"
+/>
+<link
+	href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@800&display=swap"
+	rel="stylesheet"
+/>
+
+<article class="postcard container">
+	<div class="promo">
+		<div class="left">
+			<h1 class="headline">				
+				<span class="text-background--purple">Sign up for our </span><%= course %> course...
+			</h1>
+			<p class="tagline">
+				it is affordable and offered on flexible, convenient schedules.
+			</p>
+			<p>
+				<strong>Our <%= course %> courses: </strong> 
+				<ul>
+					<% text.lists.forEach(item => { %>
+						<li><%=item%></li>
+					<% }) %>										
+				</ul>
+				<%= text.body %>
+				<br><br>So, sign up for our <%= course %> course now!
+			</p>
+					
+		</div>
+		<img
+			class="scrubs"
+			src="/scrubs.png"
+			alt="Nurses in scrubs"
+		/>
+	</div>
+
+	<div class="clippings">
+		<div class="clipping">
+			<span>
+				<a href="/learn/<%=code%>" class="btn btn-primary btn-lg">
+					Sign up now
+				</a>
+			</span>			
+		</div>
+	</div>
+</article>

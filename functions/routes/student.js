@@ -5,7 +5,10 @@ const authenticate = require("../helpers/authenticate")
 //post/processes student payment information
 router.route( '/registration' ).post( studentController.studentPayRegistration )
 //student registers self for a course on public site
-router.route('/register/:code/:id').post( studentController.studentSelfCourseSignUp )
+router.route('/register/:code/:id').post( studentController.studentSelfEnrollment )
+
+//student registers self for a course on public site
+router.route('/enroll/:code/:id').post( studentController.studentCourseSelfSignUp)
 //student contacts employers (starts job search) while enrolling for class
 router.route('/start-job-search').patch( studentController.contactEmployers )
 //student contacts employers (starts job search) while enrolling for class

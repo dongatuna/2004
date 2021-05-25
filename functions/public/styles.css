@@ -63,6 +63,15 @@ body {
     border-right: 0.125em solid #68328f;
     color: #fff;
   }
+
+  .promo .fieldname .text-background--purple {
+    background-color: #68328f;
+    border-left: 0.175em solid #68328f;
+    border-right: 0.175em solid #68328f;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    color: #ffffff;
+  }
   .promo .tagline {
     font-family: "Helvetica Neue", "Work Sans", sans-serif;
     font-size: 1.25rem;

@@ -59,7 +59,6 @@ module.exports = {
      * params: course id
      * returns: a single course object an array of students with that course id in the payments array
      */
-
     getCourseById: async ( req, res, next ) => {
         try {
             //get the parameters

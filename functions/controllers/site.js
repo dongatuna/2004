@@ -81,7 +81,7 @@ module.exports = {
                     name: course_name
                 }
 
-                res.render(/*'site/studentsignup'*/ 'site/enrollstudent', 
+                res.render('site/a/studentsignup',// 'site/enrollstudent', 
                     {   
                         // csrfToken: req.csrfToken(),
                         code: course,
@@ -108,7 +108,7 @@ module.exports = {
                 } 
                 
                
-                res.render(/*'site/studentsignup'*/ 'site/enrollstudent', 
+                res.render('site/a/studentsignup',// 'site/enrollstudent', 
                     {   
                         // csrfToken: req.csrfToken(),
                         code: course,
@@ -125,7 +125,6 @@ module.exports = {
             // throw error(error)
         }      
     },
-
     /**
      * View registration payment field and add student
      * @param {*} req 
@@ -157,7 +156,7 @@ module.exports = {
                 name: course_name
             }
 
-            return res.render('site/studentsignup', 
+            return res.render('site/b/enrollstudent', 
                 {   
                     // csrfToken: req.csrfToken(),
                     code: course,
@@ -186,7 +185,7 @@ module.exports = {
                 
                 console.log(`Data: ${JSON.stringify(data)}`)
                
-                res.render('site/enrollstudent', 
+                res.render('site/b/enrollstudent', 
                     {   
                         // csrfToken: req.csrfToken(),
                         code: code,
@@ -488,9 +487,8 @@ module.exports = {
                                         course: catalog[course], 
                                         seo_info: seo_page[req.params.course + "_page_seo_info"]
                                     } )
-    },
-    //
-    getCatalogCourse : async ( req, res, next ) =>{
+    },//
+    getCourseDates : async ( req, res, next ) =>{
         try {             
               //get the long name of course stored in database
               const course_name = courseName(req.params.course)
@@ -514,7 +512,7 @@ module.exports = {
 
                     console.log( 'reservations ', course)
                     //return course
-                    res.render('site/leadcourseschedules', {
+                    res.render('site/b/leadcourseschedules', {
                         course: course[0].data,
                         name: course[0].data.name,
                         course_id: course[0].id,
@@ -555,7 +553,98 @@ module.exports = {
                     console.log('classes -> ', courses[req.params.course])
                     if( classes.length > 0 ){
                         res.locals.lead = true
-                        res.render('site/leadcourseschedules', {
+                        res.render('site/b/leadcourseschedules', {
+                            //res.status(201).json({
+                            course: courses[req.params.course],
+                            name: course_name,       
+                            code: req.params.course,                
+                            seo_info: seo_page[req.params.course + "_page_seo_info"]                                              
+                        })
+
+                    } else {
+                        res.status(404).json({
+                            message: `No ${course_name} courses at the moment.  Check with us later.`
+                        })                   
+                    }  
+
+              }                       
+            
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({
+                message: `There has been an error getting the courses.`,
+                err
+            })
+        }
+    },  
+
+    //
+    getCatalogCourse : async ( req, res, next ) =>{
+        try {             
+              //get the long name of course stored in database
+              const course_name = courseName(req.params.course)
+
+              console.log('course name ', course_name)
+
+              if(
+                    course_name == "BLS Course Skill Testing" || 
+                    course_name == "Adult CPR/First Aid/AED Course Skill Testing" || 
+                    course_name == "DSHS Nurse Delegation (CORE) for NAs and HCAs" || 
+                    course_name == "DSHS Nurse Delegation Special Focus on Diabetes" 
+                ){
+                    //get courses by name 
+                    const results = await db.collection('reservations') 
+                                            .where('name','==', course_name )                     
+                                            .get()  
+                    
+                    const course = results.docs.map( x => {                        
+                       return { data: x.data(), id: x.id } 
+                    } )
+
+                    console.log( 'reservations ', course)
+                    //return course
+                    res.render('site/a/courseschedules', {
+                        course: course[0].data,
+                        name: course[0].data.name,
+                        course_id: course[0].id,
+                        code: req.params.course,
+                        seo_info: seo_page[req.params.course + "_page_seo_info"]   
+                    })
+
+              } else {
+
+                    //get start of today
+                    const today = moment().startOf('day')
+
+                    //get courses by name 
+                    const results = await db.collection('courses') 
+                                            .where('name','==', `${course_name}`)                                       
+                                            .orderBy('start_date')   
+                                            .get()  
+
+                    //get documents
+                    const docs = results.docs
+
+                    //sort the docs to get classes starting today or later
+                    const classes = docs.filter( doc => moment( doc.data().start_date.toDate() ).isSameOrAfter(today) && doc.data().name ==  course_name )
+                                        .map( doc => {                                    
+                                            return {                            
+                                                'end_date' : doc.data().end_date ? moment(doc.data().end_date.toDate()).format("MMM DD") : null, 
+                                                'name': doc.data().name,                            
+                                                'start_date': moment(doc.data().start_date.toDate()).format("MMM DD"),
+                                                'type': doc.data().type,
+                                                'id': doc.id
+                                            }                        
+                                        }) 
+                                        
+                    //classify the courses as either day, evening, weekend
+                    const courses = course_classifier( classes )
+
+                    //return classes, seo information and campaign information
+                    console.log('classes -> ', courses[req.params.course])
+                    if( classes.length > 0 ){
+                        res.locals.lead = true
+                        res.render('site/a/courseschedules', {
                             //res.status(201).json({
                             course: courses[req.params.course],
                             name: course_name,       
@@ -604,6 +693,27 @@ module.exports = {
         }
     },
     // Get courses landing page for CNA, HCA/Core Basic, HCA to NAC bridging
+    getCourseLandingForm: (req, res) => {
+        try {
+            //get course name from the req.params
+            const course = req.params.name == 'hca' || req.params.name == 'cna' ? req.params.name.toUpperCase() : "HCA - CNA Bridging"
+
+            console.log('course ', course, 'campaign text ', courseCampaigns[course] )
+            res.locals.lead = true
+            //return course landing view, seo information and text
+            res.render('site/b/leadcourseform',  { 
+                        code: req.params.name,
+                        course : course,
+                        seo_info : seo_page.courses_landing_seo_info,  
+                        text : courseCampaigns[course]
+                    })   
+        } catch (error) {
+            console.log('error', error)
+        }
+        
+    },
+
+     // Get courses landing page for CNA, HCA/Core Basic, HCA to NAC bridging
     getCoursesLandingPage: (req, res) => {
         try {
             //get course name from the req.params
@@ -612,7 +722,7 @@ module.exports = {
             console.log('course ', course, 'campaign text ', courseCampaigns[course] )
             res.locals.lead = true
             //return course landing view, seo information and text
-            res.render('site/leadcourseslanding',  { 
+            res.render('site/a/leadcourseslanding',  { 
                         code: req.params.name,
                         course : course,
                         seo_info : seo_page.courses_landing_seo_info,  

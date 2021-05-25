@@ -1,0 +1,214 @@
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="/styles.css"
+/>
+
+<link
+	rel="preconnect"
+	href="https://fonts.gstatic.com"
+/>
+
+<link
+	href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@800&display=swap"
+	rel="stylesheet"
+/>
+
+<section class="container my-2">
+<!-- <article class="postcard container"> -->
+    <div class="container-fluid ">    
+        <div class="row justify-content-center ">           
+            <div class="col-sm-12 col-md-8">
+                <h1 class="diplay text-dark text-center"> <%= name %> Course Schedules.</h1>  
+                <p class="diplay text-danger text-center mr-4">*If you are using a phone, scroll down to see different class times and dates.*</p>                         
+            </div>                
+        </div>
+    </div>  
+    <div class="container align-items-center">          
+                 
+        <div class="container-fluid">       
+        <% if( name == 'CNA' ){ %>          
+            <div class="row justify-content-center">                              
+                <div class="col-sm-12">
+                <h4 class="diplay text-center mr-4">*Click on course dates to sign up.*</h4>                      
+                    <div class=" row justify-content-center">
+                        <div class="col-sm-12 col-md-4">                        
+                            <ul class="list-group list-group-flush">                                
+                                <li class="list-group-item list-group-item-primary text-dark"> <strong>DAY CLASS </strong><br> Mon - Fri <br> 3 weeks <br> 9:00 a.m. - 3:00 p.m.</li> 
+                                <% course.day_courses.forEach(course => { %>                                    
+                                <li class="list-group-item" >
+                                    <a href="/train/<%=code%>/<%= course.courseId %>"> <%=course.start_date %> - <%=course.end_date %> <span class="text-danger float-right"> <strong> [+] </strong> </span> </a>
+                                </li> 
+                                <% }) %>                                 
+                            </ul>
+                        </div>
+                        <div class="col-sm-12 col-md-4">                                      
+                            <ul class="list-group list-group-flush">                                
+                                <li class="list-group-item list-group-item-primary text-dark"> <strong>EVENING CLASS </strong><br> Mon - Fri <br> 3 weeks <br> 3:00 p.m. - 9:00 p.m.</li>                        
+                                <% course.evening_courses.forEach(course => { %>       
+                                    <li class="list-group-item" >
+                                        <a href="/train/<%=code%>/<%= course.courseId %>"> <%=course.start_date %> - <%=course.end_date %> <span class="text-danger float-right"> <strong> [+] </strong> </span> </a>
+                                    </li>
+                                <% }) %>                               
+                            </ul>
+                        </div>
+                        <div class="col-sm-12 col-md-4"> 
+                            <ul class="list-group list-group-flush justify-content-center">                               
+                                <li class="list-group-item list-group-item-primary text-dark"> <strong>WEEKEND CLASS </strong> <br> Sat & Sun <br> 7 weekends <br> 2:00 p.m. - 10:00 p.m.</li>   
+                                <% course.weekend_courses.forEach(course => { %>             
+                                    <li class="list-group-item" >
+                                        <a href="/train/<%=code%>/<%= course.courseId %>"> <%=course.start_date %> - <%=course.end_date %> <span class="text-danger float-right"> <strong> [+] </strong> </span> </a>
+                                    </li>
+                                <% }) %>                                
+                            </ul>
+                        </div>  
+                    </div>
+                </div>  
+            </div>                                   
+           
+        <% } else if(  
+                        name == 'DSHS Home Care Aide/75 Hours' || 
+                        name == "HCA to CNA Bridging" ||                        
+                        name == "DSHS 12 Hours Continuous Education Units"                      
+                    ) { %>             
+            <div class="row justify-content-center">           
+                <div class="col-12">
+                    <h4 class="diplay text-center mr-4">*Click on course dates to sign up.*</h4>                     
+                    <div class=" row justify-content-end">                          
+                        <div class="col-sm-12 col-md-5">
+                            <ul class="list-group list-group-flush justify-content-between">
+                                <% if(name == 'DSHS Home Care Aide/75 Hours'){ %>
+                                    <li class="list-group-item list-group-item-primary text-dark"> <strong>WEEKDAY CLASS </strong><br> 8 days <br> [Mon, Tue, Wed, Thur] for 2 weeks <br> 10:00 a.m. - 5:30 p.m.</li> 
+                                <% } else if( name == "DSHS 12 Hours Continuous Education Units" ) { %>
+                                    <li class="list-group-item list-group-item-primary text-dark"> <strong>WEEKDAY CLASS </strong><br>2 days <br> [Tue/Wed/Thur] <br> 10:00 a.m. - 4:30 p.m.</li>                                     
+                                <% } else { %>
+                                    <li class="list-group-item list-group-item-primary text-dark"> <strong>WEEKDAY CLASS </strong><br> 4 days <br> [Mon, Tue, Wed, Thur] <br> 10:00 a.m. - 5:30 p.m.</li> 
+                                <% } %>
+                                <% course.day_courses.forEach( course => { %>                      
+                                <li  class="list-group-item"  >
+                                    <a href="/train/<%=code%>/<%= course.courseId %>"> <%= course.start_date%> - <%= course.end_date%> <span class="text-danger float-right"> <strong> [+] </strong></span> </a>
+                                </li>
+                                <% }) %>
+                            </ul>
+                        </div>
+                        <div class="col-sm-12 col-md-5"> 
+                            <ul class="list-group list-group-flush justify-content-between">
+                                <% if(name == 'DSHS Home Care Aide/75 Hours'){ %>
+                                    <li class="list-group-item list-group-item-primary text-dark"> <strong>WEEKEND CLASS </strong><br> 7 days <br> [Fri, Sat, Sun, Mon] 2 times <br> 12:00 p.m. - 8:30 p.m.</li> 
+                                <% } else if ( name ==  "DSHS 12 Hours Continuous Education Units" ) { %>
+                                    <li class="list-group-item list-group-item-primary text-dark"> <strong>WEEKEND CLASS </strong><br>2 days <br> [Sat/Sun] <br> 12:00 p.m. - 6:30 p.m.</li> 
+                                    
+                                <% } else  { %>
+                                    <li class="list-group-item list-group-item-primary text-dark"> <strong>WEEKEND CLASS </strong><br> 4 days <br> [Fri, Sat, Sun, Mon] <br> 12:00 p.m. - 8:30 p.m.</li> 
+                                <% } %>
+                               
+                                <% course.weekend_courses.forEach(course => { %>                    
+                                <li  class="list-group-item">
+                                    <a href= "/train/<%=code%>/<%= course.courseId %>"><%= course.start_date%> - <%= course.end_date %> <span class="text-danger float-right"> <strong> [+] </strong></span> </a>
+                                </li>
+                                <% }) %>
+                            </ul>
+                        </div>     
+                    </div>              
+                </div> 
+            </div>                
+          
+        <% } else if(name == "DSHS Mental Health Specialty" ||  name == "DSHS Dementia Specialty" ) { %>
+            <div class="row justify-content-center">           
+                <div class="col-12">
+                    <h4 class="diplay text-center mr-4">*Click on course dates to sign up.*</h4>    
+                    <p class="text-center text-dark" >Mental Health and Dementia are offered on consecutive days.</p>
+                    <div class=" row justify-content-end">                       
+                        <div class="col-sm-12 col-md-5">                          
+                            <ul class="list-group list-group-flush justify-content-between">                                
+                                <li class="list-group-item list-group-item-primary text-dark"> <strong>WEEKDAY CLASS </strong><br> [Tue/Wed/Thur] <br> 10:00 a.m. - 6:30 p.m.</li>                              
+                                <% course.day_courses.forEach(course => { %>                      
+                                <li  class="list-group-item"  >
+                                    <a href="/train/<%=code%>/<%= course.courseId %>"> <%= course.start_date%> <span class="text-danger float-right"> <strong> [+] </strong></span> </a>
+                                </li>
+                                <% }) %>
+                            </ul>
+                        </div>
+                        <div class="col-sm-12 col-md-5"> 
+                            <ul class="list-group list-group-flush justify-content-between">                                
+                                <li class="list-group-item list-group-item-primary text-dark"> <strong>WEEKDAY CLASS </strong><br> [Sat/Sun] <br> 12:00 p.m. - 8:30 p.m.</li>                                                           
+                                <% course.weekend_courses.forEach(course => { %>                    
+                                <li  class="list-group-item">
+                                    <a href= "/train/<%=code%>/<%= course.courseId %>"><%= course.start_date%> <span class="text-danger float-right"> <strong> [+] </strong></span> </a>
+                                </li>
+                                <% }) %>
+                            </ul>
+                        </div>     
+                    </div>              
+                </div> 
+            </div>                
+        <% } else if (  name == "DSHS Safety and Orientation"  ) { %>
+        <div class="row justify-content-center">
+                         
+            <div class="col-sm-6">
+            <h4 class="diplay text-center mr-4">*Click on course dates to sign up.*</h4>      
+                            
+                <ul class="list-group list-group-flush justify-content-between">
+                    <li class="list-group-item list-group-item-primary text-dark"> <strong>WEEKDAY/WEEKEND CLASS </strong> <br> 12:00 p.m. - 5:30 p.m.</li>  
+                    <% course.day_courses.forEach(course => { %>                       
+                    <li  class="list-group-item" >
+                        <a href="/train/<%=code%>/<%= course.courseId %>"><%=course.start_date%> <span class="text-danger float-right"> <strong> [+] </strong></span> </a>
+                    </li>
+                    <% }) %>
+                </ul>                
+            </div>                          
+        </div>                          
+        
+        <% } else if ( name == "DSHS Nurse Delegation Special Focus on Diabetes" || name == "DSHS Nurse Delegation (CORE) for NAs and HCAs" ) { %> 
+        <div class="container-fluid">
+            <div class="row justify-content-center">              
+                <div class="col-sm-12 col-md-4">
+                   
+                <p class="diplay text-left bg-warning">Our nurse delegation/diabetes are self-study.  Priority is given to students who sign up to reserve study materials.</p>                  
+                    <ul class="list-group list-group-flush justify-content-between">
+                        <li class="list-group-item list-group-item-primary text-dark"> <strong>WEEKDAY/WEEKEND CLASS </strong> <br> 30 minutes</li>                                             
+                        <li  class="list-group-item" >
+                            <a href="/train/<%=code%>/<%= course_id %>"> Sign Up <span class="text-danger float-right"> <strong> [+] </strong></span> </a>
+                        </li>
+                     
+                    </ul>
+                </div>                   
+            </div>                
+        </div>   
+        <% } else { %>  
+        <div class="container-fluid">
+            <div class="row justify-content-center">              
+                <div class="col-sm-12 col-md-4">                    
+                <p class="diplay text-left bg-warning"> Sign up to reserve date and time to complete your CPR/FA or BLS skill testing.  Priority is given to students who sign up to reserve study materials.</p>                  
+                    <ul class="list-group list-group-flush justify-content-between">
+                        <li class="list-group-item list-group-item-primary text-dark"> <strong>WEEKDAY/WEEKEND CLASS </strong> <br> 30 minutes</li>                                             
+                        <li  class="list-group-item" >
+                            <a href="/train/<%=code%>/<%= course_id %>"> Sign Up <span class="text-danger float-right"> <strong> [+] </strong></span> </a>
+                        </li>                        
+                    </ul>
+                </div>                   
+            </div>                
+        </div> 
+        <% } %>              
+    </div> 
+</div>
+</section>      
+<!-- </article> -->
+
+<script type="application/javascript">
+    $(document).ready(() => {
+        const course_name = (<%-JSON.stringify(name)%>)
+        const eventAction = 'View Lead '+course_name+' Course Schedules'
+        gtag('event', eventAction, {
+            'event_category': eventAction,
+            'event_label': 'Prospective Student',
+            'value': 1
+        })
+    })
+</script>
+
+<style scoped>
+    .course-info  {
+        white-space: pre-wrap;
+    } 
+</style>

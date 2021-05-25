@@ -24,34 +24,57 @@ router.get('/success', SiteController.getReceiptPage )
 //gets page for student to pay registration fee after receiving email //    getStudentPayRegistrationForm
 router.get('/secure/:code/:course_id/:student_id', SiteController.getStudentPayRegistrationForm )
 
-//************************************************************************************* */
-//routes for experimenting
+/**
+ * TREATMENT GROUP: Path ('b') after google ads
+ * Course landing page form (for prospect)
+ * Course schedules
+ * [SHORT] Course payment or course add to waitlist form - form with one field
+ * 
+*/
+//**************************************************************************************** */
 //get the courses landing page
-router.get('/select-course/:name', SiteController.getCoursesLandingPage )
+router.get('/select/:name', SiteController.getCourseLandingForm )
 //get the course schedules
-router.get('/select-schedule/:course', SiteController.getCatalogCourse  )
+router.get('/dates/:course', SiteController.getCourseDates )
 //gets page for student to pay registration fee after receiving email /
 router.get('/select-payment/:code/:course_id', SiteController.getStudentPayment )
 
-//************************************************************************************ */
+//***************************************************************************************** */
+
+/**
+ * CONTROL GROUP: Path ('a') after google ads
+ * Course landing page - has a button only and NO form
+ * Course schedules 
+ * [LONG] Course payment or add to waitlist form - form with 5 fields
+ */
+
+//***************************************************************************************** */
+//get the courses landing page
+router.get('/course/:name', SiteController.getCoursesLandingPage )
+//get the all courses - single day, multiple day, and reservations - in catalog
+router.get('/learn/:course', SiteController.getCatalogCourse )
+//get lead page for courses
+router.get('/register/:course/:course_id', SiteController.getCourseRegistrationForm )
+//get lead page for courses
+router.get('/train/:course/:course_id', SiteController.getCourseRegistrationForm)
+
+//***************************************************************************************** */
+
 //gets page for student to pay registration fee after receiving email /
 router.get('/enroll/:code/:course_id', SiteController.getStudentPayRegistrationForm )
 //receipt page after receipt of payment for course sign up
 router.get('/confirm-payment', SiteController.getReceiptPage )
-//get the courses landing page
-router.get('/course/:name', SiteController.getCoursesLandingPage )
+
+
 //get lead page for other courses
 router.get("/schedules/:name", SiteController.getLeadCourses )
-//get lead page for courses
-router.get('/register/:course/:course_id', SiteController.getCourseRegistrationForm )
-//get lead page for courses
-router.get('/train/:course/:course_id', SiteController.getCourseRegistrationForm )
+
+
 //get regular sign up page
 router.get('/signup/:course_id', SiteController.getCourseRegistrationForm )
 //get the the videos page
 router.get("/videos", SiteController.getVideosPage )
-//get the all courses - single day, multiple day, and reservations - in catalog
-router.get('/learn/:course', SiteController.getCatalogCourse )
+
 //get the the why post page
 router.get("/recruit", SiteController.getJobsMainLandingPage )
 //get the hca page

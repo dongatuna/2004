@@ -65,7 +65,6 @@ router.get('/enroll/:code/:course_id', SiteController.getStudentPayRegistrationF
 //receipt page after receipt of payment for course sign up
 router.get('/confirm-payment', SiteController.getReceiptPage )
 
-
 //get lead page for other courses
 router.get("/schedules/:name", SiteController.getLeadCourses )
 

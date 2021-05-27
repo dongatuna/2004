@@ -169,7 +169,7 @@ module.exports = {
                         'email': registrant.data().email,
                         'id': registrant.id,
                         'tel': registrant.data().tel,
-                        'payment': registrant.data().payments.reduce(( sum, payment ) => {        
+                        'payment': registrant.data().payments != null || registrant.data().payments!= undefined ? registrant.data().payments.reduce(( sum, payment ) => {        
                             
                             console.log('sum ')
                             //
@@ -177,12 +177,12 @@ module.exports = {
                             //console.log(payment.course_name)
                             return sum = { 
                                             "amount": total, 
-                                            "name": payment.course_name,
+                                            "name":  payment.course_name,
                                             "code": codeName( payment.course_name ), 
                                             "course_id": payment.course_id 
                                         }
                            
-                        }, {})
+                        }, {}) : { amount: 0, name: 'Prospect', code: 'None', course_id: 'None'}
                     }
                 })                
                 //sum up the payments made by registrants today

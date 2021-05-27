@@ -45,13 +45,13 @@
 						<label for="tel" class="fieldname"><strong class="text-background--purple">Telephone</strong> </label>                                   
 						<input type="tel" class="form-control border border-dark" name="tel" placeholder="Phone" id="tel" required>			   
 					</div>	
-					<a href="/learn/<%=code%>" class="btn btn-block btn-lg btn-dark" id="registerProspect">
+					<a href="/dates/<%=code%>" class="btn btn-block btn-lg btn-dark" id="registerProspect">
 						Sign up now
 					</a>
 				</div>			
 			</div> 				
 		</div>
-		 <img
+		<img
 			class="scrubs"
 			src="/scrubs.png"
 			alt="Nurses in scrubs"
@@ -96,7 +96,7 @@
 				}
       
 				//hide the registration button to avoid multiple form submission           
-				$('#btnRegister').hide()      						
+				$('#registerProspect').hide()      						
 				//create an on object constructed from data entered by user in the form above
 				const studentData = { first, last, email, tel }
 				debugger                

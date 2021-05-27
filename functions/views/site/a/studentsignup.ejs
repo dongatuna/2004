@@ -66,7 +66,7 @@
                               <!-- We'll put the error messages in this element -->
                             <div id="card-errors" role="alert" ></div>
                             <div class="mt-2">                               
-                                <button class="btn btn-primary btn-block p-3 mt-3" name="register" id="btnRegister" type="submit"><strong>Pay <%= course.fees %>.00 Registration Fee</strong></button> 
+                                <button class="btn btn-primary btn-block p-3 mt-3" name="register" id="btnRegisterStudentToClass" type="submit"><strong>Pay <%= course.fees %>.00 Registration Fee</strong></button> 
                                 <p class="text-success"><small>Payments processed by Stripe Corporation.</small></p>
                                 <p class="text-dark text-center" id="process-registration" style="display: none;"><strong>Processing...</strong></p>
                             </div>
@@ -78,7 +78,7 @@
                     <div class="row justify-content-center mt-2">
                         <div class="col-sm-12 col-lg-4 bg-white"> 
                             <p>Still undecided? </p>                                                                                
-                            <button class="btn btn-secondary py-3" name="waitlist" id="btnWaitlist" type="submit"><strong>Add me to the waitlist </strong> </button> 
+                            <button class="btn btn-secondary py-3" name="waitlist" id="btnAddToStudentWaitlist" type="submit"><strong>Add me to the waitlist </strong> </button> 
                             <p class="text-dark text-center" id="process-waitlist" style="display: none;"><strong>Processing...</strong></p>
                         </div>
                     </div>                      

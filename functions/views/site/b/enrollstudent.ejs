@@ -5,8 +5,7 @@
                 <!-- <h3 class="text-dark text-center"><%= course.title %> Course</h3> -->
                 <br>
                 <!--BEGINNING OF THE FORM-->
-                <form id="course_sign_up" >
-                                 
+                <form id="course_sign_up">                                 
                     <!-- ADD AND DISPLAY CARD ELEMENT TO THE PAGE -->
                     <div class="row justify-content-center p-4">
                         <div class="col-sm-12 col-lg-4 ">
@@ -16,15 +15,17 @@
                                 Pay registration fees to secure your spot in the <%= course.title %> course.
                             </div>
                         </div> 
+                        
 
                     </div>
                     <div class="row justify-content-center">                        
                         
-                        <div class="col-sm-12 col-lg-4 >     
-                            
-                            <label for="card-element">
+                        <div class="col-sm-12 col-lg-4" >                           
+                            <label for = "card-element">
                                 Enter credit/debit card details
                             </label>
+                            
+                            
                             <div id="card-element">
                                 <!-- Elements will create input elements here -->
                             </div>
@@ -32,11 +33,11 @@
                               <!-- We'll put the error messages in this element -->
                             <div id="card-errors" role="alert" ></div>
                             <div class="mt-2">                               
-                                <button class="btn btn-primary btn-block p-3 mt-3" name="register" id="btnRegister" type="submit"><strong>Pay <%= course.fees %>.00 Registration Fee</strong></button> 
+                                <button class="btn btn-primary btn-block p-3 mt-3" name="register" id="btnRegisterStudent" type="submit"><strong>Pay <%= course.fees %>.00 Registration Fee</strong></button> 
                                 <p class="text-success"><small>Payments processed by Stripe Corporation.</small></p>
                                 <p class="text-dark text-center" id="process-registration" style="display: none;"><strong>Processing...</strong></p>
                             </div>
-                                
+                            
                         </div>
                     </div>  
 
@@ -54,7 +55,7 @@
                     <div class="row justify-content-center mt-2">
                         <div class="col-sm-12 col-lg-4 bg-white"> 
                             <p>Still undecided? </p>                                                                                
-                            <button class="btn btn-secondary btn-sm py-3" name="waitlist" id="btnWaitlist" type="submit">Add me to the waitlist </button> 
+                            <button class="btn btn-secondary btn-sm py-3" name="waitlist" id="btnWaitlistStudent" type="submit">Add me to the waitlist </button> 
                             <p class="text-dark text-center" id="process-waitlist" style="display: none;"><strong>Processing...</strong></p>
                         </div>
                     </div>                      

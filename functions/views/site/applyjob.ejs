@@ -22,7 +22,7 @@
             <% }) %> 
             
             <a class="btn btn-dark btn-lg btn-block text-white float-right registration"           
-                type="button"> <strong>COMPLETE COURSE REGISTRATION</strong>
+                type="button"> <strong>COMPLETE</strong>
             </a>
         </div> 
     </div>
@@ -61,9 +61,6 @@
         $('.registration').on('click', e => {
             //prevent default behavior
             e.preventDefault()
-
-            console.log('data ---', student_data )
-            debugger
             
             if( jobs.length > 0 ) {
                 //send data to server
@@ -115,9 +112,7 @@
                     window.location.replace('/success')
                 }
             }
-        })
-       
-        
+        })      
     })
 //create a get route to send the user to admin
 </script> 

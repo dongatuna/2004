@@ -74,9 +74,13 @@ module.exports = {
             //create an array to store students
             const studentsArray = []
             //store all students in the array
-            query.forEach( result => studentsArray.unshift({ id: result.id, data: result.data() }))    
-           
-            const students = studentsArray.map (x => {
+            query.forEach( result => {
+                console.log(`data: ${JSON.stringify(result.data())}`)
+                studentsArray.unshift({ id: result.id, data: result.data() })
+            } )    
+       
+            const students = studentsArray.map( x => {
+               
                 return {
                     'id': x.id,
                     'name': x.data.first +" "+ x.data.last,
@@ -84,11 +88,12 @@ module.exports = {
                     'tel': x.data.tel,
                     'payments': x.data.payments,
                     'status': x.data.status,
-                    'amount': x.data.payments.reduce((sum, payment) => {
+                    'amount': x.data.payments != null || x.data.payments != undefined ? x.data.payments.reduce((sum, payment) => {
                                     return sum += payment.amount
-                                }, 0 )
+                                }, 0 ) : 0
                 }
             }).reduce(( course_students, doc ) => {
+                
                 const student = {
                     'student_id': doc.id,
                     'amount': doc.amount,
@@ -98,16 +103,18 @@ module.exports = {
                     'tel': doc.tel  
                 }
 
-                doc.payments.filter( payment => {
+                if(doc.payments != null || doc.payments != undefined){
+                    doc.payments.filter( payment => {
                    
-                    if(payment.course_id == req.params.course_id){
-                 
-                        if(!course_students.includes(student)) {
-     
-                            course_students.push(student)
-                        }                        
-                    }
-                })
+                        if(payment.course_id == req.params.course_id){
+                     
+                            if(!course_students.includes(student)) {
+         
+                                course_students.push(student)
+                            }                        
+                        }
+                    })
+                }                
 
                 return course_students
             }, [] )      

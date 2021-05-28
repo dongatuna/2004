@@ -5,7 +5,9 @@ const authenticate = require("../helpers/authenticate")
 //post/processes student payment information
 router.route( '/registration' ).post( studentController.studentPayRegistration )
 //student registers self for a course on public site
-router.route('/register/:code/:id').post( studentController.studentSelfEnrollment )
+router.route('/register/:code/:id').post( studentController.studentPayRegistrationFees)
+//student registers self for a course on public site
+router.route('/waitlist/:code/:id').post( studentController.studentAddWaitlist )
 
 //student registers self for a course on public site
 router.route('/enroll/:code/:id').post( studentController.studentCourseSelfSignUp)

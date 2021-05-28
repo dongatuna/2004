@@ -62,9 +62,9 @@ module.exports = {
          
             //return information to user
             res.status(500).json({
-                message: 'There was an error processing your form details.',
+                message: 'There was an error processing the form. Please submit the form again.',
                 redirect: false,
-                url: `/signup/${req.params.code}`
+                url: `/select/${req.params.code}`
             })
         }
     },
@@ -305,22 +305,95 @@ module.exports = {
             })
         }
     },
+
+    /**
+     * 
+     * @param {*} req 
+     * @param {*} res 
+     * @param {*} next 
+     */
+    studentAddWaitlist: async ( req, res, next ) => {
+        //get req params
+        const { code, id } = req.params 
+        //get student data
+        const { payment, student_id } = req.body
+        //create a payment array
+        const payments = []
+
+        const tags = [
+            { "name" : "Course Waitlist", "status": "active" }, 
+            { "name" : "Prospects", "status": "inactive" }
+        ]
+
+        try {
+            //get the long name of course stored in database
+            const course = await courseDbName( code, id ) 
+            //get the student using the student id
+            const student = await db.collection('students').doc(student_id).get()
+            //get the student status
+            const status = student.data().status
+            //change the prospect status to false
+            status.prospect = false
+             //add course id to the student array of payment objects
+            payments.unshift({ 
+                course_id : course.id, 
+                course_name : course.title, 
+                amount: parseInt( payment ),    
+                created : firebase.firestore.Timestamp.fromDate(new Date())
+            })  
+
+            //add student to object            
+            await db.collection('students').doc(student_id).update({ payments, status })   
+
+            //update student tags
+            updateStudentTags ( student.data().email, tags )
+
+            //update student merge fields
+            updateMergeFields( student.data().email, course.title, course.start, course.end, id )
+               //check the code of the course
+            if(code == 'hca' || code == 'cna' || code == 'bridging') {
+                res.status(201).json({
+                    redirect: true,                  
+                    registered: false,
+                    redirect_url: `/select-payment/${code}/${id}`,
+                    message: 'You have signed up for '+ course.title
+                })
+            } else {
+                res.status(201).json({
+                    redirect: true,                      
+                    redirect_url: '/success',
+                    message: 'You have signed up for '+ course.title
+                })
+            } 
+        } catch (error) {
+            console.log('Add to Waitlist error ', error)
+        }
+    },
+
     /**
      * student register self for an upcoming course
+     * payment will not be processed
      * @param { Object | student id, stripe token, course id, code } - param is course id and code
      * @param { String | course id, course code } - id of the course, code
      * data: student information and stripe token if payment is made
      */
-    studentSelfEnrollment: async( req, res, next ) => {
+    studentPayRegistrationFees: async( req, res, next ) => {
         //get req params
         const { code, id } = req.params 
+        console.log(`REQ PARAMS ---> ${req.params}`)
         //get the req.body data
-        const { stripeToken, student_id, payment } = req.body               
+        const { stripeToken, student_id, payment } = req.body      
+        console.log(`REQ BODY ----> ${req.body}`)         
         //check if there is an amount
-        const amount = payment > 0 ? parseInt( payment ) : 0            
-        //create a payment array
-        const payments = []
-
+        const amount = parseInt( payment )          
+        
+        //add mailchimp tags
+        //registration tag depending on whether they paid or not
+        const tags = [ 
+            { "name" : "Paid Course Registration", "status": "active" }, 
+            { "name" : "Course Waitlist", "status": "inactive" }
+        ]      
+        
         try{          
             //get the long name of course stored in database
             const course = await courseDbName( code, id )          
@@ -330,85 +403,59 @@ module.exports = {
             const status = student.data().status
             //change the prospect status to false
             status.prospect = false
-            //check if there is a stripe token and the amount
-            if( stripeToken && amount > 0 ) {
-                //use registrant's email, first and last name and telephone to create a customer using stripe api
-                const customer = await createCustomer( student.data().email, student.data().first, student.data().last, student.data().tel )   
+            //clear the student payment array 
+            student.data().payments.pop()   
+           
+            //use registrant's email, first and last name and telephone to create a customer using stripe api
+            const customer = await createCustomer( student.data().email, student.data().first, student.data().last, student.data().tel )  
+        
+            //create a card using customer created from above process
+            const card = await createCard( customer, stripeToken )            
+            //create a charge
+            const chargeId = await charge( card.id, customer, amount, item_description = "Self Course Sign Up - " + course.title )             
             
-                //create a card using customer created from above process
-                const card = await createCard( customer, stripeToken )            
-                //create a charge
-                const chargeId = await charge( card.id, customer, amount, item_description = "Self Course Sign Up - " + course.title )                
-            
-                //add payment information
-                payments.unshift({
-                    payment_mode: "Credit/Debit card",
-                    course_name: course.title,
-                    course_id: course.id, 
-                    amount,        
-                    chargeId,
-                    last4: card.last4,
-                    cardId: card.id,
-                    created : firebase.firestore.Timestamp.fromDate(new Date())
-                })    
-
-            } else {
-                //add course id to the student array of payment objects
-                payments.unshift({ 
-                    course_id : course.id, 
-                    course_name : course.title, 
-                    amount,    
-                    created : firebase.firestore.Timestamp.fromDate(new Date())
-                })                             
-            } 
-
-            //registration tag depending on whether they paid or not
-            const tags = parseInt( payment ) > 0 ? [ 
-                { "name" : "Paid Course Registration", "status": "active" }, 
-                { "name" : "Prospects", "status": "inactive" }
-            ] : [
-                { "name" : "Course Waitlist", "status": "active" }, 
-                { "name" : "Prospects", "status": "inactive" }
-            ]
+            const payments = []
+            //add payment information
+            payments.unshift({
+                payment_mode: "Credit/Debit card",
+                course_name: course.title,
+                course_id: course.id, 
+                amount,        
+                chargeId,
+                last4: card.last4,
+                cardId: card.id,
+                created : firebase.firestore.Timestamp.fromDate(new Date())
+            })                 
 
             //add student to object            
-            await db.collection('students').doc(student_id).update({ payments, status }) 
-        
+            await db.collection('students').doc( student_id ).update({ payments, status })         
             //update student tags
             updateStudentTags ( student.data().email, tags )
             //update student merge fields
             updateMergeFields( student.data().email, course.title, course.start, course.end, id )
             //user to send to user            
 
-            const messageOne = {
-                tel: student.data().tel,
-                message: `Thanks for signing up for our ${course.title} course.  Come to school to complete the sign up process and collect course materials.  We are located at: https://bit.ly/3yjpqOw`
-            }
-
-            await sendOneText(messageOne)  
-      
-            //check the code of the course
+         
             if(code == 'hca' || code == 'cna' || code == 'bridging') {
                 res.status(201).json({
-                    redirect: true,
-                    student_id: student.id,
-                    registered: ( stripeToken && amount > 0 ) ? true : false,
+                    redirect: true,                  
+                    registered: true ,
                     redirect_url: '/start-job-search',
                     message: 'You have signed up for '+ course.title
                 })
             } else {
                 res.status(201).json({
                     redirect: true,                      
-                    redirect_url: ( stripeToken && amount > 0 ) ? '/confirm-payment' : '/success',
+                    redirect_url: '/confirm-payment',
                     message: 'You have signed up for '+ course.title
                 })
             }            
 
         } catch (error){     
-               
+            console.log(`eRROR `, error)   
             res.status(500).json({
                 "redirect":false,
-                "redirect_url":"localhost:3000/courses",
+                "redirect_url":"localhost:3000/dates/"+code,
                 "message": "Did not sign up for the class."
             })
         }
@@ -422,8 +469,7 @@ module.exports = {
     studentCourseSelfSignUp: async( req, res, next ) => {
 
         //get req params
-        const { code, id } = req.params 
-        
+        const { code, id } = req.params         
         //get the req.body data
         const { comments, email, first, payment, stripeToken, last, tel } = req.body         
         //check if there is an amount

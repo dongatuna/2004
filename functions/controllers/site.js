@@ -159,7 +159,7 @@ module.exports = {
             return res.render('site/b/enrollstudent', 
                 {   
                     // csrfToken: req.csrfToken(),
-                    code: course,
+                    code: code,
                     seo_info: seo_page.register_page_seo_info, 
                     lead: lead,
                     course: data,                                
@@ -168,36 +168,33 @@ module.exports = {
             )
         }
         try {
-             //else {
-                //find the course
-                const query = await db.collection('courses').doc(course_id).get()
-                //construct data about class - remove student array
-                const results = query.data()                
-                
-                const title = results.end_date !== null ? moment( results.start_date.toDate()).tz('America/Los_Angeles' ).format("MMM D") +" - "+ moment( results.end_date.toDate()).tz('America/Los_Angeles' ).format("MMM D") +" "+ results.name + " " + results.type : moment( results.start_date.toDate()).tz('America/Los_Angeles' ).format("MMM D") +" "+ results.name + " " + results.type +" Sign Up Form"     
-                
-                const data = {              
-                    courseId: course_id,                                               
-                    title,
-                    fees,
-                    name: course_name                  
-                }  
-                
-                console.log(`Data: ${JSON.stringify(data)}`)
-               
-                res.render('site/b/enrollstudent', 
-                    {   
-                        // csrfToken: req.csrfToken(),
-                        code: code,
-                        seo_info: seo_page.register_page_seo_info, 
-                        lead: lead,
-                        course: data,                                
-                        STRIPE_PUBLIC_KEY: STRIPE_PUBLIC_KEY
-                    }
-                )
-            //} 
-
             
+            //find the course
+            const query = await db.collection('courses').doc(course_id).get()
+            //construct data about class - remove student array
+            const results = query.data()                
+            
+            const title = results.end_date !== null ? moment( results.start_date.toDate()).tz('America/Los_Angeles' ).format("MMM D") +" - "+ moment( results.end_date.toDate()).tz('America/Los_Angeles' ).format("MMM D") +" "+ results.name + " " + results.type : moment( results.start_date.toDate()).tz('America/Los_Angeles' ).format("MMM D") +" "+ results.name + " " + results.type +" Sign Up Form"     
+            
+            const data = {              
+                courseId: course_id,                                               
+                title,
+                fees,
+                name: course_name                  
+            }  
+            
+            console.log(`Data: ${JSON.stringify(data)}`)
+            
+            res.render('site/b/enrollstudent', 
+                {   
+                    // csrfToken: req.csrfToken(),
+                    code: code,
+                    seo_info: seo_page.register_page_seo_info, 
+                    lead: lead,
+                    course: data,                                
+                    STRIPE_PUBLIC_KEY: STRIPE_PUBLIC_KEY
+                }
+            )           
             
         } catch (error) {
             console.log('Error ', error)

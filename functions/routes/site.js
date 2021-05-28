@@ -33,7 +33,8 @@ router.get('/secure/:code/:course_id/:student_id', SiteController.getStudentPayR
 */
 //**************************************************************************************** */
 //get the courses landing page
-router.get('/select/:name', SiteController.getCourseLandingForm )
+//------router.get('/select/:name', SiteController.getCourseLandingForm )
+router.get('/course/:name', SiteController.getCourseLandingForm )
 //get the course schedules
 router.get('/dates/:course', SiteController.getCourseDates )
 //gets page for student to pay registration fee after receiving email /
@@ -50,7 +51,8 @@ router.get('/select-payment/:code/:course_id', SiteController.getStudentPayment 
 
 //***************************************************************************************** */
 //get the courses landing page
-router.get('/course/:name', SiteController.getCoursesLandingPage )
+//------router.get('/course/:name', SiteController.getCourseLandingForm )
+router.get('/select/:name', SiteController.getCoursesLandingPage )
 //get the all courses - single day, multiple day, and reservations - in catalog
 router.get('/learn/:course', SiteController.getCatalogCourse )
 //get lead page for courses

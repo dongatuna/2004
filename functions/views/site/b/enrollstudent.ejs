@@ -33,29 +33,19 @@
                               <!-- We'll put the error messages in this element -->
                             <div id="card-errors" role="alert" ></div>
                             <div class="mt-2">                               
-                                <button class="btn btn-primary btn-block p-3 mt-3" name="register" id="btnRegisterStudent" type="submit"><strong>Pay <%= course.fees %>.00 Registration Fee</strong></button> 
+                                <button class="btn btn-primary btn-block p-3 mt-3" name="register" id="btnRegisterStudent" type="submit"><strong>Pay $ <%= course.fees %>.00 Registration Fee</strong></button> 
                                 <p class="text-success"><small>Payments processed by Stripe Corporation.</small></p>
                                 <p class="text-dark text-center" id="process-registration" style="display: none;"><strong>Processing...</strong></p>
-                            </div>
-                            
+                            </div>                            
                         </div>
-                    </div>  
-
-                    <!--COMMENTS AND QUESTIONS-->
-                    <!-- <div class="row justify-content-center">
-                        <div class="col-sm-12 col-md-12 col-lg-4">
-                            <div class="form-group">
-                                <label for="comments">Comments</label>                                
-                                <textarea class="form-control" name="comments" id="comments" cols="10" rows="2" placeholder="Enter your comments or questions" ></textarea>
-                            </div>          
-                        </div>
-                    </div>                                     -->
+                    </div> 
+                                             -->
                     
                     <!-- ADD TO THE WAITLIST BUTTON -->
                     <div class="row justify-content-center mt-2">
                         <div class="col-sm-12 col-lg-4 bg-white"> 
                             <p>Still undecided? </p>                                                                                
-                            <button class="btn btn-secondary btn-sm py-3" name="waitlist" id="btnWaitlistStudent" type="submit">Add me to the waitlist </button> 
+                            <button class="btn btn-secondary btn-sm py-3" name="waitlist" id="btnWaitlistStudent" type="submit">Waitlist </button> 
                             <p class="text-dark text-center" id="process-waitlist" style="display: none;"><strong>Processing...</strong></p>
                         </div>
                     </div>                      
@@ -94,157 +84,131 @@
         } else {
             displayError.textContent = ''
         }
-    })
+    })  
 
-    $(document).ready(() => {       
+    $(document).ready( () => {       
          //get the course
-        const course = (<%-JSON.stringify(course)%>)           
+        const course = (<%-JSON.stringify(course)%>)       
+        
+        console.log(`course---> ${JSON.stringify(course)}`)
         //get the code
         const code = localStorage.getItem('code') 
-        // const fees = (<%-JSON.stringify(course.fees)%>)  
+        
         //get student id
         const student_id = localStorage.getItem('student_id')
+
         //this event register a student who pays registration fees
-        $("#btnRegister").on('click', e => { 
+        $("#btnRegisterStudent").on('click', async( e ) => { 
             //prevent default behavior
-            e.preventDefault()
-            // Read the CSRF token from the <meta> tag
-            // const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content')         
-            
+            e.preventDefault()         
             //hide the registration button to avoid multiple form submission           
-            $('#btnRegister').hide()
+            $('#btnRegisterStudent').hide()
+            $('#btnWaitlistStudent').hide()
             //show user their form submission is being processed
             $("#process-registration").show()
 
-            stripe.createToken( card ).then( result => {
-                //Handle result.error or result.token
-                if(result.error){
-                    return displayError.textContent = result.error
-                }               
-                //get the stripe token
-                const stripeToken = result.token.id  
-                debugger
-                const studentData = {
-                    payment : course.fees,
-                    stripeToken : stripeToken,
-                    student_id
-                }
+            const result = await stripe.createToken(card)
 
-                //send data to GA         
-                gtag('event', 'Course Registration', {
-                    "transaction_id": course.courseId,
-                    "affiliation": "EHCT - Course Self Registration",  
-                    "currency": "USD",  
-                    "items": [
-                        {
-                            "id": course.courseId,
-                            "name": course.name,     
-                            "category": "Courses", //course_name,
-                            // "variant": course.type,     
-                            "quantity": 1,
-                            "price": course.fees
-                        }
-                    ]
-                })
+            //Handle result.error or result.token
+            if(result.error){
+                return displayError.textContent = result.error
+            }  
 
-                $.ajax({
-                    type: 'POST', 
-                    url: '/students/register/'+ code +'/'+ course.courseId,
-                    credentials: 'same-origin', // <-- includes cookies in the request
-                    headers: {
-                        Accept: "application/json",
-                       // "Content-Type": "application/json",
-                        // 'CSRF-Token': token
-                    },
-                    dataType: "json",
-                    data: studentData,
-                }).done(function (response) {
-                    if (response.redirect !== undefined && response.redirect) {
-                        //add local storage items for student id and if student registered or waitlisted
-                        localStorage.setItem('student_id', response.student_id)
-                        localStorage.setItem('registered', response.registered)
-                        debugger
-                        alert(response.message)
-                        //window.location.replace(response.redirect_url)
-                        window.location.href = response.redirect_url
-                    }      
-                    //if something is wrong - alert user and redirect user to course schedule page
-                    if (response.redirect !== undefined && !response.redirect) {
-                        
-                        alert('Something went wrong - start the registration process again!')
-                        window.location.href = '/courses'
-                       // window.location.replace('/courses')
-                    }                   
-                })                         
-            })           
-        })
+            //get the stripe token
+            const stripeToken = result.token.id 
 
-        //this event adds a student to the waitlist
-        $("#btnWaitlist").on('click', e => {
-
-            e.preventDefault()            
-            //arbitrarily assign the price to be a third that of the registrant who paid for the course
-            const price = 15   
-           
-            //hide waitlist button
-            $('#btnWaitlist').hide()
-            //show user their form submission is being processed
-            $("#process-waitlist").show()
-            //create an on object constructed from data entered by user in the form above
+           // construct student data
             const studentData = {
-                payment : 0,
-                stripeToken : null,
+                payment : course.fees,
+                stripeToken : stripeToken,
                 student_id
-            }      
-            //get the course id for the course -> student will be added to the course with course id          
-            gtag('event', 'Course Add To Waitlist', {
+            }             
+
+            //send data to GA         
+            gtag('event', 'Course Registration', {
                 "transaction_id": course.courseId,
                 "affiliation": "EHCT - Course Self Registration",  
                 "currency": "USD",  
                 "items": [
                     {
-                        "id": course.courseId,
+                        "id":  course.courseId,
                         "name": course.name,     
                         "category": "Courses", //course_name,
                         // "variant": course.type,     
                         "quantity": 1,
-                        "price": price
+                        "price": course.fees 
                     }
                 ]
-            }) 
-           
-            
-            $.ajax({
-                    type: 'POST', 
-                    url: '/students/register/'+ code +'/'+ course.courseId,
-                    credentials: 'same-origin', // <-- includes cookies in the request
-                    headers: {
-                        Accept: "application/json",
-                        // "Content-Type": "application/json",
-                        //"CSRF-Token": token
-                    },
-                    dataType: "json",
-                    data: studentData,
-                }).done(function (response) {
-                    if (response.redirect !== undefined && response.redirect) {
-                        //add local storage items for student id and if student registered or waitlisted
-                        localStorage.setItem('student_id', response.student_id)
-                        localStorage.setItem('registered', response.registered)
-                        debugger
-                        alert(response.message)
-                        window.location.replace(response.redirect_url)
-                    }      
-                    //if something is wrong - alert user and redirect user to course schedule page
-                    if (response.redirect !== undefined && !response.redirect) {
-                        
-                        alert('Something went wrong - start the registration process again!')
+            })
+            debugger
 
-                        window.location.replace('/courses')
-                    }                   
-                })
-                            
-        })     
-   })    
+            $.ajax({
+                type: 'POST', 
+                url: `/students/register/${code}/${course.courseId}`,
+                credentials: 'same-origin', // <-- includes cookies in the request
+                headers: {
+                    Accept: "application/json",
+                    // "Content-Type": "application/json",
+                    // 'CSRF-Token': token
+                },
+                dataType: "json",
+                data: studentData,
+            }).done(function (response) {
+                if (response.redirect !== undefined && response.redirect) {
+                    //add local storage items for student id and if student registered or waitlisted
+                    
+                    localStorage.setItem('registered', response.registered)
+                    debugger
+                    alert(response.message)
+                    //window.location.replace(response.redirect_url)
+                    window.location.href = response.redirect_url
+                }      
+                //if something is wrong - alert user and redirect user to course schedule page
+                if (response.redirect !== undefined && !response.redirect) {
+                    
+                    alert('Something went wrong - start the registration process again!')
+                    window.location.href = `/select-payment/${code}/${course.courseId}` 
+                    // window.location.replace('/courses')
+                }                   
+            })            
+        })         
+        
+        $("#btnWaitlistStudent").on('click', e => {
+            
+            //prevent default behavior
+            e.preventDefault()   
+            //check to make sure that the student doesn't really want to go on without paying
+            const response = confirm("Are you sure you DON'T want to secure your spot in the class?")
+
+            if(response){
+                //hide the registration button to avoid multiple form submission           
+                $('#btnRegisterStudent').hide()
+                $('#btnWaitlistStudent').hide()
+                //show user their form submission is being processed
+                $("#process-registration").show()                
+
+               //  get the course id for the course -> student will be added to the course with course id          
+                gtag('event', 'Course Add To Waitlist', {
+                    "transaction_id":  course.courseId,
+                    "affiliation": "EHCT - Course Self Registration",  
+                    "currency": "USD",  
+                    "items": [
+                        {
+                            "id":  course.courseId,
+                            "name": course.name,     
+                            "category": "Courses", //course_name,
+                            // "variant": course.type,     
+                            "quantity": 1,
+                            "price": course.fees*1/3 
+                        }
+                    ]
+                }) 
+                //send registrant to job search page
+                window.location.href = '/start-job-search'
+            }           
+        })
+   
+    })    
 
 </script>
 <style>

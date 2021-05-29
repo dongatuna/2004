@@ -78,7 +78,7 @@
                     <div class="row justify-content-center mt-2">
                         <div class="col-sm-12 col-lg-4 bg-white"> 
                             <p>Still undecided? </p>                                                                                
-                            <button class="btn btn-secondary py-3" name="waitlist" id="btnAddToStudentWaitlist" type="submit"><strong>Add me to the waitlist </strong> </button> 
+                            <button class="btn btn-secondary py-3" name="waitlist" id="btnAddToStudentWaitlist" type="submit"><strong>Waitlist me</strong> </button> 
                             <p class="text-dark text-center" id="process-waitlist" style="display: none;"><strong>Processing...</strong></p>
                         </div>
                     </div>                      
@@ -128,7 +128,7 @@
         // const fees = (<%-JSON.stringify(course.fees)%>)  
 
         //this event register a student who pays registration fees
-        $("#btnRegister").on('click', e => { 
+        $("#btnRegisterStudentToClass").on('click', e => { 
             //prevent default behavior
             e.preventDefault()
             // Read the CSRF token from the <meta> tag
@@ -147,7 +147,7 @@
             if(first === '' || last === '' || email === '' || tel === ''){
                 return alert('You must enter all fields.  Make sure you entered your first and last names, email and/or telephone #.')
             }
-      
+            debugger
             //hide the registration button to avoid multiple form submission           
             $('#btnRegister').hide()
             //show user their form submission is being processed
@@ -210,7 +210,7 @@
                     if (response.redirect !== undefined && !response.redirect) {
                         
                         alert('Something went wrong - start the registration process again!')
-                        window.location.href = '/courses'
+                        window.location.href = '/learn/cna'
                        // window.location.replace('/courses')
                     }                   
                 })                         
@@ -218,7 +218,7 @@
         })
 
         //this event adds a student to the waitlist
-        $("#btnWaitlist").on('click', e => {
+        $("#btnAddToStudentWaitlist").on('click', e => {
 
             e.preventDefault()            
             //arbitrarily assign the price to be a third that of the registrant who paid for the course
@@ -271,11 +271,11 @@
                         type: 'POST', 
                         url: '/students/enroll/'+ code +'/'+ course.courseId,
                         credentials: 'same-origin', // <-- includes cookies in the request
-                        // headers: {
-                        //     Accept: "application/json",
-                        //     // "Content-Type": "application/json",
-                        //     "CSRF-Token": token
-                        // },
+                        headers: {
+                            Accept: "application/json",
+                            // "Content-Type": "application/json",
+                           // "CSRF-Token": token
+                        },
                         dataType: "json",
                         data: studentData,
                     }).done(function (response) {

@@ -8,9 +8,9 @@ router.route( '/registration' ).post( studentController.studentPayRegistration )
 router.route('/register/:code/:id').post( studentController.studentPayRegistrationFees)
 //student registers self for a course on public site
 router.route('/waitlist/:code/:id').post( studentController.studentAddWaitlist )
-
+router.route('/enroll/:code/:id').post( studentController.studentCourseSelfSignUp )
 //student registers self for a course on public site
-router.route('/enroll/:code/:id').post( studentController.studentCourseSelfSignUp)
+//router.route('/enroll/:code/:id').post( studentController.studentCourseSelfSignUp )
 //student contacts employers (starts job search) while enrolling for class
 router.route('/start-job-search').patch( studentController.contactEmployers )
 //student contacts employers (starts job search) while enrolling for class

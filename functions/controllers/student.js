@@ -467,7 +467,7 @@ module.exports = {
      * data: student information and stripe token if payment is made
      */
     studentCourseSelfSignUp: async( req, res, next ) => {
-
+        console.log('HITTING THE CONTROLLER....')
         //get req params
         const { code, id } = req.params         
         //get the req.body data

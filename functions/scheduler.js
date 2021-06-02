@@ -8,20 +8,10 @@ const scheduler = () => {
     return { 
         
         alertDaily: () => {
-            cron.schedule('* * * * *', () => {  // '0 9 * * *'
+            cron.schedule('0 9 * * *', () => {  // '0 9 * * *'
              
                 notifyStudents(1)
-                notifyEmployers(1)
-
-                //console.log(`FIRST ${first}`)
-                
-
-
-               
-                let second = first.add(8 - first.day(), 'day')
-                console.log(`SECOND ${second}`)
-                // notifyStudents(15) 
-                // notifyEmployers(1)              
+                notifyEmployers(1)                          
             })
         },
 

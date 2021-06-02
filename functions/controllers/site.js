@@ -485,6 +485,7 @@ module.exports = {
                                         seo_info: seo_page[req.params.course + "_page_seo_info"]
                                     } )
     },//
+    
     getCourseDates : async ( req, res, next ) =>{
         try {             
               //get the long name of course stored in database

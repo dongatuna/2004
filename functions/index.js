@@ -84,7 +84,12 @@ const scheduler = require('./scheduler')
 
 scheduler.alertDaily()
 scheduler.alertWeekly()
-scheduler.alertFirstMondayNotification()
+//this is to alert employers about upcoming courses
+//sends first and third Mondays of the month
+scheduler.firstAndThirdMondayEmails()
+//this is to alert employers to post job openings
+//sends second and fourth Mondays of the month
+scheduler.secondAndFourthMondayEmails()
 
 
 exports.app = functions.https.onRequest(app)

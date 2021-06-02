@@ -26,16 +26,15 @@ module.exports = {
                                               && moment(job.data().created.toDate()).isBefore(end) 
                                 ).map( job => {
                               
-                                return {
-                                  url: `https://www.excelcna.com/job/view/${job.id}`,
-                                  title: job.data().title,
-                                  name: job.data().facility_name
-                                }
-                              })
+                                  return {
+                                    url: `https://www.excelcna.com/job/view/${job.id}`,
+                                    title: job.data().title,
+                                    name: job.data().facility_name
+                                  }
+                                })
     //console.log(`jobs ${JSON.stringify(jobs)}`)                          
     //console.log('students ', students )
-    const subject = day === 7 ? 'CNA/Caregiver job openings posted in the last 7 days ' : ' Recent CNA/Caregiver job openings'
-  
+    const subject = day === 7 ? 'Weekly CNA/Caregiver job openings' : 'New CNA/Caregiver job openings!'  
 
     if( jobs.length > 0 ) {
       //4.  create time marker of the last 6 months         
@@ -59,12 +58,12 @@ module.exports = {
       students.forEach( async (student) => {
         //console.log(`student: ${student}`)
 
-        const mandrillresponse = await mailchimpClient.messages.sendTemplate({
+        await mailchimpClient.messages.sendTemplate({
           template_name: "jobs-openings",
           template_content: [],
           message: {
             from_email: 'jobs@excelcna.com',                        
-            subject: `${ subject }`,                      
+            subject: `${ student.name }, [APPLY FOR JOBS] - ${ subject }`,                      
             track_opens: true,
             track_clicks: true,
             important: true,
@@ -81,7 +80,7 @@ module.exports = {
             ]
           }
         })   
-        console.log(`Mandrill Response: -> ${JSON.stringify(mandrillresponse)}`)
+     
       })
       
       
@@ -96,8 +95,7 @@ module.exports = {
     //1. create time markers for the start and/or end of the week            
     const start = moment().subtract(day, 'day').startOf('day')
     const end = moment()
-    //console.log('stupid start ', start, 'and end ', end )
-                                        
+                                         
     //2.  get all jobs 
     const employer_jobs =  await db.collection('jobs')
                                   .orderBy("created", "desc")
@@ -117,39 +115,43 @@ module.exports = {
                                         email: x.data().email
                                       }
                                     })
-
+      //check if there has been any job posting                              
       if(jobs.length > 0 ){
-        jobs.forEach(async(job) => {        
-          await mailchimpClient.messages.sendTemplate({
-            template_name: "caregiver-cna-applicants",
-            template_content: [],
-            message: {
-              from_email: 'jobs@excelcna.com',                        
-              subject: `${ subject }`,                      
-              track_opens: true,
-              track_clicks: true,
-              important: true,
-              merge_language: "handlebars",
-              merge_vars: [{
-                  rcpt: job.email,
-                  vars: [
-                    { name: 'APPLICANTS', content: job.applicants }, 
-                    { name: 'PROSPECTS', content: job.prospects },                  
-                    { name: 'JOB_URL', content: job.url },
-                    { name: 'ORGANIZATION', content: job.facility_name },
-                    { name: 'TITLE', content: job.title }                                                       
-                  ]
-              }],
-              to: [
-                  { email: job.email }
-              ]
-            } 
-          })
+        jobs.forEach(async(job) => {  
+          //check if each job has at least one applicant or prospect
+          if( job.applicants.length > 0 || job.prospects.length > 0 ) {
+            await mailchimpClient.messages.sendTemplate({
+              template_name: "caregiver-cna-applicants",
+              template_content: [],
+              message: {
+                from_email: 'jobs@excelcna.com',                        
+                subject: `${ subject }`,                      
+                track_opens: true,
+                track_clicks: true,
+                important: true,
+                merge_language: "handlebars",
+                merge_vars: [{
+                    rcpt: job.email,
+                    vars: [
+                      { name: 'APPLICANTS', content: job.applicants }, 
+                      { name: 'PROSPECTS', content: job.prospects },                  
+                      { name: 'JOB_URL', content: job.url },
+                      { name: 'ORGANIZATION', content: job.facility_name },
+                      { name: 'TITLE', content: job.title }                                                       
+                    ]
+                }],
+                to: [
+                    { email: job.email }
+                ]
+              } 
+            })
+          }    
+          
         }) 
       }
   },
   //notify employers about upcoming courses
-  alertWHCAEmployers: async () => {
+  upcomingCoursesNotifications : async () => {
     //get employer list member with subscribe status
     client.setConfig({
       apiKey: MAILCHIMP_API_KEY,
@@ -164,16 +166,96 @@ module.exports = {
                                                                 } 
                                                             )
       //return only the employers' email, full_name, and providr                                                      
-      return response.members.map( x => {
+      const employers = response.members.map( x => {
         return {
           'email':  x.email_address,
           'full_name': x.merge_fields.MMERGE5,
           'provider': x.merge_fields.MMERGE6
         }
       })  
+
+      employers.forEach( async(x) => {
+        await mailchimpClient.messages.sendTemplate({
+          template_name: "upcoming-courses",
+          template_content: [],
+          message: {
+            from_email: 'jobs@excelcna.com',                        
+            subject: `[Upcoming Caregiver Courses] - CNA, HCA, HCA - CNA bridging, CEUs and other caregiver courses`,                      
+            track_opens: true,
+            track_clicks: true,
+            important: true,
+            merge_language: "handlebars",
+            merge_vars: [{
+                rcpt: x.email,
+                vars: [      
+                    { name: 'FULL_NAME', content: x.full_name },
+                    { name: 'PROVIDER', content: x.provider }                       
+                ]
+            }],
+            to: [
+                { email: student.email }
+            ]
+          }
+        })   
+      })
+      
+    } catch (error) {
+      console.log(`Error ${error}`)
+    }
+  },
+  //find from employers if they have any job openings
+  recentGraduatesNotifications : async () => {
+    //get employer list member with subscribe status
+    client.setConfig({
+      apiKey: MAILCHIMP_API_KEY,
+      server: "us4",
+    });
+    try { 
+      //get the employers from mailchimp who are still subscribers
+      const response = await client.lists.getListMembersInfo(`${ALL_EMPLOYER_LIST}`, 
+                                                                {                                                            
+                                                                  "status":"subscribed",
+                                                                  "count":1000                                                            
+                                                                } 
+                                                            )
+      //return only the employers' email, full_name, and providr                                                      
+      const employers = response.members.map( x => {
+        return {
+          'email':  x.email_address,
+          'full_name': x.merge_fields.MMERGE5,
+          'provider': x.merge_fields.MMERGE6
+        }
+      })  
+
+      employers.forEach( async(x) => {
+        await mailchimpClient.messages.sendTemplate({
+          template_name: "post-job-openings-for-free",
+          template_content: [],
+          message: {
+            from_email: 'jobs@excelcna.com',                        
+            subject: `[Upcoming Caregiver Courses] - CNA, HCA, HCA to CNA bridging, CEUs and other caregiver courses`,                      
+            track_opens: true,
+            track_clicks: true,
+            important: true,
+            merge_language: "handlebars",
+            merge_vars: [{
+                rcpt: x.email,
+                vars: [      
+                    { name: 'FULL_NAME', content: x.full_name },
+                    { name: 'PROVIDER', content: x.provider }                       
+                ]
+            }],
+            to: [
+                { email: student.email }
+            ]
+          }
+        })   
+      })
       
     } catch (error) {
       console.log(`Error ${error}`)
     }
   }
 }
+
+

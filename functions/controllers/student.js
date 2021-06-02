@@ -6,6 +6,7 @@ const { createCustomer, createCard, charge  } = require('../helpers/payments')
 const { sendOneText  } = require('../helpers/twilio')
 const { prospectData, studentData, updateStudentTags, updateMergeFields, subscribe  } = require("../helpers/subscribe")
 const { courseDbName, codeName } = require('../helpers/course_classifier')
+const { courseName } = require('../client_helpers/campaign')
 
 //create reference for firestore database
 const db = firebase.firestore()
@@ -368,6 +369,107 @@ module.exports = {
         } catch (error) {
             console.log('Add to Waitlist error ', error)
         }
+    },    
+
+    /**
+     * Get lead course schedules view for a prospect who didn't finish signing up
+     * @param { String | code } req 
+     * @param { String | student_id } req 
+     * @param { Object | } res     
+     */
+
+    studentAddProspect: async ( req, res, next ) => {
+        console.log(`req params ${req.params}`)
+        //get the code and the student id, code
+        const { code, student_id } = req.params
+        //get the long name of course stored in database
+        const course_name = courseName(code)
+
+
+        if(
+            course_name == "BLS Course Skill Testing" || 
+            course_name == "Adult CPR/First Aid/AED Course Skill Testing" || 
+            course_name == "DSHS Nurse Delegation (CORE) for NAs and HCAs" || 
+            course_name == "DSHS Nurse Delegation Special Focus on Diabetes" 
+        ){
+            //get courses by name 
+            const results = await db.collection('reservations') 
+                                    .where('name','==', course_name )                     
+                                    .get()  
+            
+            const course = results.docs.map( x => {                        
+                return { data: x.data(), id: x.id } 
+            } )
+
+            res.locals.lead = true
+            //return course
+            res.render('site/b/leadcourseschedules', {
+                course: course[0].data,
+                name: course[0].data.name,
+                course_id: course[0].id,
+                code: code,
+                student_id: student_id,      
+                seo_info: seo_page[code + "_page_seo_info"]   
+            })
+
+        } else {
+
+            //get start of today
+            const today = moment().startOf('day')
+
+            //get courses by name 
+            const results = await db.collection('courses') 
+                                    .where('name','==', `${course_name}`)                                       
+                                    .orderBy('start_date')   
+                                    .get()  
+
+            //get documents
+            const docs = results.docs
+
+            //sort the docs to get classes starting today or later
+            const classes = docs.filter( doc => moment( doc.data().start_date.toDate() ).isSameOrAfter(today) && doc.data().name ==  course_name )
+                                .map( doc => {                                    
+                                    return {                            
+                                        'end_date' : doc.data().end_date ? moment(doc.data().end_date.toDate()).format("MMM DD") : null, 
+                                        'name': doc.data().name,                            
+                                        'start_date': moment(doc.data().start_date.toDate()).format("MMM DD"),
+                                        'type': doc.data().type,
+                                        'id': doc.id
+                                    }                        
+                                }) 
+                                
+            //classify the courses as either day, evening, weekend
+            const courses = course_classifier( classes )
+
+            //return classes, seo information and campaign information
+            console.log('classes -> ', courses[req.params.course])
+            if( classes.length > 0 ){
+                res.locals.lead = true
+                res.render('site/b/leadcourseschedules', {
+                    //res.status(201).json({
+                    course: courses[code],
+                    name: course_name,       
+                    code: code,   
+                    student_id: student_id,             
+                    seo_info: seo_page[code + "_page_seo_info"]                                              
+                })
+
+            } else {
+                res.status(404).json({
+                    message: `No ${course_name} courses at the moment.  Check with us later.`
+                })                   
+            }
+        }
+
+        try {
+            //return the lead schedules view
+            res.render('site/b/leadcourseschedules', {
+
+            })
+        } catch (error) {
+            //return error
+            console.log(`Error ${ error }`)        
+        }
     },
 
     /**
@@ -462,8 +564,8 @@ module.exports = {
     },
     /**
      * student register self for an upcoming course
-     * @param { String | course id, code } - param is course id and code
-     * @params: id of the course, code
+     * @param { String | course id, code } - path param is course id and code
+     * @param { }     
      * data: student information and stripe token if payment is made
      */
     studentCourseSelfSignUp: async( req, res, next ) => {

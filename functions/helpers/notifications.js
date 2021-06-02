@@ -79,19 +79,15 @@ module.exports = {
                 { email: student.email }
             ]
           }
-        })   
-     
-      })
-      
-      
+        })    
+      })      
     }    
   },
   //Every Monday 8 a.m., send summary applicants and prospect  to a job openings
   notifyEmployers : async ( num ) => { 
     //parse the parameter to integer
-    const day = parseInt( num )
+    const day = parseInt( num )    
     
-    const subject = (num == 7 ) ? `Weekly Caregiver and CNA job applicants` : `Daily Caregiver and CNA job applicants`
     //1. create time markers for the start and/or end of the week            
     const start = moment().subtract(day, 'day').startOf('day')
     const end = moment()
@@ -125,7 +121,7 @@ module.exports = {
               template_content: [],
               message: {
                 from_email: 'jobs@excelcna.com',                        
-                subject: `${ subject }`,                      
+                subject: `Caregivers and CNAs intered in working for ${ job.facility_name }`,                      
                 track_opens: true,
                 track_clicks: true,
                 important: true,

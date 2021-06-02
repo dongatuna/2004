@@ -10,7 +10,8 @@ const scheduler = () => {
         alertDaily: () => {
             cron.schedule('* * * * *', () => {  // '0 9 * * *'
              
-               
+                notifyStudents(1)
+                notifyEmployers(1)
 
                 //console.log(`FIRST ${first}`)
                 

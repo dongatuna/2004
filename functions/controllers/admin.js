@@ -19,8 +19,9 @@ const db = firebase.firestore()
 module.exports = {
     /**
      * get page to add courses 
-     * @params: none
-     * returns: Object containing seo information and course names
+     * @param { }: req - none
+     * @param { Object }
+     * @return: Object containing seo information and course names
      */   
     addCourseView: (req, res, next ) => {
         //courses array - contains official names of courses
@@ -324,7 +325,52 @@ module.exports = {
             throw(error)
         }        
     },
-  
+
+    /**
+     * Get all students who were prospects - haven't committed to a course
+     * @param {*} req 
+     * @param {Object} res 
+     * @param {*} next 
+     */
+    
+    getProspects : async (req, res, next) => {
+        try{
+            console.log(`Hey you there....?`)
+            //get all the prospects
+            const allProspects = await db.collection("students")
+                                    .where("status.prospect", "==", true)                                   
+                                    .get()
+                                
+            //console.log(JSON.stringify(allProspects.docs))                        
+            //console.log(`prospects -- ${JSON.stringify(allProspects)}`)
+            //get 
+            // allProspects.docs.forEach(x => {
+            //     console.log(`X, ${JSON.stringify(x.data())} and ${x.id}`)
+            // })
+
+            const prospects = allProspects.docs.map(x => {
+                return {
+                    student_id:x.id,
+                    name: `${x.data().first} ${x.data().last}`,
+                    tel: x.data().tel,
+                    email: x.data().email,
+                    code: x.data().code
+                }
+            })
+
+            console.log(`PROSPECTS ${prospects} and ${prospects.length}`)
+
+            //return the prospects
+            if(prospects.length > 0){
+                res.render('admin/course/prospects', {
+                    seo_info: seo_page.admin_portal_seo_info,
+                    prospects: prospects
+                })
+            }
+        } catch (error){
+
+        }
+    },
     /**
      * gets view to display student search results
      * params: none

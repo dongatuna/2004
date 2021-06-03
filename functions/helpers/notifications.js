@@ -39,7 +39,7 @@ module.exports = {
     if( jobs.length > 0 ) {
       //4.  create time marker of the last 6 months         
     // const enrolledOn = moment().subtract(180, 'day').startOf('day')
-      const enrolledOn = moment().subtract(10, 'day').startOf('day')
+      const enrolledOn = moment().subtract(240, 'day').startOf('day')
       //5.  get all students who signed up in the last 6 months and send them job email notifications
       const allStudents = await db.collection('students')
                             .orderBy("enrolledOn", "desc")

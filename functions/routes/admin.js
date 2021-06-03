@@ -6,6 +6,9 @@ const authenticate = require("../helpers/authenticate")
 //get view for adding many courses
 router.route('/courses')
       .get( authenticate.isAdmin,  AdminController.addCourseView )
+ //get view prospects
+router.route('/prospects')
+.get( authenticate.isAdmin,  AdminController.getProspects )     
 
 //get view for course schedules for admin to add or transfer student 
 router.route('/course-schedules/:type')

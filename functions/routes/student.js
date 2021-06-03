@@ -18,7 +18,7 @@ router.route('/prospects/:code')
       .post( studentController.registerProspect )
 
 //get route prospects 
-router.route('/add-prospect/:code/:student_id').get( studentController.studentAddProspect )
+router.route('/add-prospect/:code/:student_id').get( studentController.enrollProspect )
 //admin registers a new student
 router.route('/start/:code/:course_id').post( authenticate.isAdmin, studentController.studentCourseSignUpByAdmin ) 
 //admin updates a student 

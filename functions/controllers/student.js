@@ -5,7 +5,7 @@ const mailchimpClient = require('@mailchimp/mailchimp_transactional')( MANDRILL_
 const { createCustomer, createCard, charge  } = require('../helpers/payments')
 const { sendOneText  } = require('../helpers/twilio')
 const { prospectData, studentData, updateStudentTags, updateMergeFields, subscribe  } = require("../helpers/subscribe")
-const { courseDbName, codeName } = require('../helpers/course_classifier')
+const { courseDbName, codeName, course_classifier } = require('../helpers/course_classifier')
 const { courseName } = require('../client_helpers/campaign')
 
 //create reference for firestore database
@@ -35,7 +35,7 @@ module.exports = {
             const student = await db.collection('students')
                                     .add( {
                                         enrolledOn : firebase.firestore.Timestamp.fromDate(new Date()),
-                                        first, last, tel, email, status
+                                        first, last, tel, email, code: req.params.code, status
                                     })
             //add tags showing that the student is a prospect
             const tags = ['Prospects']
@@ -378,94 +378,92 @@ module.exports = {
      * @param { Object | } res     
      */
 
-    studentAddProspect: async ( req, res, next ) => {
-        console.log(`req params ${req.params}`)
+    enrollProspect: async ( req, res, next ) => {
+     
         //get the code and the student id, code
         const { code, student_id } = req.params
         //get the long name of course stored in database
         const course_name = courseName(code)
+        console.log(`course name ${course_name}`)     
 
+        try {
+               //check to make sure 
+            if(
+                course_name == "BLS Course Skill Testing" || 
+                course_name == "Adult CPR/First Aid/AED Course Skill Testing" || 
+                course_name == "DSHS Nurse Delegation (CORE) for NAs and HCAs" || 
+                course_name == "DSHS Nurse Delegation Special Focus on Diabetes" 
+            ){
+                //get courses by name 
+                const results = await db.collection('reservations') 
+                                        .where('name','==', course_name )                     
+                                        .get()  
+                
+                const course = results.docs.map( x => {                        
+                    return { data: x.data(), id: x.id } 
+                } )
 
-        if(
-            course_name == "BLS Course Skill Testing" || 
-            course_name == "Adult CPR/First Aid/AED Course Skill Testing" || 
-            course_name == "DSHS Nurse Delegation (CORE) for NAs and HCAs" || 
-            course_name == "DSHS Nurse Delegation Special Focus on Diabetes" 
-        ){
-            //get courses by name 
-            const results = await db.collection('reservations') 
-                                    .where('name','==', course_name )                     
-                                    .get()  
-            
-            const course = results.docs.map( x => {                        
-                return { data: x.data(), id: x.id } 
-            } )
-
-            res.locals.lead = true
-            //return course
-            res.render('site/b/leadcourseschedules', {
-                course: course[0].data,
-                name: course[0].data.name,
-                course_id: course[0].id,
-                code: code,
-                student_id: student_id,      
-                seo_info: seo_page[code + "_page_seo_info"]   
-            })
-
-        } else {
-
-            //get start of today
-            const today = moment().startOf('day')
-
-            //get courses by name 
-            const results = await db.collection('courses') 
-                                    .where('name','==', `${course_name}`)                                       
-                                    .orderBy('start_date')   
-                                    .get()  
-
-            //get documents
-            const docs = results.docs
-
-            //sort the docs to get classes starting today or later
-            const classes = docs.filter( doc => moment( doc.data().start_date.toDate() ).isSameOrAfter(today) && doc.data().name ==  course_name )
-                                .map( doc => {                                    
-                                    return {                            
-                                        'end_date' : doc.data().end_date ? moment(doc.data().end_date.toDate()).format("MMM DD") : null, 
-                                        'name': doc.data().name,                            
-                                        'start_date': moment(doc.data().start_date.toDate()).format("MMM DD"),
-                                        'type': doc.data().type,
-                                        'id': doc.id
-                                    }                        
-                                }) 
-                                
-            //classify the courses as either day, evening, weekend
-            const courses = course_classifier( classes )
-
-            //return classes, seo information and campaign information
-            console.log('classes -> ', courses[req.params.course])
-            if( classes.length > 0 ){
                 res.locals.lead = true
-                res.render('site/b/leadcourseschedules', {
-                    //res.status(201).json({
-                    course: courses[code],
-                    name: course_name,       
-                    code: code,   
-                    student_id: student_id,             
-                    seo_info: seo_page[code + "_page_seo_info"]                                              
+                //return course
+                res.render('admin/course/leadcourseschedules', {
+                    course: course[0].data,
+                    name: course[0].data.name,
+                    course_id: course[0].id,
+                    code: code,
+                    student_id: student_id,      
+                    seo_info: seo_page[code + "_page_seo_info"]   
                 })
 
             } else {
-                res.status(404).json({
-                    message: `No ${course_name} courses at the moment.  Check with us later.`
-                })                   
+
+                //get start of today
+                const today = moment().startOf('day')
+
+                //get courses by name 
+                const results = await db.collection('courses') 
+                                        .where('name','==', `${course_name}`)                                       
+                                        .orderBy('start_date')   
+                                        .get()  
+
+                //get documents
+                const docs = results.docs
+
+                //sort the docs to get classes starting today or later
+                const classes = docs.filter( doc => moment( doc.data().start_date.toDate() ).isSameOrAfter(today) && doc.data().name ==  course_name )
+                                    .map( doc => {                                    
+                                        return {                            
+                                            'end_date' : doc.data().end_date ? moment(doc.data().end_date.toDate()).format("MMM DD") : null, 
+                                            'name': doc.data().name,                            
+                                            'start_date': moment(doc.data().start_date.toDate()).format("MMM DD"),
+                                            'type': doc.data().type,
+                                            'id': doc.id
+                                        }                        
+                                    }) 
+                //
+                console.log(`CLASSES ${JSON.stringify(classes)}`)                 
+                //classify the courses as either day, evening, weekend
+                const courses = course_classifier( classes )
+                //  console.log(`courses ${courses}`)
+                //return classes, seo information and campaign information
+                console.log('classes -> ', courses[code])
+                if( classes.length > 0 ){
+                    res.locals.lead = true
+                    res.render('site/b/leadcourseschedules', {
+                        //res.status(201).json({
+                        course: courses[code],
+                        name: course_name,       
+                        code: code,   
+                        student_id: student_id,             
+                        seo_info: seo_page[code + "_page_seo_info"]                                              
+                    })
+
+                } else {
+                    res.status(404).json({
+                        message: `No ${course_name} courses at the moment.  Check with us later.`
+                    })                   
+                }
             }
-        }
-
-        try {
-            //return the lead schedules view
-            res.render('site/b/leadcourseschedules', {
-
-            })
+                
         } catch (error) {
             //return error
             console.log(`Error ${ error }`)        

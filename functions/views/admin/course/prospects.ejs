@@ -1,0 +1,74 @@
+<section class="mt-5">
+    <div class="container">    
+        <div class="row justify-content-center">
+                <%-include('../panel') %>  
+            <div class="col-md-6">               
+                <div class="row justify-content-center">
+                    <div id="classDates">
+                        <div class="row">                                  
+                            <h5>Prospects</h5>                     
+                        </div>                      
+                    </div>             
+                </div>               
+               
+                <div class="row">
+                    <% if(prospects.length > 0 ) { %> 
+                    <div>
+                        <table class="table" >
+                            <thead>
+                                <tr>                                  
+                                    <th scope="col">Full names</th>                    
+                                    <th scope="col">Tel</th>
+                                    <th scope="col">Email</th>                                    
+                                    <th scope="col">Actions</th>
+                                    <!-- <th scope="col">Contact</th> -->
+                                </tr>
+                            </thead>
+                            <tbody class="justify-content-between" >
+                                <% prospects.forEach(student => { %>  
+                                  
+                                    <tr>
+                                        <!-- <th scope="row">  </th> -->
+                                        <td><%=student.name %></td>                    
+                                        <td><%=student.tel %></td>
+                                        <td><%=student.email %></td>                            
+                                        
+                                        <td>
+                                            <a href="/students/add-prospect/<%=student.code%>/<%=student.student_id%>" class="btn btn-light btn-sm" role="button">Enroll Prospect </a>                                                                            
+                                                                                                                                           
+                                        </td>                         
+                                    </tr>                              
+                                <% }) %>                         
+                            </tbody>
+                        </table>
+                    <hr>
+                   
+                    </div>
+                    <% } else { %> 
+                    <div>
+                        <table class="table" >
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Full names</th>                    
+                                    <th scope="col">Tel</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Amount Paid</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody >
+                                <div class="d-flex justify-content-end mt-5">
+                                    <h4 class="text-danger lead" ><strong> No students signed up for this course. </strong>  </h4>
+                                </div>
+                            </tbody>
+                        </table>
+                    </div>
+                    <% } %> 
+                </div>                  
+            </div>          
+        </div>        
+    </div>
+</section>
+
+

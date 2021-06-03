@@ -249,8 +249,7 @@ module.exports = {
     getReceiptPage: (req, res) => {
       
         res.render('site/success', { seo_info: seo_page.payment_page_seo_info })
-    },
-    
+    },    
     //9. Get the videos page
     getVideosPage: (req, res) => {
         
@@ -269,7 +268,6 @@ module.exports = {
         res.render('site/videos', {videos: videos, seo_info: seo_page.videos_page_seo_info})
         //res.status(200).json({videos})
     },
-
     //10. Get the employer sign in page
     getAdminSignInPage: (req, res) => {
         // res.set('Cache-Control', 'public, max-age=300, s-maxage=600')
@@ -278,7 +276,6 @@ module.exports = {
                                             seo_info: seo_page.admin_signin_page_seo_info 
                                         })
     },
-
     //get 10 jobs to present to a course registrant
     getJobs: async ( req, res, next ) => {
         console.log('shiiieeet')
@@ -489,9 +486,7 @@ module.exports = {
     getCourseDates : async ( req, res, next ) =>{
         try {             
               //get the long name of course stored in database
-              const course_name = courseName(req.params.course)
-
-              console.log('course name ', course_name)
+              const course_name = courseName(req.params.course)             
 
               if(
                     course_name == "BLS Course Skill Testing" || 
@@ -575,7 +570,6 @@ module.exports = {
             })
         }
     },  
-
     //
     getCatalogCourse : async ( req, res, next ) =>{
         try {             

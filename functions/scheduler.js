@@ -1,18 +1,22 @@
 const cron = require('node-cron')
 const moment = require('moment')
 
-const { notifyEmployers, notifyStudents, upcomingCoursesNotifications } = require('./helpers/notifications')
+const { notifyEmployers, notifyStudents,  upcomingCoursesNotifications , recentGraduatesNotifications } = require('./helpers/notifications')
 
 
 const scheduler = () => {
     return { 
         
         alertDaily: () => {
-            cron.schedule('0 9 * * *', () => {  // '0 9 * * *'
+            cron.schedule('0 8 * * *', () => {  // '0 9 * * *'
              
                 notifyStudents(1)
                 notifyEmployers(1)                          
-            })
+            },{
+                scheduled: true,
+                timezone: "America/Los_Angeles"
+              }            
+            )
         },
 
         alertWeekly: () => {
@@ -20,7 +24,11 @@ const scheduler = () => {
   
                 notifyStudents(7)
                 notifyEmployers(7)
-            })
+            },{
+                scheduled: true,
+                timezone: "America/Los_Angeles"
+              } 
+            )
         },
 
         firstAndThirdMondayEmails: () => {
@@ -30,8 +38,6 @@ const scheduler = () => {
                 //get the 15th day of the month
                 let third = moment().startOf('month').add(14, 'days');
 
-                console.log(`1. Here is the first: ${first} and third: ${third}`)
-                console.log(`2. Here is first Monday day # ${first.day()} and third Monday day ${third.day()}`)
                 //reassign variables 
                 let firstDay = first
                 let fifteenthDay = third
@@ -43,9 +49,8 @@ const scheduler = () => {
                     const thirdMonday = moment( fifteenthDay ).format('dddd')                
                     //check it the name of the day of week is 'Monday'
                     if( firstMonday === 'Monday' || thirdMonday === 'Monday' ){
-                        //alert the list WHCA lists
-                        console.log(`Here is the day of the week.....${firstMonday}`)
-                        //await alertWHCAEmployers()
+                        //alert the employers about our upcoming courses
+                        upcomingCoursesNotifications()
                     }
                  
                 }
@@ -62,8 +67,8 @@ const scheduler = () => {
 
                     //check of day of week
                     if( firstMonday === 'Monday' || thirdMonday === 'Monday'){
-                        console.log(`5. Here is the day of the week.....${firstMonday}`)
-                       // await alertWHCAEmployers()
+                        //alert the employers about our upcoming courses
+                        upcomingCoursesNotifications()
                     }
                  
                     //send an email to employers about recruiting our past students,
@@ -78,11 +83,16 @@ const scheduler = () => {
                     const thirdMonday = moment( fifteenthDay ).format('dddd')
 
                     if(firstMonday === 'Monday' || thirdMonday === 'Monday' ){
-                        console.log(`Here is the day of the week......${firstMonday}`)
-                       //await alertWHCAEmployers()
+                       //alert the employers about our upcoming courses
+                       upcomingCoursesNotifications()
                     }
                 }
-            })
+            },{
+                scheduled: true,
+                timezone: "America/Los_Angeles"
+              } 
+            
+            )
         },
 
         secondAndFourthMondayEmails: () => {
@@ -103,11 +113,9 @@ const scheduler = () => {
                     const fourthMonday = moment( twentyOneDay ).format('dddd')                
                     //check it the name of the day of week is 'Monday'
                     if( secondMonday === 'Monday' || fourthMonday === 'Monday' ){
-                        //alert the list WHCA lists
-                       
-                        //await alertWHCAEmployers()
-                    }
-                 
+                        //alert employers about recent graduates                       
+                        recentGraduatesNotifications()
+                    }                 
                 }
                
                 if ( second.day() > 1 || fourth.day() > 1) {       
@@ -122,12 +130,11 @@ const scheduler = () => {
 
                     //check of day of week
                     if( secondMonday === 'Monday' || fourthMonday === 'Monday'){
-                        console.log(`5. Here is the day of the week.....${firstMonday}`)
-                       // await alertWHCAEmployers()
-                    }
-                 
-                    //send an email to employers about recruiting our past students,
+                        //alert employers about recent graduates                       
+                        recentGraduatesNotifications()
+                    }                    
                 }
+
                 if ( second.day() === 0 || fourth.day() === 0 ) {
 
                     eighthDay = second.add(1 - second.day(), 'day')          
@@ -135,17 +142,20 @@ const scheduler = () => {
                     
                     //create second Monday
                     const secondMonday = moment(eighthDay).format('dddd')
-                   //create fourth Monday
+                    //create fourth Monday
                     const fourthMonday = moment( twentyFirstDay ).format('dddd')   
 
                     //check of day of week
                     if( secondMonday === 'Monday' || fourthMonday === 'Monday'){
-                        console.log(`5. Here is the day of the week.....${firstMonday}`)
-                       // await alertWHCAEmployers()
-                    }
-                 
+                        //alert employers about recent graduates                       
+                        recentGraduatesNotifications()
+                    }                 
                 }
-            })
+            },{
+                scheduled: true,
+                timezone: "America/Los_Angeles"
+              } 
+            )
         }
     }
 }

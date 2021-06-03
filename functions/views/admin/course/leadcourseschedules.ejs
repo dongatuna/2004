@@ -237,9 +237,9 @@
             e.preventDefault()          
 
             //get the code
-            const code =  (<%-JSON.stringify( code )%>)
+            const code = localStorage.getItem('code') === null ?  (<%-JSON.stringify( code )%>) : localStorage.getItem('code') 
             //get student id
-            const student_id = localStorage.getItem('student_id')  
+            const student_id = localStorage.getItem('student_id') === null ? (<%-JSON.stringify( student_id )%>):  localStorage.getItem('student_id') 
 
             console.log(`CODE: ${code} & STUDENT ID ${student_id}`)
             //get the course id

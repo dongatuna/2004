@@ -241,7 +241,6 @@
             //get student id
             const student_id = localStorage.getItem('student_id')  
 
-            console.log(`CODE: ${code} & STUDENT ID ${student_id}`)
             //get the course id
             const course_id = e.currentTarget.attributes[2].nodeValue
             //get the innertext of the button clicked course name from
@@ -249,9 +248,9 @@
             //get code from local storage
             //const code = localStorage.getItem('code')
             //trim the course name - remove 'button text'
-            const response = confirm(`You are about to enroll for ${course_name.substring(0, 15)} class!`)
+            const confirm = confirm(`You are about to enroll for ${course_name.substring(0, 15)} class!`)
             //if true
-            if(response){
+            if(confirm){
                
                 //
                 const studentData = {

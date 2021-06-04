@@ -39,7 +39,7 @@
                                     <% course.day_courses.forEach(course => { %>                                    
                                     <li class="list-group-item" >
                                         <%=course.start_date %> - <%=course.end_date %>
-                                        <a class="btn btn-danger float-right joinBtn" name="<%=course.start_date %>" value="<%= course.courseId %>" href ="/select-payment/<%=code%>/<%= course.courseId %>">
+                                        <a class="joinBtn btn btn-danger float-right" name="<%=course.start_date %>" value="<%= course.courseId %>" href ="/select-payment/<%=code%>/<%= course.courseId %>">
                                             Join                                      
                                         </a>
                                     </li> 
@@ -189,8 +189,7 @@
             <% } else if ( name == "DSHS Nurse Delegation Special Focus on Diabetes" || name == "DSHS Nurse Delegation (CORE) for NAs and HCAs" ) { %> 
             <div class="container-fluid">
                 <div class="row justify-content-center">              
-                    <div class="col-sm-12 col-md-4">
-                    
+                    <div class="col-sm-12 col-md-4">                    
                     <p class="diplay text-left bg-warning">Our nurse delegation/diabetes are self-study.  Priority is given to students who sign up to reserve study materials.</p>                  
                         <ul class="list-group justify-content-between">
                             <li class="list-group-item bg-dark text-white"> <strong>WEEKDAY/WEEKEND CLASS </strong> <br> 30 minutes</li>                                             
@@ -248,9 +247,9 @@
             //get code from local storage
             //const code = localStorage.getItem('code')
             //trim the course name - remove 'button text'
-            const confirm = confirm(`You are about to enroll for ${course_name.substring(0, 15)} class!`)
+            const response = confirm(`You are about to enroll for ${course_name.substring(0, 15)} class!`)
             //if true
-            if(confirm){
+            if(response){
                
                 //
                 const studentData = {

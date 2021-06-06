@@ -93,13 +93,11 @@
 				//make sure that first, last, email and telephone #s fields are filled
 				if(first === '' || last === '' || email === '' || tel === ''){
 					return alert('You must enter all fields.  Make sure you entered your first and last names, email and/or telephone #.')
-				}
-      
+				}      
 				//hide the registration button to avoid multiple form submission           
 				$('#registerProspect').hide()      						
 				//create an on object constructed from data entered by user in the form above
-				const studentData = { first, last, email, tel }
-				debugger                
+				const studentData = { first, last, email, tel }	              
 			
 
 				$.ajax({

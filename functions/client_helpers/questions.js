@@ -4655,16 +4655,16 @@ const questions = [
     {
         "answer": 1,
         "choices": [
-            "\nLock the bed wheel brakes.\n",
+            "Lock the bed wheel brakes.",
             "Give her the call light.",
-            "Lock the chair wheel brakes.",
+            "Ask the nurse for assistance.",
             "Offer her a bedpan."
         ],
         "question": "Miss Stevens is sitting in her bedside chair for lunch. After preparing her for lunch, you need to:",
         "rationale": "After getting the person ready, we need to make sure the client has their call light.  The other actions are not appropriate after getting the person ready for lunch.  "
     },
     {
-        "answer": 2,
+        "answer": 1,
         "choices": [
             "Her forehead.",
             "Her hair ends.",
@@ -4672,7 +4672,7 @@ const questions = [
             "The back of her neck."
         ],
         "question": "You are going to brush Mrs. Floyd’s hair. You should start at:",
-        "rationale": "When brushing her hair start at her scalp.  The other ways would not work when brushing her hair."
+        "rationale": "When brushing her hair start from the hair ends. This will be less painful if Mrs. Floyd's hair is tangled."
     },
     {
         "answer": 2,

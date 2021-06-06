@@ -11,7 +11,7 @@ const scheduler = () => {
             cron.schedule('0 8 * * *', () => {  // '0 9 * * *'
              
                 notifyStudents(1)
-                notifyEmployers(1)                          
+                //notifyEmployers(1)                          
             },{
                 scheduled: true,
                 timezone: "America/Los_Angeles"

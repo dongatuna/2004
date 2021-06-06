@@ -24,15 +24,15 @@ module.exports = {
       //3.  filter jobs that have been created in the last 7 days
       const jobs = allJobs.docs.filter( job => moment(job.data().created.toDate()).isAfter(start) 
                                               && moment(job.data().created.toDate()).isBefore(end) 
-                                ).map( job => {
-                              
+                                ).map( job => {                              
                                   return {
                                     url: `https://www.excelcna.com/job/view/${job.id}`,
                                     title: job.data().title,
                                     name: job.data().facility_name
                                   }
                                 })
-    //console.log(`jobs ${JSON.stringify(jobs)}`)                          
+    console.log(`jobs ${JSON.stringify(jobs)}`)  
+    //console.log(`JOBS, ${jobs}`)                        
     //console.log('students ', students )
     const subject = day === 7 ? 'Weekly CNA/Caregiver job openings' : 'New CNA/Caregiver job openings!'  
 
@@ -53,7 +53,7 @@ module.exports = {
                                       email: `${x.data().email}`
                                     }
                                   })
-    
+      console.log(`students ${JSON.stringify(students)}`)
       //7.  send students above jobs
       students.forEach( async (student) => {
         //console.log(`student: ${student}`)

@@ -32,7 +32,7 @@ const scheduler = () => {
         },
 
         firstAndThirdMondayEmails: () => {
-            cron.schedule("0 8 * * * ", async () => { //0 8 * * *              
+            cron.schedule("45 10 * * *", async () => { //0 8 * * *              
                 //get the first day of the month
                 let first = moment().startOf('month')//.add(1, 'month');
                 //get the 15th day of the month
@@ -41,6 +41,7 @@ const scheduler = () => {
                 //reassign variables 
                 let firstDay = first
                 let fifteenthDay = third
+                console.log(`first day ${first.day()}`)
                 //if the first day or thirdt day is a Monday  
                 if( first.day() === 1 || third.day() === 1 ){
                     //create first Monday
@@ -48,7 +49,7 @@ const scheduler = () => {
                     //create third Monday
                     const thirdMonday = moment( fifteenthDay ).format('dddd')                
                     //check it the name of the day of week is 'Monday'
-                    if( firstMonday === 'Monday' || thirdMonday === 'Monday' ){
+                    if( firstMonday === 'Monday' || thirdMonday === 'Monday' ){                        
                         //alert the employers about our upcoming courses
                         upcomingCoursesNotifications()
                     }
@@ -67,6 +68,7 @@ const scheduler = () => {
 
                     //check of day of week
                     if( firstMonday === 'Monday' || thirdMonday === 'Monday'){
+                        console.log(`Hello it is Monday today`)
                         //alert the employers about our upcoming courses
                         upcomingCoursesNotifications()
                     }

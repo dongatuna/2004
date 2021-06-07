@@ -152,7 +152,8 @@ module.exports = {
     client.setConfig({
       apiKey: MAILCHIMP_API_KEY,
       server: "us4",
-    });
+    })
+
     try { 
       //get the employers from mailchimp who are still subscribers
       const response = await client.lists.getListMembersInfo(`${ALL_EMPLOYER_LIST}`, 
@@ -161,6 +162,7 @@ module.exports = {
                                                                   "count":1000                                                            
                                                                 } 
                                                             )
+     // console.log(`MAILCHIMP RESPONSE ${JSON.stringify(response.members)}`)
       //return only the employers' email, full_name, and providr                                                      
       const employers = response.members.map( x => {
         return {
@@ -169,6 +171,8 @@ module.exports = {
           'provider': x.merge_fields.MMERGE6
         }
       })  
+
+     // console.log(`Employers ${JSON.stringify(employers)}`)
 
       employers.forEach( async(x) => {
         await mailchimpClient.messages.sendTemplate({
@@ -189,7 +193,7 @@ module.exports = {
                 ]
             }],
             to: [
-                { email: student.email }
+                { email: x.email }
             ]
           }
         })   
@@ -242,7 +246,7 @@ module.exports = {
                 ]
             }],
             to: [
-                { email: student.email }
+                { email: x.email }
             ]
           }
         })   

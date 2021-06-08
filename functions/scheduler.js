@@ -8,7 +8,7 @@ const scheduler = () => {
     return { 
         
         alertDaily: () => {
-            cron.schedule('0 8 * * *', () => {  // '0 9 * * *'
+            cron.schedule('0 7 * * *', () => {  // '0 9 * * *'
              
                 notifyStudents(1)
                 notifyEmployers(1)                          

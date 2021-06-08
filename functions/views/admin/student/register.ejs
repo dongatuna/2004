@@ -12,18 +12,18 @@
                             <div class="col-md-6 col-sm-12 bg-success">
                                 <div class="form-check form-check-inline">   
                                     <% if(student.status.course_start) { %>                          
-                                        <input type="checkbox" class="form-check-input" name ="course_start" value="<%=student.status.course_start%>" checked>
+                                        <input type="checkbox" class="form-check-input" name ="course_start" id="course_start" value="<%=student.status.course_start%>" checked>
                                         <label class="text-dark form-check-label mx-3" for="start">Start Course </label>
                                     <% } else{ %>
-                                        <input type="checkbox" class="form-check-input" name ="course_start" value=true required>
+                                        <input type="checkbox" class="form-check-input" name ="course_start" id="course_start" value=true required>
                                         <label class="text-dark form-check-label mx-3" for="start">Start Course </label>
                                     <% } %>
 
                                     <% if(student.status.walk_in){ %>
-                                        <input type="checkbox" class="form-check-input" name="walk_in" value="<%=student.status.walk_in%>" checked>
+                                        <input type="checkbox" class="form-check-input" name="walk_in" id="walk_in" value="<%=student.status.walk_in%>" checked>
                                         <label class="text-dark form-check-label mx-3" for="walk in">Walk In Before Course Start Date </label>
                                     <% } else { %>
-                                        <input type="checkbox" class="form-check-input" name="walk_in" value=true required>
+                                        <input type="checkbox" class="form-check-input" name="walk_in" id="walk_in" value=true required>
                                         <label class="text-dark form-check-label mx-3" for="walk in">Walk In Before Course Start Date </label>
                                     <% } %>
                                 </div>
@@ -298,24 +298,24 @@
             //if the student start course, send data to GA
             if(studentData.course_start){
                 //set event name
-                const course_start_event_name = 'Start '+ title + ' training' 
+                const course_start_event_name = `start_${code}_training` 
                 //send data to GA
                 gtag('event', course_start_event_name, {
                     'event_category': 'Course start',
                     'event_label': 'Student',
-                    'value': 1
+                    'value': parseInt(studentData.payment) > 0 ? parseInt(studentData.payment) : 250
                 })
             }
          
             //if the student start course, send data to GA
             if(studentData.walk_in){
                 //set event name : walk in a
-                const walk_in_event_name = 'Walk in before start of '+ title + ' training'
+                const walk_in_event_name = `walk_in_${code}_training`
                 //send data to GA
                 gtag('event', walk_in_event_name, {
                     'event_category': 'Walk In Before Course Start',
                     'event_label': 'Prospective Student',
-                    'value': 1
+                    'value': 100
                 })
             }
             debugger
@@ -399,13 +399,13 @@
             if( student.status.web_sign_up && !student.status.course_start ){
                 //if the student start course, send data to GA
                 if( studentData.course_start ){
-                    //set event name
-                    const course_start_event_name = title + ' training' 
+                     //set event name
+                    const course_start_event_name = `start_${code}_training` 
                     //send data to GA
                     gtag('event', course_start_event_name, {
-                        'event_category': course_start_phrase,
+                        'event_category': 'Course start',
                         'event_label': 'Student',
-                        'value': 1
+                        'value': parseInt(studentData.payment) > 0 ? parseInt(studentData.payment) : 250
                     })
                 } 
             }
@@ -415,13 +415,13 @@
             if(!student.status.walk_in){
                 //if the student start course, send data to GA
                 if(studentData.walk_in){
-                    //set event name : walk in a
-                    const walk_in_event_name = walk_in_phrase +' Before ' + title + ' training'
+                     //set event name : walk in a
+                    const walk_in_event_name = `walk_in_${code}_training`
                     //send data to GA
                     gtag('event', walk_in_event_name, {
-                        'event_category': walk_in_phrase +' Before Course Start',
+                        'event_category':  'Walk In Before Course Start',
                         'event_label': 'Prospective Student',
-                        'value': 1
+                        'value': 100
                     })
                 }
             }

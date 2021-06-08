@@ -7,21 +7,36 @@ const db = firebase.firestore()
 module.exports = {
   //Every Monday at 8:00 am, send students who signed up in the last 6 months job openings created last 7 days
   notifyStudents : async ( num ) => {   
-      console.log('notify students ', num )
+      
       //parse the parameter to integer
       const day = parseInt(num)
+
+      //1. get the recepients - students who have registered in the last 9 months
+      const enrolledOn = moment().subtract(270, 'day').startOf('day')
+      //2.  get all students who signed up in the last 9months and send them job email notifications
+      const allStudents = await db.collection('students')
+                            .orderBy("enrolledOn", "desc")
+                            .get()
+
+      //3. filter and format students names
+      const students = allStudents.docs.filter( x => moment(x.data().enrolledOn.toDate()).isAfter(enrolledOn) )
+                                  .map(x => {
+                                    return {
+                                      name: `${x.data().first} ${x.data().last}`,
+                                      email: `${x.data().email}`
+                                    }
+                                  })
   
-      //1. create time markers for the start and/or end of the week            
+      //4. create time markers for the start and/or end of the day OR the week            
       const start = moment().subtract(day, 'day').startOf('day')
       const end = moment()//.subtract(0, 'day').endOf('day')
 
-      //2.  get all jobs
+      //5.  get all jobs 
       const allJobs = await db.collection('jobs')
                             .orderBy("created", "desc")
                             .get()
-
-      // let start =  moment(doc.data().start_date.toDate() )
-      //3.  filter jobs that have been created in the last 7 days
+    
+      //6.  filter jobs that have been created in the last day (num =1) or 7 days (num = 7)
       const jobs = allJobs.docs.filter( job => moment(job.data().created.toDate()).isAfter(start) 
                                               && moment(job.data().created.toDate()).isBefore(end) 
                                 ).map( job => {                              
@@ -31,34 +46,17 @@ module.exports = {
                                     name: job.data().facility_name
                                   }
                                 })
-    console.log(`jobs ${JSON.stringify(jobs)}`)  
+ 
     //console.log(`JOBS, ${jobs}`)                        
-    //console.log('students ', students )
+    //determine the subject of the email
     const subject = day === 7 ? 'Weekly CNA/Caregiver job openings' : 'New CNA/Caregiver job openings!'  
 
-    if( jobs.length > 0 ) {
-      //4.  create time marker of the last 6 months         
-    // const enrolledOn = moment().subtract(180, 'day').startOf('day')
-      const enrolledOn = moment().subtract(240, 'day').startOf('day')
-      //5.  get all students who signed up in the last 6 months and send them job email notifications
-      const allStudents = await db.collection('students')
-                            .orderBy("enrolledOn", "desc")
-                            .get()
+    //check to make sure that more than 4 jobs were created yesterday or last week
+    if( jobs.length > 4) {
 
-      //6. filter students who enrolled within the last 6 months
-      const students = allStudents.docs.filter( x => moment(x.data().enrolledOn.toDate()).isAfter(enrolledOn) )
-                                  .map(x => {
-                                    return {
-                                      name: `${x.data().first} ${x.data().last}`,
-                                      email: `${x.data().email}`
-                                    }
-                                  })
-      console.log(`students ${JSON.stringify(students)}`)
       //7.  send students above jobs
       students.forEach( async (student) => {
-        //console.log(`student: ${student}`)
-
-        await mailchimpClient.messages.sendTemplate({
+          await mailchimpClient.messages.sendTemplate({
           template_name: "jobs-openings",
           template_content: [],
           message: {
@@ -81,7 +79,48 @@ module.exports = {
           }
         })    
       })      
-    }    
+    } else {
+      //if no less than 4 jobs were created, get the 5 most recent jobs
+      const fiveJobs = await db.collection('jobs')
+                               .orderBy("created", "desc")
+                               .limit(5)
+                               .get()
+      //format the jobs
+      const daily_jobs = fiveJobs.docs.map( job => {
+                                    return {
+                                      url: `https://www.excelcna.com/job/view/${job.id}`,
+                                      title: job.data().title,
+                                      name: job.data().facility_name
+                                    }
+                                  })
+      
+      //7.  send students above jobs
+      students.forEach( async (student) => {
+        await mailchimpClient.messages.sendTemplate({
+        template_name: "jobs-openings",
+        template_content: [],
+        message: {
+          from_email: 'jobs@excelcna.com',                        
+          subject: `${ student.name }, [APPLY FOR JOBS] - ${ subject }`,                      
+          track_opens: true,
+          track_clicks: true,
+          important: true,
+          merge_language: "handlebars",
+          merge_vars: [{
+              rcpt: student.email,
+              vars: [      
+                  { name: 'JOBS', content: daily_jobs },
+                  { name: 'STUDENT_NAME', content: student.name }                       
+              ]
+          }],
+          to: [
+              { email: student.email }
+          ]
+        }
+      })    
+     })  
+     
+    }   
   },
   //Every Monday 8 a.m., send summary applicants and prospect  to a job openings
   notifyEmployers : async ( num ) => { 

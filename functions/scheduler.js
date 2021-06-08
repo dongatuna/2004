@@ -11,7 +11,7 @@ const scheduler = () => {
             cron.schedule('0 8 * * *', () => {  // '0 9 * * *'
              
                 notifyStudents(1)
-                //notifyEmployers(1)                          
+                notifyEmployers(1)                          
             },{
                 scheduled: true,
                 timezone: "America/Los_Angeles"
@@ -32,7 +32,7 @@ const scheduler = () => {
         },
 
         firstAndThirdMondayEmails: () => {
-            cron.schedule("45 10 * * *", async () => { //0 8 * * *              
+            cron.schedule("30 7 * * *", async () => { //0 8 * * *              
                 //get the first day of the month
                 let first = moment().startOf('month')//.add(1, 'month');
                 //get the 15th day of the month
@@ -67,7 +67,7 @@ const scheduler = () => {
                     const thirdMonday = moment( fifteenthDay ).format('dddd')   
 
                     //check of day of week
-                    if( firstMonday === 'Monday' || thirdMonday === 'Monday'){
+                    if( firstMonday === 'Tuesday' || thirdMonday === 'Tuesday'){
                         console.log(`Hello it is Monday today`)
                         //alert the employers about our upcoming courses
                         upcomingCoursesNotifications()
@@ -92,8 +92,7 @@ const scheduler = () => {
             },{
                 scheduled: true,
                 timezone: "America/Los_Angeles"
-              } 
-            
+              }             
             )
         },
 

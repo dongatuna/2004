@@ -58,7 +58,7 @@ module.exports = {
             //if the applicant has not applied, submit application
             if( existing.length > 0 ){
                 return res.status(404).json({
-                    'message': 'We see you have submitted an application for this job.  Search for another job to apply for.',
+                    'message': 'We see you have submitted an application for this job.  Please apply for another job.',
                     'success': false,
                     'redirect': false,
                     'url': '/job/all'
@@ -85,7 +85,7 @@ module.exports = {
                 const num = applicants.length 
 
                 await mailchimpClient.messages.sendTemplate({
-                    template_name: "job-applicant-email",
+                    template_name: "job-applicant",
                     template_content: [],
                     message: {
                         from_email: 'jobs@excelcna.com',                        
@@ -101,6 +101,7 @@ module.exports = {
                                 { name: 'JOB_TITLE', content:  job.data().title },
                                 { name: 'APPLICANT_EMAIL', content: email },
                                 { name: 'APPLICANT_TEL', content: tel },
+                                { name: 'PROVIDER' , content: job.data().facility_name },
                                 { name: 'APPLICANT_CERTIFICATIONS', content: certifications }
                             ]
                         }],

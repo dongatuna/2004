@@ -149,7 +149,7 @@
             }
             debugger
             //hide the registration button to avoid multiple form submission           
-            $('#btnRegister').hide()
+            $('#btnRegisterStudentToClass').hide()
             //show user their form submission is being processed
             $("#process-registration").show()
 
@@ -241,7 +241,7 @@
                 return alert('You must enter all fields.  Make sure you entered your first and last names, email and/or telephone #.')
             } else {
                 //hide waitlist button
-                $('#btnWaitlist').hide()
+                $('#btnAddToStudentWaitlist').hide()
                 //show user their form submission is being processed
                 $("#process-waitlist").show()
                 //create an on object constructed from data entered by user in the form above

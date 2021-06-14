@@ -20,7 +20,7 @@ router.get('/catalog', SiteController.getCatalog )
 //get the questions page
 router.get("/questions", SiteController.getQuestionsPage )
 //receipt page after waitlisting for a course 
-router.get('/success', SiteController.getReceiptPage )
+router.get('https://www.doh.wa.gov/Portals/1/Documents/Pubs/667032.pdf', SiteController.getReceiptPage )
 //gets page for student to pay registration fee after receiving email //    getStudentPayRegistrationForm
 router.get('/secure/:code/:course_id/:student_id', SiteController.getStudentPayRegistrationForm )
 

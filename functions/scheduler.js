@@ -58,8 +58,8 @@ const scheduler = () => {
                
                 if ( first.day() > 1 || third.day() > 1) {       
                  
-                    firstDay = first.add(9 - first.day(), 'day')          
-                    fifteenthDay = third.add(9 - third.day(), 'day')                   
+                    firstDay = first.add(8 - first.day(), 'day')          
+                    fifteenthDay = third.add(8 - third.day(), 'day')                   
                     
                     //create first Monday
                     const firstMonday = moment(firstDay).format('dddd')
@@ -70,7 +70,7 @@ const scheduler = () => {
                     console.log(`first Monday ${firstMonday} and third Monday ${thirdMonday}`)
 
                     //check of day of week
-                    if( firstMonday === 'Tuesday' || thirdMonday === 'Tuesday'){
+                    if( firstMonday === 'Monday' || thirdMonday === 'Monday'){
                         console.log(`Hello it is Monday today`)
                         //alert the employers about our upcoming courses
                         upcomingCoursesNotifications()

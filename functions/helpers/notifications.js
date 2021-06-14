@@ -47,15 +47,55 @@ module.exports = {
                                   }
                                 })
  
-    //console.log(`JOBS, ${jobs}`)                        
-    //determine the subject of the email
-    const subject = day === 7 ? 'Weekly CNA/Caregiver job openings' : 'New CNA/Caregiver job openings!'  
+      //console.log(`JOBS, ${jobs}`)                        
+      //determine the subject of the email
+      const subject = day === 7 ? 'Weekly CNA/Caregiver job openings' : 'New CNA/Caregiver job openings!'  
 
-    //check to make sure that more than 4 jobs were created yesterday or last week
-    if( jobs.length > 4) {
+      //check to make sure that more than 4 jobs were created yesterday or last week
+      if( jobs.length > 4) {
 
-      //7.  send students above jobs
-      students.forEach( async (student) => {
+        //7.  send students above jobs
+        students.forEach( async (student) => {
+            await mailchimpClient.messages.sendTemplate({
+            template_name: "jobs-openings",
+            template_content: [],
+            message: {
+              from_email: 'jobs@excelcna.com',                        
+              subject: `${ student.name }, [APPLY FOR JOBS] - ${ subject }`,                      
+              track_opens: true,
+              track_clicks: true,
+              important: true,
+              merge_language: "handlebars",
+              merge_vars: [{
+                  rcpt: student.email,
+                  vars: [      
+                      { name: 'JOBS', content: jobs },
+                      { name: 'STUDENT_NAME', content: student.name }                       
+                  ]
+              }],
+              to: [
+                  { email: student.email }
+              ]
+            }
+          })    
+        })      
+      } else {
+        //if no less than 4 jobs were created, get the 5 most recent jobs
+        const fiveJobs = await db.collection('jobs')
+                                .orderBy("created", "desc")
+                                .limit(5)
+                                .get()
+        //format the jobs
+        const daily_jobs = fiveJobs.docs.map( job => {
+                                      return {
+                                        url: `https://www.excelcna.com/job/view/${job.id}`,
+                                        title: job.data().title,
+                                        name: job.data().facility_name
+                                      }
+                                    })
+        
+        //7.  send students above jobs
+        students.forEach( async (student) => {
           await mailchimpClient.messages.sendTemplate({
           template_name: "jobs-openings",
           template_content: [],
@@ -69,7 +109,7 @@ module.exports = {
             merge_vars: [{
                 rcpt: student.email,
                 vars: [      
-                    { name: 'JOBS', content: jobs },
+                    { name: 'JOBS', content: daily_jobs },
                     { name: 'STUDENT_NAME', content: student.name }                       
                 ]
             }],
@@ -78,49 +118,9 @@ module.exports = {
             ]
           }
         })    
-      })      
-    } else {
-      //if no less than 4 jobs were created, get the 5 most recent jobs
-      const fiveJobs = await db.collection('jobs')
-                               .orderBy("created", "desc")
-                               .limit(5)
-                               .get()
-      //format the jobs
-      const daily_jobs = fiveJobs.docs.map( job => {
-                                    return {
-                                      url: `https://www.excelcna.com/job/view/${job.id}`,
-                                      title: job.data().title,
-                                      name: job.data().facility_name
-                                    }
-                                  })
+      })  
       
-      //7.  send students above jobs
-      students.forEach( async (student) => {
-        await mailchimpClient.messages.sendTemplate({
-        template_name: "jobs-openings",
-        template_content: [],
-        message: {
-          from_email: 'jobs@excelcna.com',                        
-          subject: `${ student.name }, [APPLY FOR JOBS] - ${ subject }`,                      
-          track_opens: true,
-          track_clicks: true,
-          important: true,
-          merge_language: "handlebars",
-          merge_vars: [{
-              rcpt: student.email,
-              vars: [      
-                  { name: 'JOBS', content: daily_jobs },
-                  { name: 'STUDENT_NAME', content: student.name }                       
-              ]
-          }],
-          to: [
-              { email: student.email }
-          ]
-        }
-      })    
-     })  
-     
-    }   
+      }   
   },
   //Every Monday 8 a.m., send summary applicants and prospect  to a job openings
   notifyEmployers : async ( num ) => { 

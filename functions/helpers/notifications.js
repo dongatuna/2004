@@ -211,7 +211,7 @@ module.exports = {
         }
       })  
 
-     // console.log(`Employers ${JSON.stringify(employers)}`)
+      console.log(`Upcoming courses - log Employers to document in Google Console ${JSON.stringify(employers)}`)
 
       employers.forEach( async(x) => {
         await mailchimpClient.messages.sendTemplate({
@@ -248,7 +248,8 @@ module.exports = {
     client.setConfig({
       apiKey: MAILCHIMP_API_KEY,
       server: "us4",
-    });
+    })
+
     try { 
       //get the employers from mailchimp who are still subscribers
       const response = await client.lists.getListMembersInfo(`${ALL_EMPLOYER_LIST}`, 
@@ -266,13 +267,15 @@ module.exports = {
         }
       })  
 
+      console.log(`Post job openings for FREE - log Employers to document in Google Console ${JSON.stringify(employers)}`)
+
       employers.forEach( async(x) => {
         await mailchimpClient.messages.sendTemplate({
           template_name: "post-job-openings-for-free",
           template_content: [],
           message: {
             from_email: 'jobs@excelcna.com',                        
-            subject: `[Upcoming Caregiver Courses] - CNA, HCA, HCA to CNA bridging, CEUs and other caregiver courses`,                      
+            subject: `[POST CNA/CAREGIVER JOB OPENINGS FOR FREE] Recruit current CNA and Caregiver students and recent graduates!`,                      
             track_opens: true,
             track_clicks: true,
             important: true,

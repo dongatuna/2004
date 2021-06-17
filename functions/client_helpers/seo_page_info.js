@@ -1,44 +1,65 @@
 module.exports = {
 
     admin_portal_seo_info : {
-        title: 'Admin Portal',
+        title: 'Excel CNA Training Admin Portal, Seattle, Tacoma, Bellevue, Des Moines',
         titleTemplate: 'Excel Health Careers Training, Inc.',
         meta: [                   
-            {name: "description", content: "Resource for managing Excel Health Careers Training students."},
-            {name: "keywords", content: "CNA, NAC, Certified Nurse Aide, Certified Nurse Assistant, Nurse Aide, Nurse Assistant, Caregiver, Aide, Companion"},
-            {name: "author", content: "Don Gatuna"}          
-        
+            { name: "description", content: "Resource for managing Excel Health Careers Training students." },
+            { name: "keywords", content: "CNA, Nurse Aide, Nurse Assistant, Certified Nurse Aide, Certified Nurse Assistant, 75 Hours Class, 75 Hours Course, Home Care Assistant, Home Care Aide, HCA to CNA bridging, Home Care Aide to Nurse Aide Certified, Nurse Delegation CORE, Nurse Delegation Diabetes, CPR, First Aid, Basic Life Support, BLS, Cardio Pulmonary Resuscitation, CPR/First Aid/AED, Mental Health Specialty, Dementia Specialty, Safety, Orientation, Continuous Education Units" },
+            { name: "author", content: "Don Gatuna" },
+            { property: "og:site_name", content: "Excel Health Careers Training" },
+            { property: "og:title", content: "CNA Training, Caregiver Training school in Seattle, Tacoma, Bellevue, Des Moines" },
+            { property: "og:url", content: "https://www.excelcna.com/admin/signup" },
+            { property: "og:type", content: "website" },
+            { property: "og:description", content: "Study CNA, Certified Nursing Assistant, Home Care Aide, 75 Hours, Home Care Assistant, HCA to CNA bridging, DSHS caregiver courses, CPR, First Aid, Basic Life Support Seattle, Tacoma, Bellevue, Des Moines" },
+            { itemprop: "name", content: "Excel CNA Training" },
+            { itemprop: "url", content: "https://www.excelcna.com/admin/signup" },
+            { itemprop: "description", content: "Study CNA, Certified Nursing Assistant, Home Care Aide, 75 Hours, Home Care Assistant, HCA to CNA bridging, DSHS caregiver courses, CPR, First Aid, Basic Life Support Seattle, Tacoma, Bellevue, Des Moines" }       
         ],
         links: [
-            {rel: 'canonical', href: `https://www.excelcna.com/admin/signup`}
+            { rel: 'canonical', href: `https://www.excelcna.com/admin/signup` }
         ]
     },
 
     admin_signin_page_seo_info : {
-        title: 'Admin Sign In',
+        title: 'Excel CNA Training Admin Sign In, Seattle, Tacoma, Bellevue, Des Moines',
         titleTemplate: 'Excel Health Careers Training, Inc.',
         meta: [                   
-            {name: "description", content: "Resource for managing Excel Health Careers Training students."},
-            {name: "keywords", content: "CNA, NAC, Certified Nurse Aide, Certified Nurse Assistant, Nurse Aide, Nurse Assistant, Caregiver, Aide, Companion"},
-            {name: "author", content: "Don Gatuna"}          
-        
+            { name: "description", content: "Resource for managing Excel Health Careers Training students." },
+            { name: "keywords", content: "CNA, Nurse Aide, Nurse Assistant, Certified Nurse Aide, Certified Nurse Assistant, 75 Hours Class, 75 Hours Course, Home Care Assistant, Home Care Aide, HCA to CNA bridging, Home Care Aide to Nurse Aide Certified, Nurse Delegation CORE, Nurse Delegation Diabetes, CPR, First Aid, Basic Life Support, BLS, Cardio Pulmonary Resuscitation, CPR/First Aid/AED, Mental Health Specialty, Dementia Specialty, Safety, Orientation, Continuous Education Units" },
+            { name: "author", content: "Don Gatuna" },
+            { property: "og:site_name", content: "Excel Health Careers Training" },
+            { property: "og:title", content: "CNA Training, Caregiver Training school in Seattle, Tacoma, Bellevue, Des Moines" },
+            { property: "og:url", content: "https://www.excelcna.com/admin/signin" },
+            { property: "og:type", content: "website" },
+            { property: "og:description", content: "Study CNA, Certified Nursing Assistant, Home Care Aide, 75 Hours, Home Care Assistant, HCA to CNA bridging, DSHS caregiver courses, CPR, First Aid, Basic Life Support Seattle, Tacoma, Bellevue, Des Moines" },
+            { itemprop: "name", content: "Excel CNA Training"},
+            { itemprop: "url", content: "https://www.excelcna.com/admin/signin" },
+            { itemprop: "description", content: "Study CNA, Certified Nursing Assistant, Home Care Aide, 75 Hours, Home Care Assistant, HCA to CNA bridging, DSHS caregiver courses, CPR, First Aid, Basic Life Support Seattle, Tacoma, Bellevue, Des Moines" }          
         ],
         links: [
-            {rel: 'canonical', href: `https://www.excelcna.com/admin/signin`}
+            { rel: 'canonical', href: `https://www.excelcna.com/admin/signin`}
         ]
     },
 
     admin_signup_page_seo_info: {
-        title: 'Admin Sign Up',
+        title: 'Excel CNA Training Admin Sign Up, Seattle, Tacoma, Bellevue, Des Moines',
         titleTemplate: 'Excel Health Careers Training, Inc.',
         meta: [                   
             { name: "description", content: "Resource for managing Excel Health Careers Training students." },
-            { name: "keywords", content: "CNA, NAC, Certified Nurse Aide, Certified Nurse Assistant, Nurse Aide, Nurse Assistant, Caregiver, Aide, Companion" },
-            { name: "author", content: "Don Gatuna" }          
-        
+            { name: "keywords", content: "CNA, Nurse Aide, Nurse Assistant, Certified Nurse Aide, Certified Nurse Assistant, 75 Hours Class, 75 Hours Course, Home Care Assistant, Home Care Aide, HCA to CNA bridging, Home Care Aide to Nurse Aide Certified, Nurse Delegation CORE, Nurse Delegation Diabetes, CPR, First Aid, Basic Life Support, BLS, Cardio Pulmonary Resuscitation, CPR/First Aid/AED, Mental Health Specialty, Dementia Specialty, Safety, Orientation, Continuous Education Units" },
+            { name: "author", content: "Don Gatuna" },
+            { property: "og:site_name", content: "Excel Health Careers Training"},
+            { property: "og:title", content: "CNA Training, Caregiver Training school in Seattle, Tacoma, Bellevue, Des Moines"},
+            { property: "og:url", content: "https://www.excelcna.com/admin/signup"},
+            { property: "og:type", content: "website" },
+            { property: "og:description", content: "Study CNA, Certified Nursing Assistant, Home Care Aide, 75 Hours, Home Care Assistant, HCA to CNA bridging, DSHS caregiver courses, CPR, First Aid, Basic Life Support Seattle, Tacoma, Bellevue, Des Moines" },
+            { itemprop: "name", content: "Excel CNA Training"},
+            { itemprop: "url", content: "https://www.excelcna.com/admin/signup" },
+            { itemprop: "description", content: "Study CNA, Certified Nursing Assistant, Home Care Aide, 75 Hours, Home Care Assistant, HCA to CNA bridging, DSHS caregiver courses, CPR, First Aid, Basic Life Support Seattle, Tacoma, Bellevue, Des Moines" }        
         ],
         links: [
-            {rel: 'canonical', href: `https://www.excelcna.com/admin/signup`}
+            { rel: 'canonical', href: `https://www.excelcna.com/admin/signup`}
         ]
     },
 
@@ -46,21 +67,20 @@ module.exports = {
         title: 'Excel Health Careers Training, Seattle, Tacoma, Bellevue, Des Moines',
         titleTemplate: 'Excel Health Careers Training',
         meta: [               
-            { name: "description", content: "Excel Health Careers Training offers CNA, Home Care Assistant/75 hours, Home Care Aide to CNA training, CPR, First Aid, AED, and Basic Life Support (BLS), Mental Health specialty, Dementia specialty, Nurse Delegation for Nurse Assistants and Home Care Aides, Safety and Orientation, and caregiver continuous education units courses.  We also assist employers recruit caregivers and CNAs and CNA and caregiver find work."},  
-            { name: "keywords", content: "CNA Training, CNA Program, NAC School, NAC Training, NAC Program, Nurse Aide Training, Nurse Assistant Training, Nurse Aide Program, Nurse Assistant Program, 75 Hours Training, HCA School, HCA to CNA program, caregiver training school, "},              
-            { name: "author", content: "Don Gatuna"},
-            {name: "keywords", content: "CNA, Nurse Aide, Nurse Assistant, Certified Nurse Aide, Certified Nurse Assistant, 75 Hours Class, 75 Hours Course, Home Care Assistant, Home Care Aide, HCA to CNA bridging, Home Care Aide to Nurse Aide Certified, Nurse Delegation CORE, Nurse Delegation Diabetes, CPR, First Aid, Basic Life Support, BLS, Cardio Pulmonary Resuscitation, CPR/First Aid/AED, Mental Health Specialty, Dementia Specialty, Safety, Orientation, Continuous Education Units" },         
-            {property: "og:site_name", content: "Excel Health Careers Training"},
-            {property: "og:title", content: "CNA Training, Caregiver Training school in Seattle, Tacoma, Bellevue, Des Moines"},
-            {property: "og:url", content: "https://www.excelcna.com"},
-            {property: "og:type", content: "website" },
-            {property: "og:description", content: "Study CNA, Certified Nursing Assistant, Home Care Aide, 75 Hours, Home Care Assistant, HCA to CNA bridging, DSHS caregiver courses, CPR, First Aid, Basic Life Support Seattle, Tacoma, Bellevue, Des Moines"},
-            {itemprop: "name", content: "Excel CNA Training"},
-            {itemprop: "url", content: "https://www.excelcna.com"},
-            {itemprop: "description", content: "Study CNA, Certified Nursing Assistant, Home Care Aide, 75 Hours, Home Care Assistant, HCA to CNA bridging, DSHS caregiver courses, CPR, First Aid, Basic Life Support Seattle, Tacoma, Bellevue, Des Moines"}
+            { name: "description", content: "Excel Health Careers Training offers CNA, Home Care Assistant, 75 hours course, Home Care Aide to CNA training, CPR, First Aid, AED, and Basic Life Support (BLS), Mental Health specialty, Dementia specialty, Nurse Delegation for Nurse Assistants and Home Care Aides, Safety and Orientation, and caregiver continuous education units courses.  We also assist employers recruit caregivers and CNAs and CNA and caregiver find work." },            
+            { name: "keywords", content: "CNA, Nurse Aide, Nurse Assistant, Certified Nurse Aide, Certified Nurse Assistant, 75 Hours Class, 75 Hours Course, Home Care Assistant, Home Care Aide, HCA to CNA bridging, Home Care Aide to Nurse Aide Certified, Nurse Delegation CORE, Nurse Delegation Diabetes, CPR, First Aid, Basic Life Support, BLS, Cardio Pulmonary Resuscitation, CPR/First Aid/AED, Mental Health Specialty, Dementia Specialty, Safety, Orientation, Continuous Education Units" },                
+            { name: "author", content: "Don Gatuna" },
+            { property: "og:site_name", content: "Excel Health Careers Training" },
+            { property: "og:title", content: "CNA Training, Caregiver Training school in Seattle, Tacoma, Bellevue, Des Moines"},
+            { property: "og:url", content: "https://www.excelcna.com" },
+            { property: "og:type", content: "website" },
+            { property: "og:description", content: "Study CNA, Certified Nursing Assistant, Home Care Aide, 75 Hours, Home Care Assistant, HCA to CNA bridging, DSHS caregiver courses, CPR, First Aid, Basic Life Support Seattle, Tacoma, Bellevue, Des Moines" },
+            { itemprop: "name", content: "Excel CNA Training" },
+            { itemprop: "url", content: "https://www.excelcna.com" },
+            { itemprop: "description", content: "Study CNA, Certified Nursing Assistant, Home Care Aide, 75 Hours, Home Care Assistant, HCA to CNA bridging, DSHS caregiver courses, CPR, First Aid, Basic Life Support Seattle, Tacoma, Bellevue, Des Moines" }
         ],
         links: [
-            {rel: 'canonical', href: 'https://www.excelcna.com'}
+            { rel: 'canonical', href: 'https://www.excelcna.com' }
         ]
     },    
 
@@ -68,21 +88,20 @@ module.exports = {
             title: 'Nurse Assistant, Caregiver, Companion and Home Care Aide Jobs in Seattle, Tacoma, Bellevue, Des Moines',
             titleTemplate: 'Nurse Assistant, Caregiver, Companion and Home Care Aide Jobs',
             meta: [                   
-                {name: "description", content: "Listing of caregiver, companion, Certified Nurse Assistant, CNA and Home Care Aide, HCA, full time, part time and per diem jobs."},
-                {name: "keywords", content: "CNA Jobs, NAC Jobs, Caregiver Jobs, Certified Nurse Aide Jobs, Certified Nurse Assistant Jobs, Nurse Aide Jobs, Nurse Assistant Jobs, Caregiver Jobs, Companion Jobs."},
-                {name: "author", content: "Don Gatuna"},
+                { name: "description", content: "Listing of CNA, HCA, NAR, caregiver, companion, Certified Nurse Assistant, and Home Care Aide, full time, part time and per diem jobs." },
+                { name: "keywords", content: "CNA, NAC, HCA, NAR, Home Care, Caregiver, Certified Nurse Aide, Certified Nurse Assistant, Nurse Aide, Nurse Assistant, Caregiver, Companion" },
+                { name: "author", content: "Don Gatuna" },
                 { property: "og:site_name", content: "Excel Health Careers Training" },
                 { property: "og:title", content: "Jobs for HCA, CNA, Caregivers, Companions in Seattle, Tacoma, Bellevue, Des Moines" },
                 { property: "og:url", content: "https://www.excelcna.com/job/all" },
                 { property: "og:type", content: "website" },
-                { property: "og:description", content: "Jobs for HCA, CNA, Caregivers, Companions in Seattle, Tacoma, Bellevue, Des Moines"  },
+                { property: "og:description", content: "Jobs for HCA, CNA, Caregivers, Companions in Seattle, Tacoma, Bellevue, Des Moines" },
                 { itemprop: "name", content: "Excel CNA Training" },
                 { itemprop: "url", content: "https://www.excelcna.com/job/all" },
-                { itemprop: "description", content: "Jobs for HCA, CNA, Caregivers, Companions in Seattle, Tacoma, Bellevue, Des Moines"  } 
-            
+                { itemprop: "description", content: "Jobs for HCA, CNA, Caregivers, Companions in Seattle, Tacoma, Bellevue, Des Moines" } 
             ],
             links: [
-                {rel: 'canonical', href: `https://www.excelcna.com/job/all`}
+                { rel: 'canonical', href: `https://www.excelcna.com/job/all`}
             ]
     },
 
@@ -90,20 +109,20 @@ module.exports = {
         title: 'Home page',
         titleTemplate: 'Excel Health Careers Training',
         meta: [               
-            {name: "description", content: "Excel Health Careers Training offers CNA, Home Care Assistant/75 hours, HCA, HCA to CNA or Home Care Aide to CNA training, CPR, First Aid, AED, and Basic Life Support (BLS), Mental Health specialty, Dementia specialty, Nurse Delegation for Nurse Assistants and Home Care Aides, Safety and Orientation, and caregiver continuous education units courses."},                    
-            {name: "author", content: "Don Gatuna"},          
-            {name: "keywords", content: "CNA, Nurse Aide, Nurse Assistant, Certified Nurse Aide, Certified Nurse Assistant, 75 Hours Class, 75 Hours Course, Home Care Assistant, Home Care Aide, HCA to CNA bridging, Home Care Aide to Nurse Aide Certified, Nurse Delegation CORE, Nurse Delegation Diabetes, CPR, First Aid, Basic Life Support, BLS, Cardio Pulmonary Resuscitation, CPR/First Aid/AED, Mental Health Specialty, Dementia Specialty, Safety, Orientation, Continuous Education Units" },         
-            {property: "og:site_name", content: "Excel Health Careers Training"},
-            {property: "og:title", content: "CNA Training, Caregiver Training school in Seattle, Tacoma, Bellevue, Des Moines"},
-            {property: "og:url", content: "https://www.excelcna.com"},
-            {property: "og:type", content: "website" },
-            {property: "og:description", content: "Study CNA, Certified Nursing Assistant, Home Care Aide, 75 Hours, Home Care Assistant, HCA to CNA bridging, DSHS caregiver courses, CPR, First Aid, Basic Life Support Seattle, Tacoma, Bellevue, Des Moines"},
-            {itemprop: "name", content: "Excel CNA Training"},
-            {itemprop: "url", content: "https://www.excelcna.com"},
-            {itemprop: "description", content: "Study CNA, Certified Nursing Assistant, Home Care Aide, 75 Hours, Home Care Assistant, HCA to CNA bridging, DSHS caregiver courses, CPR, First Aid, Basic Life Support Seattle, Tacoma, Bellevue, Des Moines"}
+            { name: "description", content: "Excel Health Careers Training offers CNA, Home Care Assistant/75 hours, HCA, HCA to CNA or Home Care Aide to CNA training, CPR, First Aid, AED, and Basic Life Support (BLS), Mental Health specialty, Dementia specialty, Nurse Delegation for Nurse Assistants and Home Care Aides, Safety and Orientation, and caregiver continuous education units courses." },                    
+            { name: "author", content: "Don Gatuna" },          
+            { name: "keywords", content: "CNA, Nurse Aide, Nurse Assistant, Certified Nurse Aide, Certified Nurse Assistant, 75 Hours Class, 75 Hours Course, Home Care Assistant, Home Care Aide, HCA to CNA bridging, Home Care Aide to Nurse Aide Certified, Nurse Delegation CORE, Nurse Delegation Diabetes, CPR, First Aid, Basic Life Support, BLS, Cardio Pulmonary Resuscitation, CPR/First Aid/AED, Mental Health Specialty, Dementia Specialty, Safety, Orientation, Continuous Education Units" },         
+            { property: "og:site_name", content: "Excel Health Careers Training"  },
+            { property: "og:title", content: "CNA Training, Caregiver Training school in Seattle, Tacoma, Bellevue, Des Moines" },
+            { property: "og:url", content: "https://www.excelcna.com" },
+            { property: "og:type", content: "website" },
+            { property: "og:description", content: "Study CNA, Certified Nursing Assistant, Home Care Aide, 75 Hours, Home Care Assistant, HCA to CNA bridging, DSHS caregiver courses, CPR, First Aid, Basic Life Support Seattle, Tacoma, Bellevue, Des Moines" },
+            { itemprop: "name", content: "Excel CNA Training" },
+            { itemprop: "url", content: "https://www.excelcna.com" },
+            { itemprop: "description", content: "Study CNA, Certified Nursing Assistant, Home Care Aide, 75 Hours, Home Care Assistant, HCA to CNA bridging, DSHS caregiver courses, CPR, First Aid, Basic Life Support Seattle, Tacoma, Bellevue, Des Moines" }
         ],
         links: [
-            {rel: 'canonical', href: 'https://www.excelcna.com'}
+            { rel: 'canonical', href: 'https://www.excelcna.com'}
         ]
     },   
 
@@ -111,13 +130,22 @@ module.exports = {
         title: 'Payment Receipt Page',
         titleTemplate: 'Excel Health Careers Training',
         meta: [               
-            {name: "description", content: "Course sign up receipt page for students who have paid for Excel Health Careers Training courses such as CNA, Home Care Aide to CNA training, CPR, First Aid, AED, and Basic Life Support  Courses."},  
-            {name: "keywords", content:"CNA School, NAC School, CNA Training, CNA Program, NAC Training, NAC Program, Nurse Aide Training, Nurse Assistant Training, Nurse Aide Program, Nurse Assistant Program"},              
-            {name: "author", content: "Don Gatuna"}                 
+            { name: "description", content: "Course sign up receipt page for students who have paid for Excel Health Careers Training courses such as CNA, Home Care Aide to CNA training, CPR, First Aid, AED, and Basic Life Support  Courses." },  
+            { name: "keywords", content:"CNA School, NAC School, CNA Training, CNA Program, NAC Training, NAC Program, Nurse Aide Training, Nurse Assistant Training, Nurse Aide Program, Nurse Assistant Program" },              
+            { name: "author", content: "Don Gatuna" },
+            { property: "og:site_name", content: "Excel Health Careers Training" },
+            { property: "og:title", content: "CNA Training, Caregiver Training school in Seattle, Tacoma, Bellevue, Des Moines" },
+            { property: "og:url", content: "https://www.excelcna.com/success" },
+            { property: "og:type", content: "website" },
+            { property: "og:description", content: "Study CNA, Certified Nursing Assistant, Home Care Aide, 75 Hours, Home Care Assistant, HCA to CNA bridging, DSHS caregiver courses, CPR, First Aid, Basic Life Support Seattle, Tacoma, Bellevue, Des Moines" },
+            { itemprop: "name", content: "Excel CNA Training" },
+            { itemprop: "url", content: "https://www.excelcna.com/success" },
+            { itemprop: "description", content: "Study CNA, Certified Nursing Assistant, Home Care Aide, 75 Hours, Home Care Assistant, HCA to CNA bridging, DSHS caregiver courses, CPR, First Aid, Basic Life Support Seattle, Tacoma, Bellevue, Des Moines" }
+
         ],
         links: [
-            {rel: 'canonical', href: 'https://www.excelcna.com/confirm-payment'},
-            {rel: 'canonical', href: 'https://www.excelcna.com/success'}
+            { rel: 'canonical', href: 'https://www.excelcna.com/confirm-payment' },
+            { rel: 'canonical', href: 'https://www.excelcna.com/success' }
         ]
     },
 
@@ -125,8 +153,8 @@ module.exports = {
         title: 'Nurse Assistant and Home Care Aide Questions',
         titleTemplate: 'CNA and HCA written questions',
         meta: [                   
-            {name: "description", content: "Washington state CNA and HCA state license theory questions."},
-            {name: "keywords", content: "CNA Questions, NAC Quiz, Caregiver Exams, Certified Nurse Aide Tests, Certified Nurse Assistant Tests, Nurse Aide Examinations, Nurse Assistant Theory Questions"},            
+            { name: "description", content: "Washington state CNA and HCA state license theory questions."},
+            { name: "keywords", content: "CNA Questions, NAC Quiz, Caregiver Exams, Certified Nurse Aide Tests, Certified Nurse Assistant Tests, Nurse Aide Examinations, Nurse Assistant Theory Questions"},            
             { name: "author", content: "Don Gatuna" },
             { property: "og:site_name", content: "Excel Health Careers Training" },
             { property: "og:title", content: "Questions for HCA, CNA in Seattle, Tacoma, Bellevue, Des Moines" },
@@ -138,7 +166,7 @@ module.exports = {
             { itemprop: "description", content: "Study theory questions for HCA and CNA in Seattle, Tacoma, Bellevue, Des Moines" } 
         ],
         links: [
-            {rel: 'canonical', href: `https://www.excelcna.com/questions`}
+            { rel: 'canonical', href: `https://www.excelcna.com/questions`}
         ]
     },        
 
@@ -156,12 +184,11 @@ module.exports = {
             { property: "og:description", content: "Study CNA, 75 Hours Training, Home Care Aide, Mental Health Specialty, Dementia Specialty, CORE Nurse Delegation, Nurse Delegation with Special focus on Diabetes, Cardio Pulmonary Resuscitation, CPR, BLS, Basic Life Support, Seattle, Tacoma, Bellevue, Des Moines" },
             { itemprop: "name", content: "Excel CNA Training" },
             { itemprop: "url", content: "https://www.excelcna.com/register/" },
-            { itemprop: "description", content: "Study CNA, 75 Hours Training, Home Care Aide, Mental Health Specialty, Dementia Specialty, CORE Nurse Delegation, Nurse Delegation with Special focus on Diabetes, Cardio Pulmonary Resuscitation, CPR, BLS, Basic Life Support, Seattle, Tacoma, Bellevue, Des Moines" }  
-        
+            { itemprop: "description", content: "Study CNA, 75 Hours Training, Home Care Aide, Mental Health Specialty, Dementia Specialty, CORE Nurse Delegation, Nurse Delegation with Special focus on Diabetes, Cardio Pulmonary Resuscitation, CPR, BLS, Basic Life Support, Seattle, Tacoma, Bellevue, Des Moines" }        
         ],
 
         links: [
-            {rel: 'canonical', href: 'https://www.excelcna.com/register/'}
+            { rel: 'canonical', href: 'https://www.excelcna.com/register/'}
         ]
     },
 
@@ -186,58 +213,74 @@ module.exports = {
         ]
     },
 
-    signin_page_seo_info : {
-        title: 'Employer Sign In',
-        titleTemplate: 'Find CNAs, Aides, and Caregivers.',
-        meta: [                   
-            {name: "description", content: "Find and hire home care aides, HCAs, caregivers, CNAs, personal companions to work for you."},
-            {name: "keywords", content: "CNA, NAC, Certified Nurse Aide, Certified Nurse Assistant, Nurse Aide, Nurse Assistant, Caregiver, Aide, Companion"},
-            {name: "author", content: "Don Gatuna"}          
+    // signin_page_seo_info : {
+    //     title: 'Employer Sign In',
+    //     titleTemplate: 'Find CNAs, Aides, and Caregivers.',
+    //     meta: [                   
+    //         { name: "description", content: "Find and hire home care aides, HCAs, caregivers, CNAs, personal companions to work for you."},
+    //         { name: "keywords", content: "CNA, NAC, Certified Nurse Aide, Certified Nurse Assistant, Nurse Aide, Nurse Assistant, Caregiver, Aide, Companion"},
+    //         { name: "author", content: "Don Gatuna"}          
         
-        ],
-        links: [
-            {rel: 'canonical', href: `https://www.excelcna.com/user/signin`}
-        ]
-    },
+    //     ],
+    //     links: [
+    //         {rel: 'canonical', href: `https://www.excelcna.com/user/signin`}
+    //     ]
+    // },
 
-    signup_page_seo_info: {
-        title: 'Employer Sign Up',
-        titleTemplate: 'Find CNAs, Aides, and Caregivers.',
-        meta: [                   
-            {name: "description", content: "Find and hire caregivers, CNAs, personal companions to work for you."},
-            {name: "keywords", content: "CNA, NAC, Certified Nurse Aide, Certified Nurse Assistant, Nurse Aide, Nurse Assistant, Caregiver, Aide, Companion"},
-            {name: "author", content: "Don Gatuna"}          
+    // signup_page_seo_info: {
+    //     title: 'Employer Sign Up',
+    //     titleTemplate: 'Find CNAs, Aides, and Caregivers.',
+    //     meta: [                   
+    //         { name: "description", content: "Find and hire caregivers, CNAs, personal companions to work for you."},
+    //         { name: "keywords", content: "CNA, NAC, Certified Nurse Aide, Certified Nurse Assistant, Nurse Aide, Nurse Assistant, Caregiver, Aide, Companion"},
+    //         { name: "author", content: "Don Gatuna" }          
         
-        ],
-        links: [
-            {rel: 'canonical', href: `https://www.excelcna.com/user/signup`}
-        ]
-    },
+    //     ],
+    //     links: [
+    //         {rel: 'canonical', href: `https://www.excelcna.com/user/signup`}
+    //     ]
+    // },
 
     videos_page_seo_info: {
-        title: 'Nurse Assistant, Caregiver and Home Care Aide Skill Videos',
+        title: 'CNA and HCA, 75 Hours Course Skill Videos, Seattle, Tacoma, Bellevue, Des Moines',
         titleTemplate: 'Nurse Assistant, Caregiver and Home Care Aide Skill Videos',
         meta: [                   
-            {name: "description", content: "Certified Nurse and Home Care Aide personal and vital sign skills."},
-            {name: "keywords", content: "CNA Skill Videos, NAC Skill Videos, Caregiver Skill Videos, Certified Nurse Aide Skill Videos, Certified Nurse Assistant Skill Videos, Nurse Aide Skill Videos, Nurse Assistant Skill Videos, Caregiver Skill Videos, Companion Skill Videos, Aide Skill Videos"},
-            {name: "author", content: "Don Gatuna"}             
+            { name: "description", content: "Certified Nurse and Home Care Aide personal and vital sign skills."},
+            { name: "keywords", content: "CNA Skill Videos, NAC Skill Videos, Caregiver Skill Videos, Certified Nurse Aide Skill Videos, Certified Nurse Assistant Skill Videos, Nurse Aide Skill Videos, Nurse Assistant Skill Videos, Caregiver Skill Videos, Companion Skill Videos, Aide Skill Videos" },
+            { name: "author", content: "Don Gatuna" }, 
+            { property: "og:site_name", content: "Excel Health Careers Training" },
+            { property: "og:title", content: "View skill videos for HCA, CNA in Seattle, Tacoma, Bellevue, Des Moines" },
+            { property: "og:url", content: "https://www.excelcna.com/videos" },
+            { property: "og:type", content: "website" },
+            { property: "og:description", content: "View skill videos for HCA and CNA in Seattle, Tacoma, Bellevue, Des Moines" },
+            { itemprop: "name", content: "Excel CNA Training" },
+            { itemprop: "url", content: "https://www.excelcna.com/videos" },
+            { itemprop: "description", content: "View skill videos for HCA and CNA in Seattle, Tacoma, Bellevue, Des Moines" } 
         ],            
         links: [
-            {rel: 'canonical', href: `https://www.excelcna.com/videos`}
+            { rel: 'canonical', href: `https://www.excelcna.com/videos`}
         ]
     },
 
     whypost_page_seo_info : {
-        title: 'Hire CNAs, HCAs, Aides and Caregivers',
+        title: 'Hire CNAs, HCAs, Aides and Caregivers, Seattle, Tacoma, Bellevue, Des Moines',
         titleTemplate: 'Hire CNAs and Caregivers',
         meta: [                   
-            {name: "description", content: "Recruit CNAs, Home Care Aides, HCAs, Caregivers and Personal Companions in your community."},
-            {name: "keywords", content: "Recruit CNA, Find NAC, Hire Caregivers, Hire Certified Nurse Aide, Find Personal Companion, Hire Certified Nurse Assistant, Find Nurse Aide, Hire Nurse Assistant, Hire Caregiver"},
-            {name: "author", content: "Don Gatuna"}          
-        
+            { name: "description", content: "Recruit CNAs, Home Care Aides, HCAs, Caregivers and Personal Companions in your community." },
+            { name: "keywords", content: "Recruit CNA, Find NAC, Hire Caregivers, Hire Certified Nurse Aide, Find Personal Companion, Hire Certified Nurse Assistant, Find Nurse Aide, Hire Nurse Assistant, Hire Caregiver" },
+            { name: "author", content: "Don Gatuna" },
+            { property: "og:site_name", content: "Excel Health Careers Training" },
+            { property: "og:title", content: "Recruit and hire CNA and Caregivers, HCA, NAR, NAC in Seattle, Tacoma, Bellevue, Des Moines" },
+            { property: "og:url", content: "https://www.excelcna.com/whypost" },
+            { property: "og:type", content: "website" },
+            { property: "og:description", content: "Recruit and hire CNA and Caregivers, HCA, NAR, NAC in Seattle, Tacoma, Bellevue, Des Moines" },
+            { itemprop: "name", content: "Excel CNA Training" },
+            { itemprop: "url", content: "https://www.excelcna.com/whypost" },
+            { itemprop: "description", content: "Recruit and hire CNA and Caregivers, HCA, NAR, NAC in Seattle, Tacoma, Bellevue, Des Moines" }       
         ],
+
         links: [
-            {rel: 'canonical', href: `https://www.excelcna.com/whypost`}
+            { rel: 'canonical', href: `https://www.excelcna.com/whypost`}
         ]
     },
 
@@ -524,7 +567,7 @@ module.exports = {
         ],
 
         links: [
-            { rel: 'canonical', href: 'https://www.excelcna.com/classes'},
+            { rel: 'canonical', href: 'https://www.excelcna.com/classes' },
         ]
     },
 
@@ -550,5 +593,4 @@ module.exports = {
             { rel: 'canonical', href: 'https://www.excelcna.com/job' },
         ]
     }
-
 }

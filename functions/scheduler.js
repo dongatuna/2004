@@ -8,7 +8,7 @@ const scheduler = () => {
     return { 
         
         alertDaily: () => {
-            cron.schedule('0 7 * * *', () => {  // '0 9 * * *'
+            cron.schedule('0 8 * * *', () => {  // '0 9 * * *'
              
                 notifyStudents(1)
                 notifyEmployers(1)                          
@@ -32,7 +32,7 @@ const scheduler = () => {
         },
 
         firstAndThirdMondayEmails: () => {
-            cron.schedule("30 8 * * *", async () => { //0 8 * * *              
+            cron.schedule("30 8 * * 1", async () => { //0 8 * * *              
                 //get the first day of the month
                 let first = moment().startOf('month')//.add(1, 'month');
                 //get the 15th day of the month
@@ -100,7 +100,7 @@ const scheduler = () => {
         },
 
         secondAndFourthMondayEmails: () => {
-            cron.schedule("0 8 * * * ", async () => { //0 8 * * *              
+            cron.schedule("0 8 * * 1", async () => { //0 8 * * *              
                 //get the seventh day of the month
                 let second = moment().startOf('month').add(7, 'days');
                 //get the 21st day of the month

@@ -71,7 +71,7 @@ module.exports = {
             { name: "keywords", content: "CNA, Nurse Aide, Nurse Assistant, Certified Nurse Aide, Certified Nurse Assistant, 75 Hours Class, 75 Hours Course, Home Care Assistant, Home Care Aide, HCA to CNA bridging, Home Care Aide to Nurse Aide Certified, Nurse Delegation CORE, Nurse Delegation Diabetes, CPR, First Aid, Basic Life Support, BLS, Cardio Pulmonary Resuscitation, CPR/First Aid/AED, Mental Health Specialty, Dementia Specialty, Safety, Orientation, Continuous Education Units" },                
             { name: "author", content: "Don Gatuna" },
             { property: "og:site_name", content: "Excel Health Careers Training" },
-            { property: "og:title", content: "CNA Training, Caregiver Training school in Seattle, Tacoma, Bellevue, Des Moines"},
+            { property: "og:title", content: "Best CNA Training, Caregiver Training school in Seattle, Tacoma, Bellevue, Des Moines"},
             { property: "og:url", content: "https://www.excelcna.com" },
             { property: "og:type", content: "website" },
             { property: "og:description", content: "Study CNA, Certified Nursing Assistant, Home Care Aide, 75 Hours, Home Care Assistant, HCA to CNA bridging, DSHS caregiver courses, CPR, First Aid, Basic Life Support Seattle, Tacoma, Bellevue, Des Moines" },

@@ -26,7 +26,7 @@ module.exports = {
     addCourseView: (req, res, next ) => {
         //courses array - contains official names of courses
         const courses = [
-            "Certified Nurse Assistant/CNA", 
+            "CNA", 
             "DSHS Home Care Aide/75 Hours",
             "HCA to CNA Bridging", 
             "DSHS Nurse Delegation (CORE) for NAs and HCAs",

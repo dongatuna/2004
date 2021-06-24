@@ -240,55 +240,46 @@
             //get student id
             const student_id = localStorage.getItem('student_id')  
 
-            //get the course id
+            //get the course id for url parameter
             const course_id = e.currentTarget.attributes[2].nodeValue
-            //get the innertext of the button clicked course name from
-            const course_name = `${e.currentTarget.parentElement.childNodes[2].parentElement.innerText}`
-            //get code from local storage
-            //const code = localStorage.getItem('code')
-            //trim the course name - remove 'button text'
-            const response = confirm(`You are about to enroll for ${course_name.substring(0, 15)} class!`)
-            //if true
-            if(response){
-               
+           
                 //
-                const studentData = {
-                    payment : 0,                  
-                    student_id
-                }  
+            const studentData = {
+                payment : 0,                  
+                student_id
+            }  
 
-                $.ajax({
-                    type: 'POST', 
-                    url: `/students/waitlist/${code}/${course_id}`,
-                    credentials: 'same-origin', // <-- includes cookies in the request
-                    headers: {
-                        Accept: "application/json",
-                        // "Content-Type": "application/json",
-                        // 'CSRF-Token': token
-                    },
-                    dataType: "json",
-                    data: studentData,
-                }).done(function (response) {
-                    if (response.redirect !== undefined && response.redirect) {
-                        //add local storage items for student id and if student registered or waitlisted
-                        
-                        localStorage.setItem('registered', response.registered)
-                       //alert user that they will pay registration fee
-                        alert(`Next, pay course registration fees - it is part of tuition.`)    
-                        //window.location.replace(response.redirect_url)
-                        window.location.href = response.redirect_url
-                    }      
-                    //if something is wrong - alert user and redirect user to course schedule page
-                    if (response.redirect !== undefined && !response.redirect) {
-                        
-                        alert('Something went wrong - start the registration process again!')
-                        window.location.href = `/dates/${code}`
-                        // window.location.replace('/courses')
-                    }                   
-                })     
+            $.ajax({
+                type: 'POST', 
+                url: `/students/waitlist/${code}/${course_id}`,
+                credentials: 'same-origin', // <-- includes cookies in the request
+                headers: {
+                    Accept: "application/json",
+                    // "Content-Type": "application/json",
+                    // 'CSRF-Token': token
+                },
+                dataType: "json",
+                data: studentData,
+            }).done(function (response) {
+                if (response.redirect !== undefined && response.redirect) {
+                    //add local storage items for student id and if student registered or waitlisted
+                    
+                    localStorage.setItem('registered', response.registered)
+                    //alert user that they will pay registration fee
+                    alert(`Next, pay course registration fees - it is part of tuition.`)    
+                    //window.location.replace(response.redirect_url)
+                    window.location.href = response.redirect_url
+                }      
+                //if something is wrong - alert user and redirect user to course schedule page
+                if (response.redirect !== undefined && !response.redirect) {
+                    
+                    alert('Something went wrong - start the registration process again!')
+                    window.location.href = `/dates/${code}`
+                    // window.location.replace('/courses')
+                }                   
+            })    
               
-
-            } else return                                      
+                                      
         })
     })     
 

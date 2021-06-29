@@ -118,9 +118,8 @@ module.exports = {
             ]
           }
         })    
-      })  
-      
-      }   
+      })     
+    }   
   },
   //Every Monday 8 a.m., send summary applicants and prospect  to a job openings
   notifyEmployers : async ( num ) => { 

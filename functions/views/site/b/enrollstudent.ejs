@@ -39,8 +39,7 @@
                             </div>                            
                         </div>
                     </div> 
-                    <br><br><br>
-                                             
+                    <br><br><br>                                             
                     
                     <!-- ADD TO THE WAITLIST BUTTON -->
                     <div class="row justify-content-center mt-2">
@@ -97,14 +96,14 @@
         
         //get student id
         const student_id = localStorage.getItem('student_id')
-
+        
         //this event register a student who pays registration fees
         $("#btnRegisterStudent").on('click', async( e ) => { 
             //prevent default behavior
             e.preventDefault()         
             //hide the registration button to avoid multiple form submission           
             $('#btnRegisterStudent').hide()
-            $('#btnWaitlistStudent').hide()
+            $('#btnWaitlistStudent').hide()//btnWaitlistStudent
             //show user their form submission is being processed
             $("#process-registration").show()
 
@@ -160,7 +159,7 @@
                     
                     localStorage.setItem('registered', response.registered)
                     debugger
-                    alert(response.message)
+                   // alert(response.message)
                     //window.location.replace(response.redirect_url)
                     window.location.href = response.redirect_url
                 }      
@@ -175,7 +174,7 @@
         })         
         
         $("#btnWaitlistStudent").on('click', e => {
-            
+                        
             //prevent default behavior
             e.preventDefault()   
             //check to make sure that the student doesn't really want to go on without paying
@@ -186,7 +185,7 @@
                 $('#btnRegisterStudent').hide()
                 $('#btnWaitlistStudent').hide()
                 //show user their form submission is being processed
-                $("#process-registration").show()                
+                $("#process-waitlist").show()                
 
                //  get the course id for the course -> student will be added to the course with course id          
                 gtag('event', 'Course Add To Waitlist', {
@@ -207,8 +206,7 @@
                 //send registrant to job search page
                 window.location.href = '/start-job-search'
             }           
-        })
-   
+        })   
     })    
 
 </script>

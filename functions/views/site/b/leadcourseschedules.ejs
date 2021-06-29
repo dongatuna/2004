@@ -40,7 +40,7 @@
                                     <li class="list-group-item" >
                                         <%=course.start_date %> - <%=course.end_date %>
                                         <a class="joinBtn btn btn-danger float-right" name="<%=course.start_date %>" value="<%= course.courseId %>" href ="/select-payment/<%=code%>/<%= course.courseId %>">
-                                            Join                                      
+                                            Sign Up                                      
                                         </a>
                                     </li> 
                                     <% }) %>                                 
@@ -53,7 +53,7 @@
                                         <li class="list-group-item" >
                                             <%=course.start_date %> - <%=course.end_date %>
                                             <a class="btn btn-danger float-right joinBtn" name="<%=course.start_date %>" value="<%= course.courseId %>" href ="/select-payment/<%=code%>/<%= course.courseId %>">
-                                                Join                                       
+                                                Sign Up                                       
                                             </a>
                                         </li> 
                                     <% }) %>                               
@@ -66,7 +66,7 @@
                                         <li class="list-group-item" >
                                             <%=course.start_date %> - <%=course.end_date %>
                                             <a class="btn btn-danger float-right joinBtn" name="<%=course.start_date %>" value="<%= course.courseId %>" href="/select-payment/<%=code%>/<%= course.courseId %>">
-                                                Join                                       
+                                                Sign Up                                       
                                             </a>
                                         </li> 
                                     <% }) %>                                
@@ -99,7 +99,7 @@
                                     <li class="list-group-item"  >
                                         <%=course.start_date %> - <%=course.end_date %>
                                         <a class="btn btn-danger float-right joinBtn" name="<%=course.start_date %>" value="<%= course.courseId %>" href="/select-payment/<%=code%>/<%= course.courseId %>">
-                                            Join                                       
+                                            Sign Up                                       
                                         </a>
                                     </li>
                                     <% }) %>
@@ -120,7 +120,7 @@
                                         <li class="list-group-item"  >
                                             <%=course.start_date %> - <%=course.end_date %>
                                             <a class="btn btn-danger float-right joinBtn" name="<%=course.start_date %>" value="<%= course.courseId %>" href="/select-payment/<%=code%>/<%= course.courseId %>">
-                                                Join                                       
+                                                Sign Up                                       
                                             </a>
                                         </li>
                                     <% }) %>
@@ -143,7 +143,7 @@
                                         <li  class="list-group-item"  >
                                             <%=course.start_date %>
                                             <a class="btn btn-danger float-right joinBtn" name="<%=course.start_date %>" value="<%= course.courseId %>" href ="/select-payment/<%=code%>/<%= course.courseId %>">
-                                                Join                                       
+                                                Sign Up                                       
                                             </a>
                                         </li>
                                     <% }) %>
@@ -156,7 +156,7 @@
                                         <li  class="list-group-item"  >
                                             <%=course.start_date %>
                                             <a class="btn btn-danger float-right joinBtn" name="<%=course.start_date %>" value="<%= course.courseId %>" href="/select-payment/<%=code%>/<%= course.courseId %>">
-                                                Join                                       
+                                                Sign Up                                       
                                             </a>
                                         </li>
                                     <% }) %>
@@ -178,7 +178,7 @@
                             <li  class="list-group-item"  >
                                 <%=course.start_date %> 
                                 <a class="btn btn-danger float-right joinBtn" name="<%=course.start_date %>" value="<%= course.courseId %>" href="/select-payment/<%=code%>/<%= course.courseId %>">
-                                    Join                                       
+                                    Sign Up                                       
                                 </a>
                             </li>
                         <% }) %>
@@ -196,7 +196,7 @@
                             <li class="list-group-item"  >
                                 <%=course.start_date %> 
                                 <a class="btn btn-danger float-right joinBtn" name="<%=course.start_date %>" value="<%= course.courseId %>" href ="/select-payment/<%=code%>/<%= course.courseId %>">
-                                    Join                                       
+                                    Sign Up                                       
                                 </a>
                             </li>                    
                         </ul>
@@ -211,9 +211,9 @@
                         <ul class="list-group list-group-flush justify-content-between">
                             <li class="list-group-item bg-dark text-white"> <strong>WEEKDAY/WEEKEND CLASS </strong> <br> 30 minutes</li>                                             
                             <li class="list-group-item">
-                                <%= course.start_date %> - <%=course.end_date %>
+                                <%= course.start_date %> 
                                 <a class="btn btn-danger float-right joinBtn" name="<%=course.start_date %>" value="<%= course.courseId %>" href="/select-payment/<%=code%>/<%= course.courseId %>">
-                                    Join                                       
+                                    Sign Up                                       
                                 </a>
                             </li>                       
                         </ul>
@@ -221,10 +221,10 @@
                 </div>                
             </div> 
             <% } %>              
-        </div>
-        
-</div>
+        </div>        
+    </div>
 </section>      
+
 
 <script type="application/javascript">
 
@@ -262,11 +262,8 @@
                 data: studentData,
             }).done(function (response) {
                 if (response.redirect !== undefined && response.redirect) {
-                    //add local storage items for student id and if student registered or waitlisted
-                    
-                    localStorage.setItem('registered', response.registered)
-                    //alert user that they will pay registration fee
-                    alert(`Next, pay course registration fees - it is part of tuition.`)    
+                    //add local storage items for student id and if student registered or waitlisted                    
+                    localStorage.setItem('registered', response.registered)                    
                     //window.location.replace(response.redirect_url)
                     window.location.href = response.redirect_url
                 }      

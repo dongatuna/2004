@@ -483,7 +483,7 @@ module.exports = {
         console.log(`REQ PARAMS ---> ${req.params}`)
         //get the req.body data
         const { stripeToken, student_id, payment } = req.body      
-        console.log(`REQ BODY ----> ${req.body}`)         
+        console.log(`REQ BODY ----> ${JSON.stringify(req.body)}`)         
         //check if there is an amount
         const amount = parseInt( payment )          
         
@@ -498,12 +498,14 @@ module.exports = {
             //get the long name of course stored in database
             const course = await courseDbName( code, id )          
             //get the student using the student id
+            console.log('course ----> ', course)
             const student = await db.collection('students').doc(student_id).get()
             //get the student status
             const status = student.data().status
             //change the prospect status to false
             status.prospect = false
             //clear the student payment array 
+            //this removes the last item in the student payment array associated with waitlist data 
             student.data().payments.pop()   
            
             //use registrant's email, first and last name and telephone to create a customer using stripe api
